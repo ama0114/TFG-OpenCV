@@ -1,8 +1,8 @@
-Instalación para windows 10 32 o 64 bits.
+Instalaciï¿½n para windows 10 32 o 64 bits.
 Los programas instalados son de 32 bits por lo que funcionan tanto en 32 como en 64. 
 Se usan programas de 32 bits ya que algunas de las librerias solo funcionan en sistemas de 32 bits.
 
-Partimos de aquí:
+Partimos de aquï¿½:
 http://docs.opencv.org/3.2.0/d5/de5/tutorial_py_setup_in_windows.html
 Desactualizado, pasos para instalarlo correctamente (python 2.7.5, opencv 3.3.0, numpy 1.13.1, matplotlib 1.3.0).
 
@@ -27,10 +27,15 @@ Instalamos con pip dos librerias necesarias para que funcione matplotlib.
 pip install pyparsing
 pip install python-dateutil
 
-Por último descargamos opencv
+Por ï¿½ltimo descargamos opencv
 https://sourceforge.net/projects/opencvlibrary/files/latest/download?source=files
-Lo instalamos. (en realidad no es una instalacón al uso, simplemente nos creará una carpeta con las librerias para varios lenguajes de programación)
+Lo instalamos. (en realidad no es una instalacï¿½n al uso, simplemente nos crearï¿½ una carpeta con las librerias para varios lenguajes de programaciï¿½n)
 Vamos donde nos ha instalado las librerias, accedemos a build/python/2.7/x86, copiamos el archivo cv2.py y lo copiamos en C:/Python27/lib/site-packages.
+Descargaremos las librerias ffmpeg para poder abrir archivos de video http://ffmpeg.zeranoe.com/builds/ version static. Copiaremos la carpeta ffmpeg
+en el directorio raiz del sistema. AÃ±adiremos a la variable de entorno el directorio "C:\ffmpeg\bin" para comprobar el correcto funcionamiento,
+ejecutamos en una ventana de comandos ffmpeg.
+Por Ãºltimo moveremos la carpeta opencv al directorio raiz del disco. AÃ±adiremos a la variable de entorno del sistema el directorio "C:\opencv\build\x64\vc14\bin" 
+y copiaremos en la carpeta de python2.7 el archivo opencv_ffmpeg330.dll.
 
 Tras esto probamos que todo esta instalado correctamente. Abrimos python IDLE desde el menu de inicio.
 Realizamos los 3 import.
@@ -40,19 +45,19 @@ Realizamos los 3 import.
 Ahora comprobaremos la version de cv2.
 >>> print cv2.__version__
 Nos deberia devolver 3.3.0
-Si conseguimos realizar los import sin que salte ningun error, la instalación es correcta.
+Si conseguimos realizar los import sin que salte ningun error, la instalaciï¿½n es correcta.
 
-El IDE que vamos a usar es Visual Studio Code, por su integración con git y las extensiones para python.
+El IDE que vamos a usar es Visual Studio Code, por su integraciï¿½n con git y las extensiones para python.
 https://code.visualstudio.com/
 
 Para poder usar git lo descargamos e instalamos: https://git-scm.com/download/win
 Una vez creado el repositorio en github, simplemente copiamos la url de este y desde un terminal ejecutamos:
 git clone urldelrepositorio.
 
-Abrimos esta carpeta desde visual studio code. Nos detectará la carpeta como clon de un repositorio, 
-todos los cambios que hagamos sobre la carpeta/archivos de esta, aparecerán reflejados en el icono de control de versiones.
+Abrimos esta carpeta desde visual studio code. Nos detectarï¿½ la carpeta como clon de un repositorio, 
+todos los cambios que hagamos sobre la carpeta/archivos de esta, aparecerï¿½n reflejados en el icono de control de versiones.
 
-Por último podemos configurar Visual Studio Code para ayudarnos a programar y debuggear nuestros códigos python.
+Por ï¿½ltimo podemos configurar Visual Studio Code para ayudarnos a programar y debuggear nuestros cï¿½digos python.
 Instalamos la extension de python(La primera que nos aparece).
-Instalamos pylint(nos lo propone el programa directamente) para obtener warnings y errores directamente sobre el código.
-Podemos configurar las advertencias, warnings y errores de pylint mediante la creacción de un archivo .pylintrc .
+Instalamos pylint(nos lo propone el programa directamente) para obtener warnings y errores directamente sobre el cï¿½digo.
+Podemos configurar las advertencias, warnings y errores de pylint mediante la creacciï¿½n de un archivo .pylintrc .
