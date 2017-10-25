@@ -1,3 +1,4 @@
+# coding=utf-8
 """Reproducción de un archivo de video 
     con OpenCV.
     Código obtenido en:
