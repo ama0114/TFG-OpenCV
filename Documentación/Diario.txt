@@ -1,1 +1,5 @@
 Aquí se guardarán los avances que se vayan haciendo, explicaciones, links a articulos consultados... 
+
+2/11/2017
+El robot recalcula su posición cada 20 milisegundos a partir de la información que recibe, por lo que cada 20 milisegundos o menos 
+es necesario que reciba una instrucción para que siga la trayectoria.

@@ -1,4 +1,7 @@
 # TFG-OpenCV
 
-Este proyecto consistirá en la creacción/prueba de diferentes códigos usando las librerias de OpenCV para obtener un programa capaz de detectar la posición de una linea en una imágen obtenida mediante una cámara.
+El objetivo del proyecto es guiar a un robot agv mediante la detección de una linea en el suelo. Se usarán camaras para 
+que el robot pueda "ver" esa linea, y se procesará la imagen para dar instrucciónes sobre que dirección debe de tomar.
+Para el procesamiento de imagenes usaremos OpenCV en su versión 3.3.0 en conjunto con python 2.7.5.
+
 
