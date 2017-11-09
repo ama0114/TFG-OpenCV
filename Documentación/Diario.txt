@@ -3,3 +3,14 @@ Aquí se guardarán los avances que se vayan haciendo, explicaciones, links a ar
 2/11/2017
 El robot recalcula su posición cada 20 milisegundos a partir de la información que recibe, por lo que cada 20 milisegundos o menos 
 es necesario que reciba una instrucción para que siga la trayectoria.
+
+9/11/2017
+Desarrollo de software evolutivo. Partimos de unos requisitos iniciales básicos, los desarollamos,
+los completamos y nos ponemos unos nuevos requisitos en base a lo desarrollado en la etapa anterior.
+
+Calendario
+Diciembre>Deteccion de la línea bajo diferentes entornos(iluminacion, color, saturación).
+Enero>Medir el error respecto del centro de la línea para saber si nos estamos desviando.
+Febrero>Obtener la ecuación que nos permita determinar la trazada en las curvas.
+Abril>Conectar el programa con las librerías necesarias para guiar el robot.
+Marzo>Hacer pruebas.
