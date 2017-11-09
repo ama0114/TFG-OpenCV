@@ -5,8 +5,9 @@ El robot recalcula su posición cada 20 milisegundos a partir de la información
 es necesario que reciba una instrucción para que siga la trayectoria.
 
 9/11/2017
-Desarrollo de software evolutivo. Partimos de unos requisitos iniciales básicos, los desarollamos,
+Desarrollo de software evolutivo, exploratorio. Partimos de unos requisitos iniciales básicos, los desarollamos,
 los completamos y nos ponemos unos nuevos requisitos en base a lo desarrollado en la etapa anterior.
+https://ossielniembrogarcia.wordpress.com/tag/modelo-espiral/
 
 Calendario
 Diciembre>Deteccion de la línea bajo diferentes entornos(iluminacion, color, saturación).
