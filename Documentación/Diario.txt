@@ -19,6 +19,27 @@ Marzo>Hacer pruebas.
 12/11/2017
 Organización de repositorio
 Creacion de un código que permite obtener el streaming generado por la aplicacion IPWebcam en un dispositivo android.
-La resolución del streaming se ha configurado en 640x480, la calidad del video dentro de la app en 38.
-Se consigue obtener una tasa de fps entre 15 y 25, aunque tiene caidas puntuales hasta 5 fps.
+La idea es poder transmitir lo que ve la camara situada en el robot a un dispositivo más potente, via inalambrica, 
+para ejecutar los diferentes algoritmos que nos permitiran mandar instrucciones de vuelta al robot.
+He creado una red lan con un router viejo, para aislar las comunicaciones y obtener todo el rendimiento posible,
+además el ordenador está conectado via ethernet al router.
+
+Resolución 800x600. 
+Calidad streaming > min,max,media fps.
+100             >   1.43, 6.85, 3.82
+75              >   4.67, 16.13, 11.49
+50              >   2.15, 19.23, 12.04
+
+Resolución 640x480.
+Calidad streaming > min,max,media fps.
+100             >  2.28, 7.3, 5.57
+75              >  1.07, 23.26, 15.73
+50              >  2.47, 22.73, 16.13
+
+Entre el ajuste 50 y 75 apenas se pierden fps, y la imagen mejora considerablemente.
+El cambio de resolucion nos limita el ancho que podemos ver, para curvas cerradas puede ser un problema.
+Por debajo de 50 pierde mucha calidad, por lo que es improducente probarlo si despúes no se va a poder usar.
+Sería conveniente encontrar la forma de medir el bitrate, ya que el parametro de calidad dentro de la app limita la funcioalidad
+en caso de que se quiera usar otro elemento de streaming.
+
 
