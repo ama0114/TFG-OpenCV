@@ -15,3 +15,10 @@ Enero>Medir el error respecto del centro de la línea para saber si nos estamos 
 Febrero>Obtener la ecuación que nos permita determinar la trazada en las curvas.
 Abril>Conectar el programa con las librerías necesarias para guiar el robot.
 Marzo>Hacer pruebas.
+
+12/11/2017
+Organización de repositorio
+Creacion de un código que permite obtener el streaming generado por la aplicacion IPWebcam en un dispositivo android.
+La resolución del streaming se ha configurado en 640x480, la calidad del video dentro de la app en 38.
+Se consigue obtener una tasa de fps entre 15 y 25, aunque tiene caidas puntuales hasta 5 fps.
+

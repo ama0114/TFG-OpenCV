@@ -3,7 +3,7 @@ from webcamStream import webcamStream
 import cv2
 
 def main():
-    stream = webcamStream('http://192.168.0.13:8080/shot.jpg')
+    stream = webcamStream('http://192.168.1.11:8080/shot.jpg')
    
     while True:      
         cv2.imshow('Streaming', stream.getVideoStream(-1))
