@@ -36,10 +36,17 @@ Calidad streaming > min,max,media fps.
 75              >  1.07, 23.26, 15.73
 50              >  2.47, 22.73, 16.13
 
+Resolución 176x144.
+Calidad streaming > min,max,media fps.
+20                > 5.26,200.00, 58.20
+
 Entre el ajuste 50 y 75 apenas se pierden fps, y la imagen mejora considerablemente.
 El cambio de resolucion nos limita el ancho que podemos ver, para curvas cerradas puede ser un problema.
 Por debajo de 50 pierde mucha calidad, por lo que es improducente probarlo si despúes no se va a poder usar.
 Sería conveniente encontrar la forma de medir el bitrate, ya que el parametro de calidad dentro de la app limita la funcioalidad
 en caso de que se quiera usar otro elemento de streaming.
+En la prueba de resolucion a 176x144 y calidad 20 podemos ver como para obtener una tasa de 50 fps (un fps cada 20 milisegundos),
+necesitamos bajar la calidad y resolucion del streaming radicalmente. Veremos en las pruebas de binarizacion como se comporta 
+cada streaming.
 
 

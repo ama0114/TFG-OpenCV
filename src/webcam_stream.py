@@ -32,8 +32,11 @@ class webcam_stream:
         img = cv2.imdecode(imgArray, modo)
         
         #calculo los fps
-        elapsed = time.time() - t       
-        f = round(1/elapsed,2)
+        elapsed = time.time() - t
+        if(elapsed != 0):
+            f = 1/elapsed
+        else:
+            f = 1/0.02
         return img, f
 
             
