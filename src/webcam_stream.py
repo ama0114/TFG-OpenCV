@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import time
 
-class webcamStream:
+class webcam_stream:
 
     def __init__(self, url):
         self.url = url
@@ -17,7 +17,7 @@ class webcamStream:
      si modo = 0, nos devuelve la imagen en escala de grises.
      si modo < 0, nos devuelve la imagen con canal alfa.
     """
-    def getVideoStream(self, modo):
+    def get_video_stream(self, modo):
         
         #inicio contador de tiempo para ver fps
         t = time.time()
@@ -33,7 +33,6 @@ class webcamStream:
         
         #calculo los fps
         elapsed = time.time() - t       
-        print(str(1/elapsed) + " fps")
         f = round(1/elapsed,2)
         return img, f
 

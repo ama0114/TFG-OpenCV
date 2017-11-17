@@ -1,13 +1,13 @@
 # coding=utf-8
-from webcamStream import webcamStream
+from webcam_stream import webcam_stream
 import cv2
 import numpy as np
 
 def main():
-    stream = webcamStream('http://192.168.1.11:8080/shot.jpg')
+    stream = webcam_stream('http://192.168.1.11:8080/shot.jpg')
     fpsStats = []
     while True:
-        vid, fps = stream.getVideoStream(-1)
+        vid, fps = stream.get_video_stream(-1)
         fpsStats.append(fps)
         cv2.imshow('Streaming', vid)
 
