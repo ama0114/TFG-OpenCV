@@ -33,12 +33,14 @@ class webcam_stream:
         
         #calculo los fps
         elapsed = time.time() - t
+        #Elapsed a veces es 0, si eso pasa uso 0.02 (lo suficiente para obtener 50fps) 
+        # para no alterar demasiado la medición, ya que nuestro objetivo son 50 fps.
         if(elapsed != 0):
             f = 1/elapsed
         else:
             f = 1/0.02
         return img, f
-
+        
             
 
 
