@@ -49,4 +49,20 @@ En la prueba de resolucion a 176x144 y calidad 20 podemos ver como para obtener 
 necesitamos bajar la calidad y resolucion del streaming radicalmente. Veremos en las pruebas de binarizacion como se comporta 
 cada streaming.
 
+19/11/2017
+Creo una "caja de herramientas" para almacenar los diferentes algoritmos que vaya haciendo
+relacionados con binarizacion y procesamiento de imagenes. Archivo toolbox.py
+
+Lo primero que necesito para poder realizar las pruebas de binarizacion es ser capaz de medir
+la luminosidad que esta capturando mi camara. 
+Para ello necesito capturar la luminosidad de una imagen rgb.
+He encontrado resuelta mi duda en el foro de OpenCV, la pongo en practica
+http://answers.opencv.org/question/66874/how-to-get-luminosity-from-the-camera-android/
+He creado en toolbox.py el metodo calcular_luminosidad, que la calcula segun el ejemplo anterior.
+Para probar que efectivamente funciona, he creado un archivo de prueba llamado test_luminosidad.py
+En el video TestLuminosidad.avi, en la carpea Documentacion/Videos/PruebaLuminosidad, 
+podemos ver como efectivamente es capaz de medir la luminosidad este metodo, cuando la luminosidad es baja,
+el metodo nos devuelve resultados cercanos a 0, mientras que segun aumenta,
+ha llegado a dar un valor de 148 (con luz artificial, una lampara de led).
+
 
