@@ -65,4 +65,7 @@ podemos ver como efectivamente es capaz de medir la luminosidad este metodo, cua
 el metodo nos devuelve resultados cercanos a 0, mientras que segun aumenta,
 ha llegado a dar un valor de 148 (con luz artificial, una lampara de led).
 
+Documentacion de los algoritmos de binarizacion de OpenCV. 
+Los algoritmos estan documentados en la clase toolbox, y se pueden llamar desde funciones de esta clase.
+
 

@@ -19,8 +19,8 @@ def main():
 
         #Binarizo la imagen 
         #Uso cv2.THRESH_BINARY_INV ya que necesito que la linea sea blanca y el resto negro
-        img_binarizada = toolbox.binarizar_umbral_fijo(vid, 147, 255, cv2.THRESH_BINARY_INV)
-
+        #img_binarizada = toolbox.binarizar_umbral_fijo(vid, 147, 255, cv2.THRESH_BINARY_INV)
+        umbral, img_binarizada = toolbox.binarizar_otsu(vid,255)
         #Muestro la imagen
         cv2.imshow('Binarizada', img_binarizada)
         cv2.imshow('Original', vid)
