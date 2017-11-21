@@ -51,23 +51,60 @@ Página oficial editor Latex: http://www.xm1math.net/texmaker/
 
 También se ha usado MikTex como implementación de Latex para windows. En su página dicen que por ser un conjunto de paquetes, no tienen una licencia concreta como en otros casos, aun así siguen las directrices de la FSF, y establecen una serie de pautas de uso distribuición y modificación.
 
-Página oficial implementacion MikTex: https://miktex.org/
+Página oficial MikTex: https://miktex.org/
 
 \section{Herramientas de gestión}
 
 \subsection{Trello}
+Trello es una herramienta online de gestión de tareas intuitiva y simple. Podemos crear diferentes tableros y crear tareas dentro de estos. La vamos a usar principalmente para comunicarnos entre profesor y alumno. Crearemos 3 tableros, tareas por hacer, tareas en desarrollo y tareas completadas.
+
+Página de trello: https://trello.com/
 
 \subsection{GitHub}
+Github es una plataforma online para albergar proyectos desarrollados mediante un sistema de control de versiones git. 
+Es una herramienta mundialmente conocida en el mundo del desarrollo de software, y una de las más usadas para este tipo de propósitos.
+
+Principalmente tiene 3 tipos de elementos:
+\begin{itemize}
+	\item Milestones: Son puntos temporales de importancia dentro de la planificación del proyecto.
+	\item Issues: Tareas a realizar. Pueden ser asignadas a um Milestone. 
+ 	\item Commits: Son el elemento que permite ir realizando cambios en el repositorio: añadir elementos, modificar, eliminar... Sirven para ir resolviendo las tareas que vayan surgiendo.
+\end{itemize}
+
+La usaremos para albergar el código del proyecto, y para aplicar metodologías ágiles y scrum. Los Sprints los representaremos con Milestones. Las tareas que vayan surgiendo en cada Sprint como Issues, y la resolución de las diferentes tareas se harán con commits.
+
 
 \section{Herramientas de desarrollo}
 
 \subsection{Python}
+El lenguaje de programación usado para este proyecto es python. Ha sido elegido, primero porque las librerias de OpenCV están para este lenguaje, lo cual es un requisito imprescindible; y segundo por la facilidad de uso, la versatilidad y la gran cantidad de librerias externas con las que cuenta.
+
+Concretamente se ha usado python en su versión 2.7.5.
+Nos hubiera gustado dar el salto a python 3, pero no hay librerías de OpenCV de forma oficial para esta versión, solo librerías traducidas de python 2 a python 3, por usuarios, por lo que no contamos con un soporte oficial y nos podemos encontrar con errores y sorpresas desagradables.
+
 
 \subsection{PyLint}
+PyLint es una herramienta para analizar y encontrar errores en códigos python. Se puede añadir a IDEs de forma sencilla, y se pueden personalizar los distintos avisos que proporciona. 
+Además permite refactorizar código y cuenta con los estándares para el desarrollo de códigos en python.
 
 \subsection{OpenCV}
+OpenCV es una librería software de vision aritificial y machine learning. Nos proporcionará todos los elementos software necesarios para poder obtener y procesar imágenes. 
+OpenCV se distribuye bajo licencia BSD.
 
 \subsection{Visual Studio Code}
+Visual Studio Coce es el IDE elegido para este proyecto. Es un IDE sencillo, compatible con una grán variedad de lenguajes de programación y compatible con Linux, Windows y MacOS.
+ 
+Se pueden añadir extensiones de una forma muy sencilla dentro del propio IDE, de hecho es el propio IDE el que nos sugiere instalar algunas extensiones dependiendo del lenguaje de programación que estemos usando. 
+
+En mi caso, en cuanto detecto que en mi repositorio había ficheros python, me recomendó instalar la extension de python, la cual incluye pylint, el debugger de python y alguna otra herramienta más.
+
+Además de todo esto, es compatible con git de una forma muy sencilla, simplemente abrimos la carpeta de nuestro repositorio y ya entra en funcionamiento el control de versiones.
+
+Su propietario es Microsoft y sus licencias son:
+\begin{itemize}
+	\item Codigo fuente, licencia del MIT.
+	\item Binarios, licencia FreeWare.
+\end{itemize}
 
 
 
