@@ -2,13 +2,16 @@
 import cv2
 import numpy as np
 
-def binarizar_otsu(frame, valor_por_encima):
+def binarizar_otsu(frame, valor_por_encima, modo):
     """
     Funcion que permite binarizar una imagen, 
     calculando el umbral de binarizacion segun el algoritmo de Otsu.
     parametros:
     - frame: imagen a binarizar
     - valor_por_encima: valor asignados a los pixeles por encima del umbral
+    - modo: metodo para binarizar la imagen.
+        - cv2.THRESH_BINARY  => binarizacion normal
+        - cv2.THRESH_BINARY_INV => binarizacion inversa
 
     devuelve la imagen binarizada img_binarizada
 
@@ -25,20 +28,15 @@ def binarizar_umbral_fijo(frame, umbral, valor_por_encima, modo):
     - frame: Imagen de origen
     - umbral: umbral de binarizacion 
     - valor_por_encima: Valor asignado a los pixeles por encima del umbral
-    - modo: metodo para binarizar la imagen.
-    
-    - cv2.THRESH_BINARY  => binarizacion normal
-
-    - cv2.THRESH_BINARY_INV => binarizacion inversa
-
-    - cv2.THRESH_TRUNC => los valores por encima del umbral se binarizan 
-    con el valor_por_encima, los valores por debajo no
-
-    - cv2.THRESH_TOZERO => los valores por debajo del 
-    umbral se binarizan a 0, los valores por encima no
-
-    - cv2.THRESH_TOZERO_INV => los valores por encima 
-    del umbral se binarizan a 0, los valores por debajo no
+     - modo: metodo para binarizar la imagen.
+        - cv2.THRESH_BINARY  => binarizacion normal
+        - cv2.THRESH_BINARY_INV => binarizacion inversa
+        - cv2.THRESH_TRUNC => los valores por encima del umbral se binarizan 
+        con el valor_por_encima, los valores por debajo no
+        - cv2.THRESH_TOZERO => los valores por debajo del 
+        umbral se binarizan a 0, los valores por encima no
+        - cv2.THRESH_TOZERO_INV => los valores por encima 
+        del umbral se binarizan a 0, los valores por debajo no
 
      Devuelve la imagen binarizada img_binarizada
 

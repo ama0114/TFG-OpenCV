@@ -1,10 +1,10 @@
 Aquí se guardarán los avances que se vayan haciendo, explicaciones, links a articulos consultados... 
 
-2/11/2017
+**********************************2/11/2017******************************************
 El robot recalcula su posición cada 20 milisegundos a partir de la información que recibe, por lo que cada 20 milisegundos o menos 
 es necesario que reciba una instrucción para que siga la trayectoria.
 
-9/11/2017
+**********************************9/11/2017******************************************
 Desarrollo de software evolutivo, exploratorio. Partimos de unos requisitos iniciales básicos, los desarollamos,
 los completamos y nos ponemos unos nuevos requisitos en base a lo desarrollado en la etapa anterior.
 https://ossielniembrogarcia.wordpress.com/tag/modelo-espiral/
@@ -16,7 +16,7 @@ Febrero>Obtener la ecuación que nos permita determinar la trazada en las curvas
 Abril>Conectar el programa con las librerías necesarias para guiar el robot.
 Marzo>Hacer pruebas.
 
-12/11/2017
+***********************************12/11/2017*****************************************
 Organización de repositorio
 Creacion de un código que permite obtener el streaming generado por la aplicacion IPWebcam en un dispositivo android.
 La idea es poder transmitir lo que ve la camara situada en el robot a un dispositivo más potente, via inalambrica, 
@@ -49,7 +49,7 @@ En la prueba de resolucion a 176x144 y calidad 20 podemos ver como para obtener 
 necesitamos bajar la calidad y resolucion del streaming radicalmente. Veremos en las pruebas de binarizacion como se comporta 
 cada streaming.
 
-19/11/2017
+***************************19/11/2017****************************************
 Creo una "caja de herramientas" para almacenar los diferentes algoritmos que vaya haciendo
 relacionados con binarizacion y procesamiento de imagenes. Archivo toolbox.py
 
@@ -71,4 +71,72 @@ https://docs.opencv.org/3.3.1/d7/d4d/tutorial_py_thresholding.html
 https://docs.opencv.org/2.4.8/modules/imgproc/doc/miscellaneous_transformations.html
 https://docs.opencv.org/2.4.8/modules/imgproc/doc/miscellaneous_transformations.html#threshold
 
+ ************************23/11/2017********************************
+Pruebas de binarizacion.
+Posicion de la camara respecto del suelo: 55º de inclinación, 8cm de altura respecto del suelo.
+La camara es capaz de ver a una distancia de 37 cm.
+Fondo blanco: folios.
+Material de la cinta: cinta aislante negra mate.
+
+Parametros del streaming:
+Resolución 176x144, calidad del streaming 20.
+
+-- Umbral fijo.
+Umbral de 147, los valores que superan ese umbral, so binarizaran como 0, los que sean inferiores como 1.
+Recordemos que estamos usando la funcion de binarizacion inversa, lo que buscamos es que únicamente la linea 
+quede de color blanco.
+- Luminosidad: 183.96
+- Fps: 
+    min     Max      avg
+    5.52    200.0    55.50
+- Resultado: el programa consigue binarizar correctamente la línea. Conseguimos distinguir perfectamente la linea
+del fondo. 
+- Ventajas:el umbral fijo requiere menos tiempo de ejecución que las otras opciones, puesto que 
+solo tiene que hacer comparaciones y devolver valores.
+- Desventajas: el umbral es fijo, por lo que no en todas las situaciones va a funcionar correctamente.
+
+-- Umbral adaptativo media.
+Tamaño de vecindario 20, constante para calculo de la media: 7
+Usamos binarizacion inversa, lo que buscamos es que únicamente la linea quede de color blanco.
+- Luminosidad: 183.38
+- Fps: 
+    min     Max      avg
+    1.58    199.99   56.41
+- Resultado: el programa no consigue binarizar correctamente la imagen. 
+Aparecen puntos negros y manchas negras donde no deberia haberlos, 
+y tambien aparecen manchas blancas donde no deberia haberlas.
+Este algoritmo con estos parametros no se puede usar.
+
+-- Umbral adaptativo gausiano.
+Tamaño de vecindario 20, constante para calculo de la media: 7
+Usamos binarizacion inversa, lo que buscamos es que únicamente la linea quede de color blanco.
+- Luminosidad: 183.16
+- Fps: 
+    min     Max      avg
+    2.38   200.00   56.17
+- Resultado: el programa no consigue binarizar correctamente la imagen. 
+Aparecen puntos negros y manchas negras donde no deberia haberlos, 
+y tambien aparecen manchas blancas donde no deberia haberlas.
+Este algoritmo con estos parametros no se puede usar.
+
+
+-- Umbral calculado según el algoritmo de Otsu.
+El algoritmo de Otsu no recibe más parametros que el video
+y el valor que se debe de poner a los pixeles que estan por encima del umbral.
+El umbral se calcula para cada fotograma del video.
+- Luminosidad: 182.86
+- Fps: 
+    min     Max      avg
+    5.05   166.67   56.94
+- Umbral de Otsu: 118.0
+- Resultado: el programa es capaz de binarizar correctamente la imagen. 
+Además es capaz de calcular el umbral en funcion de la luminosidad de la imagen,
+lo que nos proporciona mucha versatilidad en cuanto a poder usar este programa en 
+diferentes entornos, o entornos con condiciones cambiantes.
+Es un buen candidato para seguir avanzando en el proyecto.
+- Ventajas: permite calcular el umbral en funcion de cada imagen, lo cual permite que funcione
+en entornos cambiantes.
+- Desventajas: necesita un tiempo extra de ejecución para calcular el umbral. Aunque esto
+no se ve reflejado en los resultados obtenidos, puesto que los fps son muy similares 
+al caso del umbral fijo.
 
