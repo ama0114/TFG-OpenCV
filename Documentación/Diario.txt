@@ -140,3 +140,42 @@ en entornos cambiantes.
 no se ve reflejado en los resultados obtenidos, puesto que los fps son muy similares 
 al caso del umbral fijo.
 
+
+************************************12/02/18*************************************************
+Funcion para calcular el ancho de la linea en cualquier zona de la imagen,
+teniendo en cuenta la distorsión por perspectiva.
+Voy a usar la herramienta online https://www.rapidtables.com/web/tools/pixel-ruler.html
+para tomar medidas en pixeles sobre la imágen real.
+Primero compruebo que la resolución coincide con la que estoy usando en el streaming de video.
+Despues mido el máximo y mínimo ancho de la línea.
+Max: 56px
+Min: 13px
+He de calcularlo en la imagen real, ya que los algoritmos de binarizacion pueden modificar 
+el ancho de la línea, mediante funciones de dilatación o reducción.
+Esto me permite calcular mediante una regla de 3 el factor de reduccion del ancho de la línea.
+Disminución de pixeles: 56px-13px = 43px
+La linea ha disminuido su ancho en 43px. 
+La resolución de la imágen es de 176x144. 
+Por tanto, ha disminuido 43 pixeles en los 144 pixeles de alto que tiene la imágen.
+Entonces, para cada fila de pixeles de la imagen, cada fila de esas 144 filas, tendrá
+que disminuir: 43/144 = 0.298 pixel/fila
+
+Ahora para calcular cuanto debería de tener la linea de ancho en una zona de la imagen,
+basta con multiplicar el factor pixel/fila, por el número de fila, y restarle el resultado al máximo.
+Veamos: 
+    - Sí estamos en la fila 0, 0 * 0.298 = 0 -> 56 - 0 = 56px. Correcto
+    - En la fila 144, 144*0.298 = 21 -> 56 - 43 = 13px. Correcto
+    - En la fila 70, 70*0.298 = 21 -> 56 - 21 = 35 Correcto
+
+Pruebas y medidciones de error
+
+Otsu (Porcentaje entre medida calculada y medida real)
+Luminosidad/Fila        10          50           100          130
+51                      7.69%       15.38%      8.18%          1.05%
+71                      3.74%       2.26%       8.18%          4.76%
+125                     0.026%      0.16%       8.18%          1.05%
+161                     0.026%      0.16%       4.35%          1.05%
+
+En esta tabla podemos ver como contra mas luminosidad tenemos, 
+el programa es capaz de ver mejor la linea, llegando a tener 
+una precisión muy alta.

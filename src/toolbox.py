@@ -103,4 +103,35 @@ def calcular_luminosidad(frame):
     luminosidad = r_avg*0.299 + g_avg*0.587 + b_avg*0.114
     return luminosidad
 
+
+def calcular_ancho_linea(img_bin, max_line_width, min_line_width, 
+    img_height, img_width, real_width, height, crop):
+    """
+    Calcula el ancho de la linea en cualquier parte de la imágen, resolviendo la
+    distorsión por perspectiva.
+    Parámetros:
+    - img_bin: imagen binarizada
+    - max_line_width: ancho máximo de la linea medido en la imagen real (entero positivo)
+    - min_line_width: ancho mínimo de la linea medido en la imagen real (entero positivo)
+    - img_height: altura de la imagen (entero positivo)
+    - img_width: anchura de la imagen (entero positivo)
+    - real_width: ancho real de la linea, en cm, metros, unidades ... (float positivo)
+    - height: altura de la imagen donde mediremos el ancho (de 1 a img_height)
+    - crop: fraccion del ancho de la imagen que se recorta para obtener el ancho de la linea
+    """
+
+    import numpy as np
+
+    reduccion_px = max_line_width - min_line_width
+    reduccion_fila = float(reduccion_px) / float(img_height)
+    anchura_calculada = max_line_width - (height * reduccion_fila)
+
+
+    anchura_medida = 0 
+    array = np.array(img_bin[abs(height - img_height)])
+    #Información de la parte central de la imagen
+    array = array[int(img_width/crop):int(3*(img_width/crop))]
+    anchura_medida = sum(array == 255)
     
+    return anchura_calculada, anchura_medida
+
