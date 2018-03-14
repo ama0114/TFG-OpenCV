@@ -135,3 +135,36 @@ def calcular_ancho_linea(img_bin, max_line_width, min_line_width,
     
     return anchura_calculada, anchura_medida
 
+def calcular_angulo_coef(frame):
+    """
+    Calcula el coeficiente de reduccion en pixeles de la imagen
+    en funcion del angulo que tiene la camara sobre el suelo.
+    Se usará una plantilla con un cuadrado de proporciones conocidas.
+    La funcion devuelve el coeficiente de reduccion.
+    
+    Parámetros: 
+    - frame: imagen binarizada.
+    """
+    bottom_square = 0
+    top_square = 0
+    min_width = 0
+    max_width = 0
+    b = True
+    t = True
+
+    for i in range(len(frame)-2,-1,-1):
+        if(frame[i][len(frame[0])/2] == 255 and b):
+            #Dejamos 2 pixeles de margen
+            bottom_square = i-2
+            b = False
+        
+        if(bottom_square != 0 and frame[i][len(frame[0])/2] == 0 and t):
+            #Dejamos 2 pixeles de margen
+            top_square = i+2
+            t = False
+
+    min_width = sum(frame[top_square] > 0)
+    max_width = sum(frame[bottom_square] > 0)
+    coef = float (max_width - min_width) / float(bottom_square - top_square)
+
+    return coef

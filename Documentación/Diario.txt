@@ -179,3 +179,35 @@ Luminosidad/Fila        10          50           100          130
 En esta tabla podemos ver como contra mas luminosidad tenemos, 
 el programa es capaz de ver mejor la linea, llegando a tener 
 una precisión muy alta.
+
+
+********************* 14/03/2018 **************************
+La anterior función de medida del error es muy  estricta en cuanto a que la linea
+sobre la que se mide el error y calcula la distorsión por perspectiva tiene que 
+ser perfectamente recta y perpendicular a la camara, lo cual no va a pasar siempre.
+
+Voy a crear una función que me devuelva el coeficiente de reduccion que se genera
+debido al angulo que esta la camara sobre el suelo. La funcion usará una plantilla 
+con un cuadrado sobre fondo blanco para poder medir este coeficiente, y despues poderlo
+usar con cualquier tipo de linea, curva, recta, diagonal...
+
+La plantilla se ha de colocar recta a la camara (contra más recta mejor), 
+y con la linea guia hacia el lado de la camara y que no aparezca en la imagen. 
+El cuadrado debe de quedar centrado en la imagen, aunque no es necesario que 
+este estrictamente en el centro, basta con centrarlo a ojo. La funcion encontrará
+el rectangulo partiendo de la parte de abajo de la imagen, tomará sus medidas, y 
+sabiendo que sus porporciones deberian de ser iguales, calculará el coeficiente.
+
+Angulo    coeficiente
+0           0.014
+20          0.254
+30          0.393
+35          0.482
+40          0.506
+50          0.550
+55          0.576
+60          0.613
+70          0.625
+
+La relación angulo-coeficiente puede ser útil en un futuro, aunque ahora de momento
+solo voy a trabajar con el coeficiente.

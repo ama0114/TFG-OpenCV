@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 import toolbox
 
 def main():
-    stream = webcam_stream('http://192.168.1.11:8080/shot.jpg')
+    stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
     
     while True:
         #0 - B/N, 1 - Color RGB
