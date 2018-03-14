@@ -5,12 +5,18 @@ import numpy as np
 from matplotlib import pyplot as plt
 import toolbox
 
+coef = 0
+stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
+
 def main():
     umbral = 0
-    stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
     fpsStats = []
     img = stream.get_frame(1)
-    print("Luminosidad " + str(toolbox.calcular_luminosidad(img)))
+    ''' print("Luminosidad " + str(toolbox.calcular_luminosidad(img)))
+    raw_input("Pulsa intro para calcular el coeficiente de correcion de distorsion por perspectiva")
+    coef = calcular_coef_angulo()
+    print("El coeficiente calculado es: " + str(coef))
+    raw_input("Retira la plantilla, pulsa intro para continuar") '''
     while True:
         #0 - B/N, 1 - Color RGB
         vid, fps = stream.get_video_stream(0)
@@ -24,11 +30,12 @@ def main():
         umbral, img_binarizada = toolbox.binarizar_otsu(vid,255,cv2.THRESH_BINARY_INV)
         #img_binarizada = toolbox.binarizar_umbral_adaptativo(vid, 255, 
         #cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 20, 7)
-        
+        img_correjida = toolbox.correjir_distorsion_perspectiva(img_binarizada, 0.63)
         
         #Muestro la imagen
         cv2.imshow('Binarizada', img_binarizada)
         cv2.imshow('Original', vid)
+        cv2.imshow('Correjida',img_correjida)
         
 
         # salimos pulsando s
@@ -44,6 +51,26 @@ def main():
             if umbral > 0:
                 print("El umbral calculado mediante el algoritmo de otsu es: " + str(umbral))
             break
+
+def calcular_coef_angulo():
+    while True:
+        #0 - B/N, 1 - Color RGB
+        vid, fps = stream.get_video_stream(0)
+
+        #Binarizo
+        umbral, img_binarizada = toolbox.binarizar_otsu(vid,255,cv2.THRESH_BINARY_INV)
+
+        #Calculo angulo
+        c = toolbox.calcular_angulo_coef(img_binarizada)
+
+        #Muestro la imagen
+        cv2.imshow('Original', img_binarizada)
+
+        # salimos pulsando s
+        if cv2.waitKey(1) & 0xFF == ord('s'):
+            break
+    return c
+
 
 if  __name__ =='__main__':
     main()

@@ -145,6 +145,7 @@ def calcular_angulo_coef(frame):
     Parámetros: 
     - frame: imagen binarizada.
     """
+    coef = 0
     bottom_square = 0
     top_square = 0
     min_width = 0
@@ -165,6 +166,54 @@ def calcular_angulo_coef(frame):
 
     min_width = sum(frame[top_square] > 0)
     max_width = sum(frame[bottom_square] > 0)
-    coef = float (max_width - min_width) / float(bottom_square - top_square)
+    if(float(bottom_square - top_square) > 0):
+        coef = float (max_width - min_width) / float(bottom_square - top_square)
 
     return coef
+
+
+def correjir_distorsion_perspectiva(frame, coef):
+    frame_correjido = []
+    for i in frame:
+        inicio = 0
+        fin = 0
+        for j in range(len(i)):
+            aux1 = True
+            aux2 = True
+            if i[j] == 255 and aux1:
+                inicio = j
+                aux1 = False
+            if inicio != 0 and i[j] == 0 and aux2:
+                fin = j
+                aux2 = False
+
+        tam = fin-inicio
+        print("tam" + str(tam))
+        centro = inicio+((tam)/2)
+
+        coef_fila = (abs(len(i) - j))*coef
+
+        tam_correjido = int(tam - coef_fila)
+        print("tam_correjido" + str(tam_correjido))
+        mitad_correjida = int(tam_correjido/2)
+        inicio_correjido = centro - mitad_correjida
+        fin_correjido = centro + mitad_correjida
+        if inicio_correjido < 0:
+            inicio_correjido = 0
+        if fin_correjido > len(i):
+            fin_correjido = len(i)-1
+
+        nueva_linea = np.zeros(len(i))
+
+        for j in range(len(i)):
+            if j >= inicio_correjido:
+                nueva_linea[j]=255
+            if j == fin_correjido:
+                break
+        
+        frame_correjido.append(nueva_linea)
+
+    return np.matrix(frame_correjido)
+
+
+        
