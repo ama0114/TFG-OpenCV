@@ -12,11 +12,11 @@ def main():
     umbral = 0
     fpsStats = []
     img = stream.get_frame(1)
-    ''' print("Luminosidad " + str(toolbox.calcular_luminosidad(img)))
+    print("Luminosidad " + str(toolbox.calcular_luminosidad(img)))
     raw_input("Pulsa intro para calcular el coeficiente de correcion de distorsion por perspectiva")
     coef = calcular_coef_angulo()
     print("El coeficiente calculado es: " + str(coef))
-    raw_input("Retira la plantilla, pulsa intro para continuar") '''
+    raw_input("Retira la plantilla, pulsa intro para continuar")
     while True:
         #0 - B/N, 1 - Color RGB
         vid, fps = stream.get_video_stream(0)
@@ -30,7 +30,7 @@ def main():
         umbral, img_binarizada = toolbox.binarizar_otsu(vid,255,cv2.THRESH_BINARY_INV)
         #img_binarizada = toolbox.binarizar_umbral_adaptativo(vid, 255, 
         #cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 20, 7)
-        img_correjida = toolbox.correjir_distorsion_perspectiva(img_binarizada, 0.63)
+        img_correjida = toolbox.correjir_distorsion_perspectiva(img_binarizada, coef)
         
         #Muestro la imagen
         cv2.imshow('Binarizada', img_binarizada)

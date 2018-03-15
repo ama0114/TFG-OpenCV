@@ -173,47 +173,22 @@ def calcular_angulo_coef(frame):
 
 
 def correjir_distorsion_perspectiva(frame, coef):
-    frame_correjido = []
-    for i in frame:
-        inicio = 0
-        fin = 0
-        for j in range(len(i)):
-            aux1 = True
-            aux2 = True
-            if i[j] == 255 and aux1:
-                inicio = j
-                aux1 = False
-            if inicio != 0 and i[j] == 0 and aux2:
-                fin = j
-                aux2 = False
+    coef_fila = coef * len(frame)
+    tam_reducido = len(frame[0])-coef_fila
+    tam_reducido = tam_reducido + 40
+    
 
-        tam = fin-inicio
-        print("tam" + str(tam))
-        centro = inicio+((tam)/2)
+    src = np.float32([[0, len(frame)-1], [len(frame[0])-1, len(frame)-1], 
+                        [0, 0], [len(frame[0])-1, 0]])
+    dst = np.float32([[tam_reducido/2, len(frame)-1], 
+                        [len(frame[0])-tam_reducido/2, len(frame)-1], 
+                        [0, 0], [len(frame[0])-1, 0]])
 
-        coef_fila = (abs(len(i) - j))*coef
+    M = cv2.getPerspectiveTransform(src, dst) 
 
-        tam_correjido = int(tam - coef_fila)
-        print("tam_correjido" + str(tam_correjido))
-        mitad_correjida = int(tam_correjido/2)
-        inicio_correjido = centro - mitad_correjida
-        fin_correjido = centro + mitad_correjida
-        if inicio_correjido < 0:
-            inicio_correjido = 0
-        if fin_correjido > len(i):
-            fin_correjido = len(i)-1
+    warped_img = cv2.warpPerspective(frame, M, (len(frame[0]), len(frame))) 
 
-        nueva_linea = np.zeros(len(i))
-
-        for j in range(len(i)):
-            if j >= inicio_correjido:
-                nueva_linea[j]=255
-            if j == fin_correjido:
-                break
-        
-        frame_correjido.append(nueva_linea)
-
-    return np.matrix(frame_correjido)
+    return warped_img
 
 
         
