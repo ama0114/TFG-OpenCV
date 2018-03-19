@@ -164,7 +164,7 @@ Ahora para calcular cuanto debería de tener la linea de ancho en una zona de la
 basta con multiplicar el factor pixel/fila, por el número de fila, y restarle el resultado al máximo.
 Veamos: 
     - Sí estamos en la fila 0, 0 * 0.298 = 0 -> 56 - 0 = 56px. Correcto
-    - En la fila 144, 144*0.298 = 21 -> 56 - 43 = 13px. Correcto
+    - En la fila 144, 144*0.298 = 43 -> 56 - 43 = 13px. Correcto
     - En la fila 70, 70*0.298 = 21 -> 56 - 21 = 35 Correcto
 
 Pruebas y medidciones de error
@@ -211,3 +211,15 @@ Angulo    coeficiente
 
 La relación angulo-coeficiente puede ser útil en un futuro, aunque ahora de momento
 solo voy a trabajar con el coeficiente.
+
+********************************* 19/03/2018*****************************************
+He conseguido implementar una función para resolver la distorsión por perspectiva.
+Lo que hace es reducir el ancho de la imagen en la parte inferior hasta corregir la 
+perspectiva y hacer que parezca "vista de pajaro". Para calcular esta reduccion, uso 
+el coeficiente que me generaba mi anterior funcion, pero al parecer este coeficiente 
+no es el correcto, o necesita algun ajuste, ya que no es capaz de corregir perfectamente 
+la distorsión. Con el coeficiente se calcula el número de pixeles a reducir en la parte 
+inferior de la imagen, y por lo que he podido comprobar, no lo hace bien. He probado a 
+modificar el parametro dentro de la funcion y para un angulo concreto he conseguido 
+corregir perfectamente la distorsión. 
+El siguiente paso es revisar la funcion que me genera este coeficiente.

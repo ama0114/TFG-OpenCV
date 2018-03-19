@@ -167,12 +167,18 @@ def calcular_angulo_coef(frame):
     min_width = sum(frame[top_square] > 0)
     max_width = sum(frame[bottom_square] > 0)
     if(float(bottom_square - top_square) > 0):
-        coef = float (max_width - min_width) / float(bottom_square - top_square)
+        coef = abs(float (min_width - max_width) / float(bottom_square - top_square))
 
     return coef
 
 
 def correjir_distorsion_perspectiva(frame, coef):
+    """
+    Permite obtener una vista de pajaro de la imagen de origen.
+    Parámetros:
+    - frame: imagen de origen
+    - coef: coeficiente de correcion para la distorsion por perspectiva
+    """
     coef_fila = coef * len(frame)
     tam_reducido = len(frame[0])-coef_fila
     tam_reducido = tam_reducido + 40

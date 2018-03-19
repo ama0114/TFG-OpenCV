@@ -43,11 +43,13 @@ def main():
             print("Minimos fps: " + str(min(fpsStats)))
             print("Maximos fps: " + str(max(fpsStats)))
             print("Media fps: " + str(np.average(fpsStats)))
-            anchura_calculada, anchura_medida = toolbox.calcular_ancho_linea(img_binarizada, 
+
+            ''' anchura_calculada, anchura_medida = toolbox.calcular_ancho_linea(img_binarizada, 
             56, 13, 144, 176, 1.6, 130, 4)
             print("Anchura calculada " + str(anchura_calculada))
             print("Anchura medida " + str(anchura_medida))
-            print("Porcentraje error " + str(abs(100-(anchura_medida/anchura_calculada*100))) + "%")
+            print("Porcentraje error " + str(abs(100-(anchura_medida/anchura_calculada*100))) + "%") '''
+
             if umbral > 0:
                 print("El umbral calculado mediante el algoritmo de otsu es: " + str(umbral))
             break
