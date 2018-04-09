@@ -179,9 +179,10 @@ def correjir_distorsion_perspectiva(frame, coef):
     - frame: imagen de origen
     - coef: coeficiente de correcion para la distorsion por perspectiva
     """
-    coef_fila = coef * len(frame)
+    ''' coef_fila = coef * len(frame)
     tam_reducido = len(frame[0])-coef_fila
-    tam_reducido = tam_reducido + 40
+    tam_reducido = tam_reducido + 40 '''
+    tam_reducido = coef
     
 
     src = np.float32([[0, len(frame)-1], [len(frame[0])-1, len(frame)-1], 

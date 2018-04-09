@@ -223,3 +223,21 @@ inferior de la imagen, y por lo que he podido comprobar, no lo hace bien. He pro
 modificar el parametro dentro de la funcion y para un angulo concreto he conseguido 
 corregir perfectamente la distorsión. 
 El siguiente paso es revisar la funcion que me genera este coeficiente.
+
+
+******************************* 9/4/2018 *********************************************
+Los pixeles que se necesitan reducir en la imagen para poder resolver la distorsion por
+perspectiva no tienen una ecuacion lineal simple, a si que a partir de unos puntos obtenidos
+manualmente, voy a obtener una ecuacion aproximada que me permita generar los pixeles a reducir
+en función del angulo de la cámara.
+
+Angulo    coeficiente   Pixeles a reducir
+40          0.506           100px
+45          0.530           105px
+50          0.550           110px
+55          0.576           135px
+60          0.613           140px
+
+Ecuacion generada con la herramienta: https://mycurvefit.com/
+
+y = -11.61136 + 0.3067521*x - 0.002577183*x^2 + 0.000007212609*x^3
