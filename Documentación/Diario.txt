@@ -240,4 +240,6 @@ Angulo    coeficiente   Pixeles a reducir
 
 Ecuacion generada con la herramienta: https://mycurvefit.com/
 
-y = -11.61136 + 0.3067521*x - 0.002577183*x^2 + 0.000007212609*x^3
+y = 140.3462 + (101.7432 - 140.3462)/(1 + (x/0.5605076)^64.36072)
+
+Usando esta funcion como una funcion lambda podemos obtener fácilmente los pixeles a reducir.

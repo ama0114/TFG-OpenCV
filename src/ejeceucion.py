@@ -30,7 +30,7 @@ def main():
         umbral, img_binarizada = toolbox.binarizar_otsu(vid,255,cv2.THRESH_BINARY_INV)
         #img_binarizada = toolbox.binarizar_umbral_adaptativo(vid, 255, 
         #cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 20, 7)
-        img_correjida = toolbox.correjir_distorsion_perspectiva(img_binarizada, 105)
+        img_correjida = toolbox.correjir_distorsion_perspectiva(img_binarizada, coef)
         
         #Muestro la imagen
         cv2.imshow('Binarizada', img_binarizada)
