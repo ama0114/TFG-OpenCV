@@ -243,3 +243,11 @@ Ecuacion generada con la herramienta: https://mycurvefit.com/
 y = 140.3462 + (101.7432 - 140.3462)/(1 + (x/0.5605076)^64.36072)
 
 Usando esta funcion como una funcion lambda podemos obtener fácilmente los pixeles a reducir.
+
+
+******************************* 22/04/2018 *************************************************
+Implementado y probado métodos para detectar el borde de la linea binarizada.
+Intento de deteccion de las lineas mediante Hough, pero sin exito.
+He conseguido separar ambos bordes de la linea, y el siguiente paso es usar regresion lineal
+en cada borde, para obtener un polinomio que se adapte a la línea, de tal forma que pueda obtener
+los dos bordes perfectamente definidos para operar con ellos.

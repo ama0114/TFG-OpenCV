@@ -36,6 +36,11 @@ def main():
         bordes = toolbox.obtener_contornos(img_correjida, 50, 200)
         
         lineas = toolbox.deteccion_lineas_hough(bordes)
+
+        borde_izq = toolbox.obtener_unico_borde(bordes,0)
+        borde_der =  toolbox.obtener_unico_borde(bordes,1)
+
+        toolbox.obtener_polinomio(borde_izq)
         
         #Muestro la imagen
         cv2.imshow('Binarizada', img_binarizada)
@@ -43,6 +48,8 @@ def main():
         cv2.imshow('Correjida',img_correjida)
         cv2.imshow('Bordes',bordes)
         cv2.imshow("Detected Lines (in red) - Probabilistic Line Transform", lineas)
+        cv2.imshow("Borde izquierdo", borde_izq)
+        cv2.imshow("Borde derecho", borde_der)
         
 
         # salimos pulsando s

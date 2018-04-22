@@ -1,6 +1,7 @@
 # coding=utf-8
 import cv2
 import numpy as np
+from matplotlib import pyplot as plt
 
 def binarizar_otsu(frame, valor_por_encima, modo):
     """
@@ -213,7 +214,7 @@ def deteccion_lineas_hough(frame):
     Es conveniente que la imagen no solo sea binaria sino que sea un 
     "mapa" de bordes de la imagen original. Aplicar algun tipo de fitlrado de
     deteccion de bordes.
-    devuelve la imagen
+    devuelve la imagen con las lineas
     Parámetros: 
     - frame: imagen de origen
     
@@ -222,7 +223,7 @@ def deteccion_lineas_hough(frame):
     cdst = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
     cdstP = np.copy(cdst)
     
-    lines = cv2.HoughLines(frame, 1, np.pi / 180, 150, 10, 0, 0)
+    lines = cv2.HoughLines(frame, 1, np.pi / 180, 150, 0, 5, 0)
     
     if lines is not None:
         for i in range(0, len(lines)):
@@ -246,7 +247,52 @@ def deteccion_lineas_hough(frame):
     
     return cdstP
 
+def obtener_unico_borde(frame, modo):
+    """
+    Permite obtener el borde derecho o izquierdo de la linea
+    Parámetros:
+    - frame: imagen binarizada y pasada por un filtro de detección de bordes
+    - modo: 0 de izquierda a derecha, 1 de derecha a izquierda
+    """
+
+    img_aux = np.zeros((len(frame),len(frame[0])))
+
+    for i in range(len(frame)):
+        aux = True
+        if modo is 0:
+            for j in range(0,len(frame[0])):
+                if frame[i][j] != 0 and aux:
+                    img_aux[i][j]=255
+                    aux = False
         
+        if modo is 1:
+            for j in range(len(frame[0])-1,-1,-1):
+                if frame[i][j] != 0 and aux:
+                    img_aux[i][j]=255
+                    aux = False
+
+    return img_aux
+
+
+def obtener_polinomio(frame):
+    datax = []
+    datay = []
+
+    for i in range(len(frame)):
+        aux = True
+        for j in range(0,len(frame[0])):
+            if frame[i][j] != 0 and aux:
+                datax.append(i)
+                datay.append(j)
+                aux = False
+
+    z = np.polyfit(datay, datax, 5)
+    f = np.poly1d(z)
+    t = np.arange(0, frame.shape[1], 1)
+    ax2 = plt.subplot(212)
+    ax2.plot(t, f(t))
+    plt.show()
+    
 
 
         
