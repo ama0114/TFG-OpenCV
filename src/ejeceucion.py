@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 import toolbox
+import math
 
 coef = 0
 stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
@@ -31,11 +32,17 @@ def main():
         #img_binarizada = toolbox.binarizar_umbral_adaptativo(vid, 255, 
         #cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 20, 7)
         img_correjida = toolbox.correjir_distorsion_perspectiva(img_binarizada, coef)
+
+        bordes = toolbox.obtener_contornos(img_correjida, 50, 200)
+        
+        lineas = toolbox.deteccion_lineas_hough(bordes)
         
         #Muestro la imagen
         cv2.imshow('Binarizada', img_binarizada)
         cv2.imshow('Original', vid)
         cv2.imshow('Correjida',img_correjida)
+        cv2.imshow('Bordes',bordes)
+        cv2.imshow("Detected Lines (in red) - Probabilistic Line Transform", lineas)
         
 
         # salimos pulsando s

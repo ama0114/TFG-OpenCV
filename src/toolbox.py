@@ -195,5 +195,58 @@ def correjir_distorsion_perspectiva(frame, coef):
 
     return warped_img
 
+def obtener_contornos(frame, umbral_bajo, umbral_alto):
+    """
+    Calcula los contornos de los elementos de la imagen
+    Parámetros:
+    - frame: imagen de origen
+    - umbral_bajo: primer umbral para realizar la histéresis
+    - umbral_alto: segundo umbral para realizar la histéresis
+    """
+    return cv2.Canny(frame, umbral_bajo, umbral_alto)
+
+
+def deteccion_lineas_hough(frame):
+    """
+    https://docs.opencv.org/3.4.0/d9/db0/tutorial_hough_lines.html
+    Detecta lineas en una imagen binarizada y las dibuja sobre la imagen
+    Es conveniente que la imagen no solo sea binaria sino que sea un 
+    "mapa" de bordes de la imagen original. Aplicar algun tipo de fitlrado de
+    deteccion de bordes.
+    devuelve la imagen
+    Parámetros: 
+    - frame: imagen de origen
+    
+    """
+
+    cdst = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
+    cdstP = np.copy(cdst)
+    
+    lines = cv2.HoughLines(frame, 1, np.pi / 180, 150, 10, 0, 0)
+    
+    if lines is not None:
+        for i in range(0, len(lines)):
+            rho = lines[i][0][0]
+            theta = lines[i][0][1]
+            a = math.cos(theta)
+            b = math.sin(theta)
+            x0 = a * rho
+            y0 = b * rho
+            pt1 = (int(x0 + 1000*(-b)), int(y0 + 1000*(a)))
+            pt2 = (int(x0 - 1000*(-b)), int(y0 - 1000*(a)))
+            cv2.line(cdst, pt1, pt2, (0,0,255), 3, cv2.LINE_AA)
+    
+    
+    linesP = cv2.HoughLinesP(frame, 1, np.pi / 180, 50, None, 50, 10)
+    
+    if linesP is not None:
+        for i in range(0, len(linesP)):
+            l = linesP[i][0]
+            cv2.line(cdstP, (l[0], l[1]), (l[2], l[3]), (0,0,255), 3, cv2.LINE_AA)
+    
+    return cdstP
+
+        
+
 
         
