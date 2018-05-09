@@ -5,11 +5,26 @@ import numpy as np
 from matplotlib import pyplot as plt
 import toolbox
 import math
+from direccion import direccion
 
 coef = 0
 stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
 
+
+
 def main():
+    dir = direccion(0.02,len(stream.get_frame(1)[0]))
+
+    ax1 = plt.subplot(2,2,1)
+    ax2 = plt.subplot(2,2,2)
+    ax3 = plt.subplot(2,2,3)
+    ax4 = plt.subplot(2,2,4)
+    im1 = ax1.imshow(stream.get_frame(1), cmap='gray')
+    im2 = ax2.imshow(stream.get_frame(1), cmap='gray')
+    im3 = ax3.imshow(stream.get_frame(1), cmap='gray')
+    im4 = ax4.imshow(stream.get_frame(1), cmap='gray')
+    plt.ion()
+
     umbral = 0
     fpsStats = []
     img = stream.get_frame(1)
@@ -33,23 +48,39 @@ def main():
         #cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 20, 7)
         img_correjida = toolbox.correjir_distorsion_perspectiva(img_binarizada, coef)
 
-        bordes = toolbox.obtener_contornos(img_correjida, 50, 200)
+        bordes = toolbox.obtener_contornos(img_binarizada, 50, 200)
         
-        lineas = toolbox.deteccion_lineas_hough(bordes)
+        #lineas = toolbox.deteccion_lineas_hough(bordes)
 
-        borde_izq = toolbox.obtener_unico_borde(bordes,0)
-        borde_der =  toolbox.obtener_unico_borde(bordes,1)
+        #borde_izq = toolbox.obtener_unico_borde(bordes,0)
+        #borde_der =  toolbox.obtener_unico_borde(bordes,1)
 
-        toolbox.obtener_polinomio(borde_izq)
+        tray = toolbox.obtener_trayectoria(bordes)
+        bordes_tray = bordes + tray
+        texto, angulo = dir.obtener_direccion(tray)
+        #pol = toolbox.obtener_polinomio(borde_izq)
         
         #Muestro la imagen
-        cv2.imshow('Binarizada', img_binarizada)
+        #cv2.imshow('Binarizada', img_binarizada)
+        cv2.putText(bordes_tray, texto + "              " + str(round(angulo,2)), 
+        (10,50), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255,255,255), 1)
+        cv2.putText(vid, texto + "              " + str(round(angulo,2)), 
+        (10,50), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0,0,0), 1)
+        
         cv2.imshow('Original', vid)
-        cv2.imshow('Correjida',img_correjida)
-        cv2.imshow('Bordes',bordes)
-        cv2.imshow("Detected Lines (in red) - Probabilistic Line Transform", lineas)
-        cv2.imshow("Borde izquierdo", borde_izq)
-        cv2.imshow("Borde derecho", borde_der)
+        cv2.imshow('Trayectoria', bordes_tray)
+        
+        """ im1.set_data(img_binarizada)
+        im2.set_data(vid)
+        im3.set_data(img_correjida)
+        im4.set_data(bordes_tray) """
+        #plt.pause(0.001)
+
+        #cv2.imshow("Detected Lines (in red) - Probabilistic Line Transform", lineas)
+        #cv2.imshow("Borde izquierdo", borde_izq)
+        #cv2.imshow("Borde derecho", borde_der)
+        #cv2.imshow("Tray", tray)
+        #cv2.imshow("Polinomio", pol)
         
 
         # salimos pulsando s
@@ -84,6 +115,7 @@ def calcular_coef_angulo():
 
         # salimos pulsando s
         if cv2.waitKey(1) & 0xFF == ord('s'):
+            cv2.destroyAllWindows()
             break
     return c
 

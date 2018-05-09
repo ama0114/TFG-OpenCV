@@ -184,11 +184,15 @@ def correjir_distorsion_perspectiva(frame, coef):
     tam_reducido = g(coef)
     
 
-    src = np.float32([[0, len(frame)-1], [len(frame[0])-1, len(frame)-1], 
-                        [0, 0], [len(frame[0])-1, 0]])
+    src = np.float32([[0, len(frame)-1], 
+                        [len(frame[0])-1, len(frame)-1], 
+                        [0, 0], 
+                        [len(frame[0])-1, 0]])
+                        
     dst = np.float32([[tam_reducido/2, len(frame)-1], 
                         [len(frame[0])-tam_reducido/2, len(frame)-1], 
-                        [0, 0], [len(frame[0])-1, 0]])
+                        [0, 0], 
+                        [len(frame[0])-1, 0]])
 
     M = cv2.getPerspectiveTransform(src, dst) 
 
@@ -277,22 +281,52 @@ def obtener_unico_borde(frame, modo):
 def obtener_polinomio(frame):
     datax = []
     datay = []
-
+    ret = frame
     for i in range(len(frame)):
         aux = True
         for j in range(0,len(frame[0])):
             if frame[i][j] != 0 and aux:
-                datax.append(i)
-                datay.append(j)
+                datay.append(i)
+                datax.append(j)
                 aux = False
 
-    z = np.polyfit(datay, datax, 5)
+    z = np.polyfit(datax, datay, 5)
     f = np.poly1d(z)
-    t = np.arange(0, frame.shape[1], 1)
-    ax2 = plt.subplot(212)
-    ax2.plot(t, f(t))
-    plt.show()
-    
+    t = np.arange(min(datax),max(datax), 1)
+    for i in range(1,len(t)):
+        cv2.line(ret, (int(f(t[i-1])), t[i-1]),(int(f(t[i])),t[i]), (0,0,255), 3)
 
+    return ret
+
+
+def obtener_trayectoria(frame):
+    """
+    Obtiene la trayectoria calculada a partir de los dos bordes de la línea.
+    Parámetros:
+    - frame: imagen binarizada donde solo esten los dos bordes de la linea.
+        Usar funcion obtener contornos.
+    """
+
+    img_aux = np.zeros((len(frame),len(frame[0])))
+
+    for i in range(len(frame)):
+        aux = True
+        bordes = 0
+        borde_1 = 0
+        borde_2 = 0
+        for j in range(0,len(frame[0])):
+            if frame[i][j] != 0 and aux:
+                if bordes == 0:
+                    borde_1 = j
+                if bordes == 1:
+                    borde_2 = j
+                    img_aux[i][borde_1+((borde_2-borde_1)/2)]=255
+                    aux = False  
+                bordes += 1
+
+    return img_aux
+
+
+        
 
         

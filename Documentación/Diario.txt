@@ -251,3 +251,25 @@ Intento de deteccion de las lineas mediante Hough, pero sin exito.
 He conseguido separar ambos bordes de la linea, y el siguiente paso es usar regresion lineal
 en cada borde, para obtener un polinomio que se adapte a la línea, de tal forma que pueda obtener
 los dos bordes perfectamente definidos para operar con ellos.
+
+
+***************************** 09/05/2018 ***************************************************
+Obtencion de la trayectoria, linea que esta en la mitad exacta de los dos bordes.
+Primera aproximacion del sistema de guiado. Una vez tenemos la trayectoria, podemos saber
+si el vehiculo esta a la derecha o a la izquierda de esta, y corregir la trayectoria. 
+Implementado un sistema de correcion dinamico, permite definir el angulo que el vehiculo 
+deberia girar para corregir la trayectoria. Así, evitamos giros bruscos.
+Inclusion de algunos gráficos para agrupar ventanas.
+
+En el video de sistema de guiado, podemos ver como cuando la trayectoria (linea central) se encuentra
+en el centro de la imagen, el programa nos indica que podemos seguir recto, girando la direccion
+un angulo de 0. La funcion de guiado soporta un marjen de error, con el parametro error, de 0 a 1.
+0 para que no haya marjen de error y el programa nos corrija siempre, 1 para que no nos corrija nunca.
+Lo que hace es calcular el porcentaje del ancho de la imagen, y establecerlo como zona de error al 
+centro de esta. Por ejemplo, para una imagen de 100px de ancho, y un error de 0.1, nos creará una
+zona de error entre las columnas de pixel 40 y 60. Mientras la trayectoria se mantenga dentro de esta zona
+el programa nos dira que sigamos recto. En cuanto nos salimos de la zona del marjen de error que dejemos, el programa nos empezará
+a corregir. Bien indicando que giremos a la izquierda o a la derecha, y el angulo con el que lo tenemos que
+hacer. Tambien nos muestra un indicador, R para Recto, RI, para recto izquierda, RD, para recto derecha,
+I para izquierda, y D para derecha. D e I solo surjen cuando estamos en una situacion muy limite, casi 
+saliendose la trayectoria de la imagen.
