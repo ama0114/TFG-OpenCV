@@ -172,34 +172,6 @@ def calcular_angulo_coef(frame):
 
     return coef
 
-
-def correjir_distorsion_perspectiva(frame, coef):
-    """
-    Permite obtener una vista de pajaro de la imagen de origen.
-    Parámetros:
-    - frame: imagen de origen
-    - coef: coeficiente de correcion para la distorsion por perspectiva
-    """
-    g = lambda x: 140.3462 + (101.7432 - 140.3462)/(1 + (x/0.5605076)**64.36072)
-    tam_reducido = g(coef)
-    
-
-    src = np.float32([[0, len(frame)-1], 
-                        [len(frame[0])-1, len(frame)-1], 
-                        [0, 0], 
-                        [len(frame[0])-1, 0]])
-                        
-    dst = np.float32([[tam_reducido/2, len(frame)-1], 
-                        [len(frame[0])-tam_reducido/2, len(frame)-1], 
-                        [0, 0], 
-                        [len(frame[0])-1, 0]])
-
-    M = cv2.getPerspectiveTransform(src, dst) 
-
-    warped_img = cv2.warpPerspective(frame, M, (len(frame[0]), len(frame))) 
-
-    return warped_img
-
 def obtener_contornos(frame, umbral_bajo, umbral_alto):
     """
     Calcula los contornos de los elementos de la imagen
@@ -277,7 +249,6 @@ def obtener_unico_borde(frame, modo):
 
     return img_aux
 
-
 def obtener_polinomio(frame):
     datax = []
     datay = []
@@ -297,7 +268,6 @@ def obtener_polinomio(frame):
         cv2.line(ret, (int(f(t[i-1])), t[i-1]),(int(f(t[i])),t[i]), (0,0,255), 3)
 
     return ret
-
 
 def obtener_trayectoria(frame):
     """

@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 import toolbox
 import math
 from direccion import direccion
+from perspectiva import perspectiva
 
 coef = 0
 stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
@@ -14,6 +15,7 @@ stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
 
 def main():
     dir = direccion(0.02,len(stream.get_frame(1)[0]))
+    
 
     ax1 = plt.subplot(2,2,1)
     ax2 = plt.subplot(2,2,2)
@@ -33,6 +35,7 @@ def main():
     coef = calcular_coef_angulo()
     print("El coeficiente calculado es: " + str(coef))
     raw_input("Retira la plantilla, pulsa intro para continuar")
+    persp = perspectiva(stream.get_frame(1),coef)
     while True:
         #0 - B/N, 1 - Color RGB
         vid, fps = stream.get_video_stream(0)
@@ -46,9 +49,9 @@ def main():
         umbral, img_binarizada = toolbox.binarizar_otsu(vid,255,cv2.THRESH_BINARY_INV)
         #img_binarizada = toolbox.binarizar_umbral_adaptativo(vid, 255, 
         #cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 20, 7)
-        img_correjida = toolbox.correjir_distorsion_perspectiva(img_binarizada, coef)
+        img_correjida = persp.correjir_distorsion_perspectiva(img_binarizada)
 
-        bordes = toolbox.obtener_contornos(img_binarizada, 50, 200)
+        bordes = toolbox.obtener_contornos(img_correjida, 50, 200)
         
         #lineas = toolbox.deteccion_lineas_hough(bordes)
 
@@ -62,19 +65,19 @@ def main():
         
         #Muestro la imagen
         #cv2.imshow('Binarizada', img_binarizada)
-        cv2.putText(bordes_tray, texto + "              " + str(round(angulo,2)), 
+        """ cv2.putText(bordes_tray, texto + "              " + str(round(angulo,2)), 
         (10,50), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255,255,255), 1)
         cv2.putText(vid, texto + "              " + str(round(angulo,2)), 
         (10,50), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0,0,0), 1)
         
         cv2.imshow('Original', vid)
-        cv2.imshow('Trayectoria', bordes_tray)
+        cv2.imshow('Trayectoria', bordes_tray) """
         
-        """ im1.set_data(img_binarizada)
+        im1.set_data(img_binarizada)
         im2.set_data(vid)
         im3.set_data(img_correjida)
-        im4.set_data(bordes_tray) """
-        #plt.pause(0.001)
+        im4.set_data(bordes_tray)
+        plt.pause(0.001)
 
         #cv2.imshow("Detected Lines (in red) - Probabilistic Line Transform", lineas)
         #cv2.imshow("Borde izquierdo", borde_izq)
