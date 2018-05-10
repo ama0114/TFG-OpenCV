@@ -273,3 +273,10 @@ a corregir. Bien indicando que giremos a la izquierda o a la derecha, y el angul
 hacer. Tambien nos muestra un indicador, R para Recto, RI, para recto izquierda, RD, para recto derecha,
 I para izquierda, y D para derecha. D e I solo surjen cuando estamos en una situacion muy limite, casi 
 saliendose la trayectoria de la imagen.
+
+
+********************** 10/05/2018 *************************************************
+Puesto que en un entorno real es muy dificl encontrarnos con una linea negra 
+sobre un fondo completamente blanco. Voy a intentar binarizar por color, usando
+una linea de un color llamativo. De esta forma da igual que fondo usemos, mientras
+que no tenga elementos del mismo color que la linea.
