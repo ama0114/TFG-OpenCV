@@ -14,16 +14,20 @@ def main():
 
         hsv =  hsv = cv2.cvtColor(vid, cv2.COLOR_BGR2HSV)
 
+        #incremento saturacion
+        hsv[:,:,1] += 100
+        rgbimg = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
+
         # define range of yellow color in HSV
-        lower_y = np.array([20,10,60])
-        upper_y = np.array([40,255,255])
+        lower_y = np.array([10,10,60])
+        upper_y = np.array([50,255,255])
 
         #Binarizo
         img_binarizada = cv2.inRange(hsv, lower_y, upper_y)
 
         #Muestro la imagen
         cv2.imshow('Bin', img_binarizada)
-        cv2.imshow('Original', vid)
+        cv2.imshow('Original', rgbimg)
 
         # salimos pulsando s
         if cv2.waitKey(1) & 0xFF == ord('s'):
