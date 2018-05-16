@@ -280,3 +280,28 @@ Puesto que en un entorno real es muy dificl encontrarnos con una linea negra
 sobre un fondo completamente blanco. Voy a intentar binarizar por color, usando
 una linea de un color llamativo. De esta forma da igual que fondo usemos, mientras
 que no tenga elementos del mismo color que la linea.
+
+
+********************* 16/05/2018 **************************************************
+Es necesario comprobar que al resolver la distorsion por perspectiva, no solo el 
+programa es capaz de hacer que los dos bordes de la línea se vean paralelos, sino 
+que la imagen tambien guarda las porporciones de la realidad. Estas proporciones 
+se pueden perder si la imagen a lo alto se ve achatada de alguna forma. 
+Ha creado una plantilla con diferentes ángulos, y voy a medirlos en la imagen 
+corregida para comprobar si en la imagen siguen guardando las mismas proporciones que 
+en la realidad.
+Las pruebas se muestran en los videos :
+- Distorsion por perspectiva - comprobar imagen proporciones reales - cámara angulo 60
+- Distorsion por perspectiva - comprobar imagen proporciones reales - cámara angulo 50
+En el primero la cámara está colocada con un ángulo de 60 grados respecto del suelo, 
+en el segundo con un ángulo de 50.
+Para ambos casos se han hecho medidas tanto en la parte inferior de la imágen como en 
+la parte superior. La parte inferior se ve más nitida puesto que es la parte "encogida"
+al hacer la transformación. La parte superior se ve muy borrosa, pero al realizar la 
+detección de bordes, se puede apreciar de forma más nitida.
+En ambas zonas, vemos que el programa muestra los ángulos con las mismas proporciones
+que en la realidad. A pesar de que la medición de los ángulos en la imágen no es sencillo,
+se puede comprobar como midiendo bien los ángulos, tienen la misma apertura que en la realidad
+por lo que podemos decir, que nuestro programa para deshacer la distorsion por perspectva, 
+es capaz de guardar las prporciones de la realidad en la imagen que genera, incluso para 
+diferentes ángulos de la cámara respecto del suelo.
