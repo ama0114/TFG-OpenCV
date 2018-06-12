@@ -10,32 +10,23 @@ from perspectiva import perspectiva
 
 coef = 0
 stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
-
+persp = perspectiva(stream.get_frame(1))
 
 
 def main():
     dir = direccion(0.02,len(stream.get_frame(1)[0]))
-    
 
-    ax1 = plt.subplot(2,2,1)
-    ax2 = plt.subplot(2,2,2)
-    ax3 = plt.subplot(2,2,3)
-    ax4 = plt.subplot(2,2,4)
-    im1 = ax1.imshow(stream.get_frame(1), cmap='gray')
-    im2 = ax2.imshow(stream.get_frame(1), cmap='gray')
-    im3 = ax3.imshow(stream.get_frame(1), cmap='gray')
-    im4 = ax4.imshow(stream.get_frame(1), cmap='gray')
-    plt.ion()
+    im_spc1, im_spc2, im_spc3, im_spc4 = crear_marco_comparacion(stream.get_frame(1))
 
     umbral = 0
     fpsStats = []
     img = stream.get_frame(1)
     print("Luminosidad " + str(toolbox.calcular_luminosidad(img)))
     raw_input("Pulsa intro para calcular el coeficiente de correcion de distorsion por perspectiva")
-    coef = calcular_coef_angulo()
-    print("El coeficiente calculado es: " + str(coef))
+    persp.calcular_coef_angulo(stream)
+    print("El coeficiente calculado es: " + str(persp.coef_correcion))
     raw_input("Retira la plantilla, pulsa intro para continuar")
-    persp = perspectiva(stream.get_frame(1),coef)
+    
     while True:
         #0 - B/N, 1 - Color RGB
         vid, fps = stream.get_video_stream(0)
@@ -73,11 +64,8 @@ def main():
         cv2.imshow('Original', vid)
         cv2.imshow('Trayectoria', bordes_tray) """
         
-        im1.set_data(img_binarizada)
-        im2.set_data(vid)
-        im3.set_data(img_correjida)
-        im4.set_data(bordes_tray)
-        plt.pause(0.001)
+        mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, 
+                        img_binarizada, vid, img_correjida, bordes_tray)
 
         #cv2.imshow("Detected Lines (in red) - Probabilistic Line Transform", lineas)
         #cv2.imshow("Borde izquierdo", borde_izq)
@@ -102,25 +90,35 @@ def main():
                 print("El umbral calculado mediante el algoritmo de otsu es: " + str(umbral))
             break
 
-def calcular_coef_angulo():
-    while True:
-        #0 - B/N, 1 - Color RGB
-        vid, fps = stream.get_video_stream(0)
 
-        #Binarizo
-        umbral, img_binarizada = toolbox.binarizar_otsu(vid,255,cv2.THRESH_BINARY_INV)
+def crear_marco_comparacion(img):
+    #Creo subplots
+    ax1 = plt.subplot(2,2,1)
+    ax2 = plt.subplot(2,2,2)
+    ax3 = plt.subplot(2,2,3)
+    ax4 = plt.subplot(2,2,4)
 
-        #Calculo angulo
-        c = toolbox.calcular_angulo_coef(img_binarizada)
+    #Creo espacios para mostrar imagenes
+    im_spc1 = ax1.imshow(img, cmap='gray')
+    im_spc2 = ax2.imshow(img, cmap='gray')
+    im_spc3 = ax3.imshow(img, cmap='gray')
+    im_spc4 = ax4.imshow(img, cmap='gray')
 
-        #Muestro la imagen
-        cv2.imshow('Original', img_binarizada)
+    #Hago el plot dinamico
+    plt.ion()
 
-        # salimos pulsando s
-        if cv2.waitKey(1) & 0xFF == ord('s'):
-            cv2.destroyAllWindows()
-            break
-    return c
+    return im_spc1, im_spc2, im_spc3, im_spc4
+
+def mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, im1, im2, im3, im4):
+
+    #Asigno las imagenes
+    im_spc1.set_data(im1)
+    im_spc2.set_data(im2)
+    im_spc3.set_data(im3)
+    im_spc4.set_data(im4)
+
+    #Tiempo de pausa, lo menor posible para que el video se muestre fluido
+    plt.pause(0.001)
 
 
 if  __name__ =='__main__':
