@@ -7,16 +7,14 @@ import toolbox
 import math
 from direccion import direccion
 from perspectiva import perspectiva
+import os
 
-coef = 0
 stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
 persp = perspectiva(stream.get_frame(1))
 
-
 def main():
     dir = direccion(0.02,len(stream.get_frame(1)[0]))
-
-    im_spc1, im_spc2, im_spc3, im_spc4 = crear_marco_comparacion(stream.get_frame(1))
+    im_spc1, im_spc2, im_spc3, im_spc4, fig = crear_marco_comparacion(stream.get_frame(1))
 
     umbral = 0
     fpsStats = []
@@ -67,6 +65,12 @@ def main():
         mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, 
                         img_binarizada, vid, img_correjida, bordes_tray)
 
+        #Funcion auxiliar para capturar el evento de cierre de la figura
+        def handle_close(evt):
+            os._exit(1)
+        
+        fig.canvas.mpl_connect('close_event', handle_close)
+
         #cv2.imshow("Detected Lines (in red) - Probabilistic Line Transform", lineas)
         #cv2.imshow("Borde izquierdo", borde_izq)
         #cv2.imshow("Borde derecho", borde_der)
@@ -92,7 +96,14 @@ def main():
 
 
 def crear_marco_comparacion(img):
-    #Creo subplots
+
+    fig, ax = plt.subplots(nrows=2, ncols=2)
+    image_spaces = []
+    for row in ax:
+        for col in row:
+            image_spaces.append(col.imshow(img, cmap='gray'))
+
+    """ #Creo subplots
     ax1 = plt.subplot(2,2,1)
     ax2 = plt.subplot(2,2,2)
     ax3 = plt.subplot(2,2,3)
@@ -102,12 +113,13 @@ def crear_marco_comparacion(img):
     im_spc1 = ax1.imshow(img, cmap='gray')
     im_spc2 = ax2.imshow(img, cmap='gray')
     im_spc3 = ax3.imshow(img, cmap='gray')
-    im_spc4 = ax4.imshow(img, cmap='gray')
+    im_spc4 = ax4.imshow(img, cmap='gray') """
 
     #Hago el plot dinamico
     plt.ion()
 
-    return im_spc1, im_spc2, im_spc3, im_spc4
+    #return im_spc1, im_spc2, im_spc3, im_spc4
+    return image_spaces[0], image_spaces[1], image_spaces[2], image_spaces[3], fig
 
 def mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, im1, im2, im3, im4):
 
