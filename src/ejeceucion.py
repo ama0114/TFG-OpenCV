@@ -180,18 +180,10 @@ def binarizar_color(stream):
     binarizar_hsv.calibrar_color()
 
 def muestra_proceso(stream):
-    opcion = 0
-    fps_stats = []
-    persp = perspectiva(stream.get_frame(1))
-    salir_evt = [False]
 
-    def handle_close(evt):
-        del salir_evt[:]
-        salir_evt.append(True)
-    
+    opcion = 0
     while opcion is not 3:
         opcion = input("1-Binarizar Color\n 2-Binarizar Luminosidad\n 3-Salir\n")
-        im_spc1, im_spc2, im_spc3, im_spc4, fig = crear_marco_comparacion(stream.get_frame(1))
         if opcion is 1:
             binarizar_color(stream)
 
@@ -200,35 +192,7 @@ def muestra_proceso(stream):
             print("El coeficiente calculado es: " + str(persp.coef_correcion))
             raw_input("Retira la plantilla, pulsa intro para continuar")
             
-            salir = False
-            while not salir:
-                #0 - B/N, 1 - Color RGB
-                vid, fps = stream.get_video_stream(1)
-
-                #Añado los fps a una lista para despues mostrar estadisticas
-                fps_stats.append(fps)
-
-                img_correjida = persp.correjir_distorsion_perspectiva(vid)
-
-                img_binarizada = binarizar_hsv.binarizar_frame(img_correjida)
-
-                bordes = toolbox.obtener_contornos(img_binarizada, 50, 200)
-                tray = toolbox.obtener_trayectoria(bordes)
-                bordes_tray = bordes + tray
-
-                fig.canvas.mpl_connect('close_event', handle_close)
-
-                vid = cv2.cvtColor(vid, cv2.COLOR_RGB2BGR)
-                img_correjida = cv2.cvtColor(img_correjida, cv2.COLOR_RGB2BGR)
-
-                mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, vid, img_correjida, img_binarizada, bordes_tray)
-
-                if salir_evt[0] is True:
-                    imprimir_fps_stats(fps_stats)
-                    cv2.destroyAllWindows()
-                    salir = True
-                    opcion = 0
-                    salir_evt[0] = False
+            muestra_proceso_aux(1, binarizar_hsv.binarizar_frame)
 
         elif opcion is 2:
             
@@ -242,32 +206,7 @@ def muestra_proceso(stream):
             print("El coeficiente calculado es: " + str(persp.coef_correcion))
             raw_input("Retira la plantilla, pulsa intro para continuar")
             
-            salir = False
-            while not salir:
-                #0 - B/N, 1 - Color RGB
-                vid, fps = stream.get_video_stream(0)
-
-                #Añado los fps a una lista para despues mostrar estadisticas
-                fps_stats.append(fps)
-
-                img_correjida = persp.correjir_distorsion_perspectiva(vid)
-
-                umbral, img_binarizada = toolbox.binarizar_otsu(img_correjida,255,cv2.THRESH_BINARY_INV)
-
-                bordes = toolbox.obtener_contornos(img_binarizada, 50, 200)
-                tray = toolbox.obtener_trayectoria(bordes)
-                bordes_tray = bordes + tray
-
-                fig.canvas.mpl_connect('close_event', handle_close)
-
-                mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, vid, img_correjida, img_binarizada, bordes_tray)
-
-                if salir_evt[0] is True:
-                    imprimir_fps_stats(fps_stats)
-                    cv2.destroyAllWindows()
-                    salir = True
-                    opcion = 0
-                    salir_evt[0]=False
+            muestra_proceso_aux(0, funcion_adaptador)
 
         elif opcion is 3:
             break
@@ -282,6 +221,46 @@ def imprimir_fps_stats(fps_stats):
     print("Maximos fps: " + str(max(fps_stats)))
     print("Media fps: " + str(np.average(fps_stats)))
 
+def muestra_proceso_aux(color_stream, funcion_binarizado):
+
+    salir_evt = [False]
+    fps_stats = []
+    im_spc1, im_spc2, im_spc3, im_spc4, fig = crear_marco_comparacion(stream.get_frame(1))
+
+    def handle_close(evt):
+        del salir_evt[:]
+        salir_evt.append(True)
+
+    salir = False
+    while not salir:
+        #0 - B/N, 1 - Color RGB
+        vid, fps = stream.get_video_stream(color_stream)
+
+        #Añado los fps a una lista para despues mostrar estadisticas
+        fps_stats.append(fps)
+
+        img_correjida = persp.correjir_distorsion_perspectiva(vid)
+
+        img_binarizada = funcion_binarizado(img_correjida)
+
+        bordes = toolbox.obtener_contornos(img_binarizada, 50, 200)
+        tray = toolbox.obtener_trayectoria(bordes)
+        bordes_tray = bordes + tray
+
+        fig.canvas.mpl_connect('close_event', handle_close)
+        
+        if color_stream is 1:
+            vid = cv2.cvtColor(vid, cv2.COLOR_RGB2BGR)
+            img_correjida = cv2.cvtColor(img_correjida, cv2.COLOR_RGB2BGR)
+
+        mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, vid, img_correjida, img_binarizada, bordes_tray)
+
+        if salir_evt[0] is True:
+            imprimir_fps_stats(fps_stats)
+            cv2.destroyAllWindows()
+            salir = True
+            opcion = 0
+            salir_evt[0] = False
 
 if  __name__ =='__main__':
     main()
