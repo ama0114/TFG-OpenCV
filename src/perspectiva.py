@@ -66,13 +66,14 @@ class perspectiva:
 
         return coef
 
-    def calcular_coef_angulo(self, stream):
+    def calcular_coef_angulo(self, stream, color_stream, funcion_binarizar):
         while True:
             #0 - B/N, 1 - Color RGB
-            vid, fps = stream.get_video_stream(0)
+            vid, fps = stream.get_video_stream(color_stream)
 
             #Binarizo
-            umbral, img_binarizada = toolbox.binarizar_otsu(vid,255,cv2.THRESH_BINARY_INV)
+            #umbral, img_binarizada = toolbox.binarizar_otsu(vid,255,cv2.THRESH_BINARY_INV)
+            img_binarizada = funcion_binarizar(vid)
 
             #Calculo angulo
             c = self.calcular_coef(img_binarizada)
