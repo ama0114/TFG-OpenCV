@@ -10,11 +10,6 @@ from direccion import direccion
 from perspectiva import perspectiva
 import os
 
-stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
-persp = perspectiva(stream.get_frame(1))
-binarizar_hsv = binarizar_hsv()
-
-
 """ def main():
     dir = direccion(0.02,len(stream.get_frame(1)[0]))
     im_spc1, im_spc2, im_spc3, im_spc4, fig = crear_marco_comparacion(stream.get_frame(1))
@@ -101,7 +96,12 @@ binarizar_hsv = binarizar_hsv()
             break """
 
 def main():
-    menu(stream, persp)
+
+    stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
+    persp = perspectiva(stream.get_frame(1))
+    bin_hsv = binarizar_hsv()
+
+    menu(stream, persp, bin_hsv)
 
 
 def crear_marco_comparacion(img):
@@ -141,7 +141,7 @@ def mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, im1, im2, i
     #Tiempo de pausa, lo menor posible para que el video se muestre fluido
     plt.pause(0.001)
 
-def menu(stream, persp):
+def menu(stream, persp, binarizar_hsv):
     opcion = 0
     while(opcion is not 5):
         opcion = input("1-Binarizar luminosidad \n 2-Binarizar color \n 3-Muestra proceso \n 4-Ejecucion normal \n 5-Salir \n")
@@ -149,10 +149,10 @@ def menu(stream, persp):
             binarizar_luminosidad(stream)
             opcion = 0
         elif opcion is 2:
-            binarizar_color(stream)
+            binarizar_color(binarizar_hsv)
             opcion = 0
         elif opcion is 3:
-            muestra_proceso(stream) 
+            muestra_proceso(stream, persp, binarizar_hsv) 
             opcion = 0
         elif opcion is 4:
             pass
@@ -176,23 +176,23 @@ def binarizar_luminosidad(stream):
             cv2.destroyAllWindows()
             break
 
-def binarizar_color(stream):
+def binarizar_color(binarizar_hsv):
     binarizar_hsv.calibrar_color()
 
-def muestra_proceso(stream):
+def muestra_proceso(stream, persp, binarizar_hsv):
 
     opcion = 0
     while opcion is not 3:
         opcion = input("1-Binarizar Color\n 2-Binarizar Luminosidad\n 3-Salir\n")
         if opcion is 1:
-            binarizar_color(stream)
+            binarizar_color(binarizar_hsv)
 
             raw_input("Pulsa intro para calcular el coeficiente de correcion de distorsion por perspectiva")
             persp.calcular_coef_angulo(stream, 1, binarizar_hsv.binarizar_frame)
             print("El coeficiente calculado es: " + str(persp.coef_correcion))
             raw_input("Retira la plantilla, pulsa intro para continuar")
             
-            muestra_proceso_aux(1, binarizar_hsv.binarizar_frame)
+            muestra_proceso_aux(1, binarizar_hsv.binarizar_frame, stream, persp)
 
         elif opcion is 2:
             
@@ -206,7 +206,7 @@ def muestra_proceso(stream):
             print("El coeficiente calculado es: " + str(persp.coef_correcion))
             raw_input("Retira la plantilla, pulsa intro para continuar")
             
-            muestra_proceso_aux(0, funcion_adaptador)
+            muestra_proceso_aux(0, funcion_adaptador, stream, persp)
 
         elif opcion is 3:
             break
@@ -221,7 +221,7 @@ def imprimir_fps_stats(fps_stats):
     print("Maximos fps: " + str(max(fps_stats)))
     print("Media fps: " + str(np.average(fps_stats)))
 
-def muestra_proceso_aux(color_stream, funcion_binarizado):
+def muestra_proceso_aux(color_stream, funcion_binarizado, stream, persp):
 
     salir_evt = [False]
     fps_stats = []
@@ -248,7 +248,7 @@ def muestra_proceso_aux(color_stream, funcion_binarizado):
         bordes_tray = bordes + tray
 
         fig.canvas.mpl_connect('close_event', handle_close)
-        
+
         if color_stream is 1:
             vid = cv2.cvtColor(vid, cv2.COLOR_RGB2BGR)
             img_correjida = cv2.cvtColor(img_correjida, cv2.COLOR_RGB2BGR)
