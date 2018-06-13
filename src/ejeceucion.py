@@ -171,9 +171,7 @@ def binarizar_luminosidad(stream):
         cv2.imshow('Bin_Lum', img_binarizada)
         fps_stats.append(fps)
         if cv2.waitKey(1) & 0xFF == ord('s'):
-            print("Minimos fps: " + str(min(fps_stats)))
-            print("Maximos fps: " + str(max(fps_stats)))
-            print("Media fps: " + str(np.average(fps_stats)))
+            imprimir_fps_stats(fps_stats)
             print("Umbral de binarizacion" + str(umbral))
             cv2.destroyAllWindows()
             break
@@ -226,9 +224,7 @@ def muestra_proceso(stream):
                 mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, vid, img_correjida, img_binarizada, bordes_tray)
 
                 if salir_evt[0] is True:
-                    print("Minimos fps: " + str(min(fps_stats)))
-                    print("Maximos fps: " + str(max(fps_stats)))
-                    print("Media fps: " + str(np.average(fps_stats)))
+                    imprimir_fps_stats(fps_stats)
                     cv2.destroyAllWindows()
                     salir = True
                     opcion = 0
@@ -267,9 +263,7 @@ def muestra_proceso(stream):
                 mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, vid, img_correjida, img_binarizada, bordes_tray)
 
                 if salir_evt[0] is True:
-                    print("Minimos fps: " + str(min(fps_stats)))
-                    print("Maximos fps: " + str(max(fps_stats)))
-                    print("Media fps: " + str(np.average(fps_stats)))
+                    imprimir_fps_stats(fps_stats)
                     cv2.destroyAllWindows()
                     salir = True
                     opcion = 0
@@ -282,6 +276,12 @@ def muestra_proceso(stream):
     
 def ejecucion_normal():
     pass
+
+def imprimir_fps_stats(fps_stats):
+    print("Minimos fps: " + str(min(fps_stats)))
+    print("Maximos fps: " + str(max(fps_stats)))
+    print("Media fps: " + str(np.average(fps_stats)))
+
 
 if  __name__ =='__main__':
     main()
