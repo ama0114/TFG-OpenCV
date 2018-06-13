@@ -19,9 +19,7 @@ class binarizar_hsv:
         """
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-        color = np.array(self.color_bin[0])
-        lower_y = color - 20
-        upper_y = color + 20
+        lower_y, upper_y = self.generar_rangos() 
 
         #Binarizo
         img_binarizada = cv2.inRange(hsv, lower_y, upper_y)
@@ -30,14 +28,13 @@ class binarizar_hsv:
 
     def calibrar_color(self):
         stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
-        color_bin = [[0,0,0]]
         salir = False
 
         def on_mouse_click (event, x, y, flags, frame):
             if event == cv2.EVENT_LBUTTONUP:
                 #print(frame[y,x].tolist())
-                del color_bin[:]
-                color_bin.append(frame[y,x].tolist())
+                del self.color_bin[:]
+                self.color_bin.append(frame[y,x].tolist())
         
         while not salir:
             #0 - B/N, 1 - Color RGB
@@ -45,9 +42,7 @@ class binarizar_hsv:
 
             hsv = cv2.cvtColor(vid, cv2.COLOR_BGR2HSV)
 
-            color = np.array(color_bin[0])
-            lower_y = color - 20
-            upper_y = color + 20
+            lower_y, upper_y = self.generar_rangos() 
 
             #Binarizo
             img_binarizada = cv2.inRange(hsv, lower_y, upper_y)
@@ -63,4 +58,20 @@ class binarizar_hsv:
                 cv2.destroyAllWindows()
                 salir = True
 
-        self.color_bin = color_bin
+    def generar_rangos(self):
+
+        color = np.array(self.color_bin[0])
+        lower_y = np.copy(color)
+        upper_y = np.copy(color)
+
+        #Ajustando los rangos de color, saturacion y luminosidad 
+        #Para captar diferentes variaciones del color
+        lower_y[0] = lower_y[0]-20 if lower_y[0]-20 > 0 else 0
+        lower_y[1] =  lower_y[1]-100 if lower_y[1]-100 > 0 else 0
+        lower_y[2] =  lower_y[2]-100 if lower_y[2]-100 > 0 else 0
+
+        upper_y[0] = upper_y[0]+20
+        upper_y[1] = upper_y[1]+100 if upper_y[1]+100 < 256 else 255
+        upper_y[2] = upper_y[2]+100 if upper_y[2]+100 < 256 else 255
+
+        return lower_y, upper_y
