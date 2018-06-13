@@ -15,7 +15,7 @@ persp = perspectiva(stream.get_frame(1))
 def main():
     dir = direccion(0.02,len(stream.get_frame(1)[0]))
     im_spc1, im_spc2, im_spc3, im_spc4, fig = crear_marco_comparacion(stream.get_frame(1))
-
+    salir = [False]
     umbral = 0
     fpsStats = []
     img = stream.get_frame(1)
@@ -24,7 +24,7 @@ def main():
     persp.calcular_coef_angulo(stream)
     print("El coeficiente calculado es: " + str(persp.coef_correcion))
     raw_input("Retira la plantilla, pulsa intro para continuar")
-    
+    menu(stream, persp)
     while True:
         #0 - B/N, 1 - Color RGB
         vid, fps = stream.get_video_stream(0)
@@ -67,10 +67,12 @@ def main():
 
         #Funcion auxiliar para capturar el evento de cierre de la figura
         def handle_close(evt):
-            os._exit(1)
+            del salir[:]
+            salir.append(True)
         
         fig.canvas.mpl_connect('close_event', handle_close)
-
+        if salir[0] is True:
+            break
         #cv2.imshow("Detected Lines (in red) - Probabilistic Line Transform", lineas)
         #cv2.imshow("Borde izquierdo", borde_izq)
         #cv2.imshow("Borde derecho", borde_der)
@@ -132,6 +134,77 @@ def mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, im1, im2, i
     #Tiempo de pausa, lo menor posible para que el video se muestre fluido
     plt.pause(0.001)
 
+def menu(stream, persp):
+    opcion = 0
+    while(opcion not in [1,2,3,4]):
+        opcion = input("1-Binarizar luminosidad \n 2-Binarizar color \n 3-Muestra proceso \n 4-Ejecucion normal \n 5-Salir \n")
+        if opcion is 1:
+            binarizar_luminosidad(stream)
+        elif opcion is 2:
+            binarizar_color(stream)
+        elif opcion is 3:
+            pass 
+        elif opcion is 4:
+            pass
+        elif opcion is 5:
+            quit()
+        else:
+            print("Error, intentalo de nuevo\n")
+
+
+def binarizar_luminosidad(stream):
+    fps_stats = []
+    while True:
+        vid, fps = stream.get_video_stream(0)
+        umbral, img_binarizada = toolbox.binarizar_otsu(vid,255,cv2.THRESH_BINARY_INV)
+        cv2.imshow('Bin_Lum', img_binarizada)
+        fps_stats.append(fps)
+        if cv2.waitKey(1) & 0xFF == ord('s'):
+            print("Minimos fps: " + str(min(fps_stats)))
+            print("Maximos fps: " + str(max(fps_stats)))
+            print("Media fps: " + str(np.average(fps_stats)))
+            print("Umbral de binarizacion" + str(umbral))
+            cv2.destroyAllWindows()
+            break
+
+def binarizar_color(stream):
+    fps_stats = []
+    color_bin = [[0,0,0]]
+
+    def on_mouse_click (event, x, y, flags, frame):
+        if event == cv2.EVENT_LBUTTONUP:
+            print(frame[y,x].tolist())
+            del color_bin[:]
+            color_bin.append(frame[y,x].tolist())
+    
+    while True:
+        #0 - B/N, 1 - Color RGB
+        vid, fps = stream.get_video_stream(1)
+
+        hsv = cv2.cvtColor(vid, cv2.COLOR_BGR2HSV)
+
+        color = np.array(color_bin[0])
+        lower_y = color - 20
+        upper_y = color + 20
+
+        #Binarizo
+        img_binarizada = cv2.inRange(hsv, lower_y, upper_y)
+
+        #Muestro la imagen
+        cv2.imshow('Bin_Col', img_binarizada)
+        cv2.imshow('Original', vid)
+
+        cv2.setMouseCallback('Original', on_mouse_click, hsv)
+
+        fps_stats.append(fps)
+
+        if cv2.waitKey(1) & 0xFF == ord('s'):
+            print("Minimos fps: " + str(min(fps_stats)))
+            print("Maximos fps: " + str(max(fps_stats)))
+            print("Media fps: " + str(np.average(fps_stats)))
+            
+            cv2.destroyAllWindows()
+            break
 
 if  __name__ =='__main__':
     main()
