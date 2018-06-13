@@ -143,16 +143,20 @@ def mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, im1, im2, i
 
 def menu(stream, persp):
     opcion = 0
-    while(opcion not in [1,2,3,4]):
+    while(opcion is not 5):
         opcion = input("1-Binarizar luminosidad \n 2-Binarizar color \n 3-Muestra proceso \n 4-Ejecucion normal \n 5-Salir \n")
         if opcion is 1:
             binarizar_luminosidad(stream)
+            opcion = 0
         elif opcion is 2:
             binarizar_color(stream)
+            opcion = 0
         elif opcion is 3:
             muestra_proceso(stream) 
+            opcion = 0
         elif opcion is 4:
             pass
+            opcion = 0
         elif opcion is 5:
             quit()
         else:
@@ -179,26 +183,27 @@ def binarizar_color(stream):
 
 def muestra_proceso(stream):
     opcion = 0
-    im_spc1, im_spc2, im_spc3, im_spc4, fig = crear_marco_comparacion(stream.get_frame(1))
     fps_stats = []
     persp = perspectiva(stream.get_frame(1))
-    salir = [False]
+    salir_evt = [False]
 
     def handle_close(evt):
-        del salir[:]
-        salir.append(True)
+        del salir_evt[:]
+        salir_evt.append(True)
     
-    while opcion not in [1,2]:
+    while opcion is not 3:
         opcion = input("1-Binarizar Color\n 2-Binarizar Luminosidad\n 3-Salir\n")
+        im_spc1, im_spc2, im_spc3, im_spc4, fig = crear_marco_comparacion(stream.get_frame(1))
         if opcion is 1:
             binarizar_color(stream)
 
             raw_input("Pulsa intro para calcular el coeficiente de correcion de distorsion por perspectiva")
-            persp.calcular_coef_angulo(stream)
+            persp.calcular_coef_angulo(stream, 1, binarizar_hsv.binarizar_frame)
             print("El coeficiente calculado es: " + str(persp.coef_correcion))
             raw_input("Retira la plantilla, pulsa intro para continuar")
-
-            while True:
+            
+            salir = False
+            while not salir:
                 #0 - B/N, 1 - Color RGB
                 vid, fps = stream.get_video_stream(1)
 
@@ -215,25 +220,68 @@ def muestra_proceso(stream):
 
                 fig.canvas.mpl_connect('close_event', handle_close)
 
-                vid = cv2.cvtColor(img_correjida, cv2.COLOR_HSV2BGR)
-                img_correjida = cv2.cvtColor(img_correjida, cv2.COLOR_HSV2BGR)
+                vid = cv2.cvtColor(vid, cv2.COLOR_RGB2BGR)
+                img_correjida = cv2.cvtColor(img_correjida, cv2.COLOR_RGB2BGR)
 
                 mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, vid, img_correjida, img_binarizada, bordes_tray)
 
-                if salir[0] is True:
+                if salir_evt[0] is True:
                     print("Minimos fps: " + str(min(fps_stats)))
                     print("Maximos fps: " + str(max(fps_stats)))
                     print("Media fps: " + str(np.average(fps_stats)))
                     cv2.destroyAllWindows()
-                    break
+                    salir = True
+                    opcion = 0
+                    salir_evt[0] = False
 
         elif opcion is 2:
-            pass
+            
+            def funcion_adaptador(frame):
+                umbral, frame = toolbox.binarizar_otsu(frame,255,cv2.THRESH_BINARY_INV)
+
+                return frame
+
+            raw_input("Pulsa intro para calcular el coeficiente de correcion de distorsion por perspectiva")
+            persp.calcular_coef_angulo(stream, 0, funcion_adaptador)
+            print("El coeficiente calculado es: " + str(persp.coef_correcion))
+            raw_input("Retira la plantilla, pulsa intro para continuar")
+            
+            salir = False
+            while not salir:
+                #0 - B/N, 1 - Color RGB
+                vid, fps = stream.get_video_stream(0)
+
+                #Añado los fps a una lista para despues mostrar estadisticas
+                fps_stats.append(fps)
+
+                img_correjida = persp.correjir_distorsion_perspectiva(vid)
+
+                umbral, img_binarizada = toolbox.binarizar_otsu(img_correjida,255,cv2.THRESH_BINARY_INV)
+
+                bordes = toolbox.obtener_contornos(img_binarizada, 50, 200)
+                tray = toolbox.obtener_trayectoria(bordes)
+                bordes_tray = bordes + tray
+
+                fig.canvas.mpl_connect('close_event', handle_close)
+
+                mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, vid, img_correjida, img_binarizada, bordes_tray)
+
+                if salir_evt[0] is True:
+                    print("Minimos fps: " + str(min(fps_stats)))
+                    print("Maximos fps: " + str(max(fps_stats)))
+                    print("Media fps: " + str(np.average(fps_stats)))
+                    cv2.destroyAllWindows()
+                    salir = True
+                    opcion = 0
+                    salir_evt[0]=False
+
         elif opcion is 3:
             break
         else:
             print("Error, introduce una opción correcta\n")
     
+def ejecucion_normal():
+    pass
 
 if  __name__ =='__main__':
     main()
