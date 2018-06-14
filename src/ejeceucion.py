@@ -152,10 +152,10 @@ def menu(stream, persp, binarizar_hsv):
             binarizar_color(binarizar_hsv)
             opcion = 0
         elif opcion is 3:
-            muestra_proceso(stream, persp, binarizar_hsv) 
+            menu_aux(stream, persp, binarizar_hsv, muestra_proceso) 
             opcion = 0
         elif opcion is 4:
-            pass
+            menu_aux(stream, persp, binarizar_hsv, ejecucion_normal)
             opcion = 0
         elif opcion is 5:
             quit()
@@ -180,7 +180,7 @@ def binarizar_luminosidad(stream):
 def binarizar_color(binarizar_hsv):
     binarizar_hsv.calibrar_color()
 
-def muestra_proceso(stream, persp, binarizar_hsv):
+def menu_aux(stream, persp, binarizar_hsv, ejecucion):
 
     opcion = 0
     while opcion is not 3:
@@ -190,7 +190,7 @@ def muestra_proceso(stream, persp, binarizar_hsv):
 
             calcular_coef_angulo_interaccion(persp, stream, binarizar_hsv.binarizar_frame, 1)
             
-            muestra_proceso_aux(1, binarizar_hsv.binarizar_frame, stream, persp)
+            ejecucion(1, binarizar_hsv.binarizar_frame, stream, persp)
 
         elif opcion is 2:
             
@@ -201,15 +201,70 @@ def muestra_proceso(stream, persp, binarizar_hsv):
 
             calcular_coef_angulo_interaccion(persp, stream, funcion_adaptador, 0)
             
-            muestra_proceso_aux(0, funcion_adaptador, stream, persp)
+            ejecucion(0, funcion_adaptador, stream, persp)
 
         elif opcion is 3:
+            opcion = 0
             break
         else:
             print("Error, introduce una opción correcta\n")
+
+def pinta_indicadores(frame, dir):
+    centro = [len(frame[0])/2,(len(frame[0])/2)-1]
+    rango = [int(dir.rango_seguro_min),int(dir.rango_seguro_max)]
+    for i in range(len(frame)-1, len(frame)-10, -1):
+        for j in centro:
+            frame.itemset((i, j, 0),0)
+            frame.itemset((i, j, 1),255)
+            frame.itemset((i, j, 2),0)
+        for j in rango:
+            frame.itemset((i, j, 0),0)
+            frame.itemset((i, j, 1),0)
+            frame.itemset((i, j, 2),255)
+    return frame
     
-def ejecucion_normal():
-    pass
+def ejecucion_normal(color_stream, funcion_binarizado, stream, persp):
+    fps_stats = []
+    rango_seguro = -1
+    while rango_seguro > 0.3 or rango_seguro < 0:
+        rango_seguro = input("Dime el rango seguro para la direccion\n min=0, max=0.3\n")
+
+    dir = direccion(rango_seguro, len(stream.get_frame(1)[0]))
+    while True:
+        vid, fps = stream.get_video_stream(1)
+        if color_stream is 0:
+            vid_bn = cv2.cvtColor(vid, cv2.COLOR_BGR2GRAY)
+            img_binarizada = funcion_binarizado(vid_bn)
+        else:
+            img_binarizada = funcion_binarizado(vid)
+
+        #Perspectiva
+        img_bin_persp = persp.correjir_distorsion_perspectiva(img_binarizada)
+        vid_persp = persp.correjir_distorsion_perspectiva(vid)
+        bordes_persp = toolbox.obtener_contornos(img_bin_persp, 50, 200)
+        tray_persp = toolbox.obtener_trayectoria(bordes_persp)
+
+        #Normal
+        bordes_normal = toolbox.obtener_contornos(img_binarizada, 50, 200)
+        tray_normal = toolbox.obtener_trayectoria(bordes_normal)
+        texto, angulo = dir.obtener_direccion(tray_normal)
+
+        vid = toolbox.pintar_lineas(vid, tray_normal, [255,0,0])
+        vid = pinta_indicadores(vid, dir)
+
+        vid_persp = toolbox.pintar_lineas(vid_persp, bordes_persp, [0,255,0])
+        vid_persp = toolbox.pintar_lineas(vid_persp, tray_persp, [255,0,0])
+
+        cv2.putText(vid, texto + "              " + str(round(angulo,2)), 
+        (10,50), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0,0,255), 1)
+        cv2.imshow('Guia', vid)
+        cv2.imshow('Tray', vid_persp)
+
+        fps_stats.append(fps)
+        if cv2.waitKey(1) & 0xFF == ord('s'):
+            imprimir_fps_stats(fps_stats)
+            cv2.destroyAllWindows()
+            break
 
 def calcular_coef_angulo_interaccion(persp, stream, funcion, color_stream):
     raw_input("Pulsa intro para calcular el coeficiente de correcion de distorsion por perspectiva")
@@ -222,7 +277,7 @@ def imprimir_fps_stats(fps_stats):
     print("Maximos fps: " + str(max(fps_stats)))
     print("Media fps: " + str(np.average(fps_stats)))
 
-def muestra_proceso_aux(color_stream, funcion_binarizado, stream, persp):
+def muestra_proceso(color_stream, funcion_binarizado, stream, persp):
 
     salir_evt = [False]
     fps_stats = []
@@ -260,7 +315,6 @@ def muestra_proceso_aux(color_stream, funcion_binarizado, stream, persp):
             imprimir_fps_stats(fps_stats)
             cv2.destroyAllWindows()
             salir = True
-            opcion = 0
             salir_evt[0] = False
 
 if  __name__ =='__main__':
