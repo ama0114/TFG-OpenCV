@@ -17,6 +17,14 @@ class perspectiva:
     def __init__(self, frame):
         pass
 
+    def deshacer_distorsion_perspectiva(self, frame):
+
+        M = cv2.getPerspectiveTransform(self.dst, self.src) 
+
+        warped_img = cv2.warpPerspective(frame, M, (len(frame[0]), len(frame))) 
+
+        return warped_img
+
     def correjir_distorsion_perspectiva(self, frame):
         """
         Permite obtener una vista de pajaro de la imagen de origen.
