@@ -168,6 +168,7 @@ def binarizar_luminosidad(stream):
     while True:
         vid, fps = stream.get_video_stream(0)
         umbral, img_binarizada = toolbox.binarizar_otsu(vid,255,cv2.THRESH_BINARY_INV)
+        cv2.imshow('Original', vid)
         cv2.imshow('Bin_Lum', img_binarizada)
         fps_stats.append(fps)
         if cv2.waitKey(1) & 0xFF == ord('s'):
@@ -187,10 +188,7 @@ def muestra_proceso(stream, persp, binarizar_hsv):
         if opcion is 1:
             binarizar_color(binarizar_hsv)
 
-            raw_input("Pulsa intro para calcular el coeficiente de correcion de distorsion por perspectiva")
-            persp.calcular_coef_angulo(stream, 1, binarizar_hsv.binarizar_frame)
-            print("El coeficiente calculado es: " + str(persp.coef_correcion))
-            raw_input("Retira la plantilla, pulsa intro para continuar")
+            calcular_coef_angulo_interaccion(persp, stream, binarizar_hsv.binarizar_frame, 1)
             
             muestra_proceso_aux(1, binarizar_hsv.binarizar_frame, stream, persp)
 
@@ -201,10 +199,7 @@ def muestra_proceso(stream, persp, binarizar_hsv):
 
                 return frame
 
-            raw_input("Pulsa intro para calcular el coeficiente de correcion de distorsion por perspectiva")
-            persp.calcular_coef_angulo(stream, 0, funcion_adaptador)
-            print("El coeficiente calculado es: " + str(persp.coef_correcion))
-            raw_input("Retira la plantilla, pulsa intro para continuar")
+            calcular_coef_angulo_interaccion(persp, stream, funcion_adaptador, 0)
             
             muestra_proceso_aux(0, funcion_adaptador, stream, persp)
 
@@ -215,6 +210,12 @@ def muestra_proceso(stream, persp, binarizar_hsv):
     
 def ejecucion_normal():
     pass
+
+def calcular_coef_angulo_interaccion(persp, stream, funcion, color_stream):
+    raw_input("Pulsa intro para calcular el coeficiente de correcion de distorsion por perspectiva")
+    persp.calcular_coef_angulo(stream, color_stream, funcion)
+    print("El coeficiente calculado es: " + str(persp.coef_correcion))
+    raw_input("Retira la plantilla, pulsa intro para continuar")
 
 def imprimir_fps_stats(fps_stats):
     print("Minimos fps: " + str(min(fps_stats)))
