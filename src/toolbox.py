@@ -144,7 +144,17 @@ def obtener_contornos(frame, umbral_bajo, umbral_alto):
     - umbral_bajo: primer umbral para realizar la histéresis
     - umbral_alto: segundo umbral para realizar la histéresis
     """
-    return cv2.Canny(frame, umbral_bajo, umbral_alto)
+    contornos = cv2.Canny(frame, umbral_bajo, umbral_alto)
+
+    for i in range(len(contornos)):
+        for j in range(len(contornos[0])):
+            if contornos.item(i,j) is 255:
+                for k in range(-2,2):
+                    if j-k > 0 and j-k < len(contornos[0]) and j+k < len(contornos[0]) and k is not 0:
+                        contornos.itemset((i,j+k), 0)
+
+    return contornos
+
 
 
 def deteccion_lineas_hough(frame):
