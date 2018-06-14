@@ -160,32 +160,17 @@ def deteccion_lineas_hough(frame):
     
     """
 
-    cdst = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
-    cdstP = np.copy(cdst)
+    retorno = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
     
-    lines = cv2.HoughLines(frame, 1, np.pi / 180, 150, 0, 5, 0)
-    
-    if lines is not None:
-        for i in range(0, len(lines)):
-            rho = lines[i][0][0]
-            theta = lines[i][0][1]
-            a = math.cos(theta)
-            b = math.sin(theta)
-            x0 = a * rho
-            y0 = b * rho
-            pt1 = (int(x0 + 1000*(-b)), int(y0 + 1000*(a)))
-            pt2 = (int(x0 - 1000*(-b)), int(y0 - 1000*(a)))
-            cv2.line(cdst, pt1, pt2, (0,0,255), 3, cv2.LINE_AA)
-    
-    
-    linesP = cv2.HoughLinesP(frame, 1, np.pi / 180, 50, None, 50, 10)
+    linesP = cv2.HoughLinesP(frame, cv2.HOUGH_PROBABILISTIC, 
+                            np.pi/180, 90, minLineLength = 5, maxLineGap = 5)
     
     if linesP is not None:
         for i in range(0, len(linesP)):
             l = linesP[i][0]
-            cv2.line(cdstP, (l[0], l[1]), (l[2], l[3]), (0,0,255), 3, cv2.LINE_AA)
+            cv2.line(retorno, (l[0], l[1]), (l[2], l[3]), (0,0,255), 3, cv2.LINE_AA)
     
-    return cdstP
+    return retorno
 
 def obtener_unico_borde(frame, modo):
     """
@@ -195,7 +180,7 @@ def obtener_unico_borde(frame, modo):
     - modo: 0 de izquierda a derecha, 1 de derecha a izquierda
     """
 
-    img_aux = np.zeros((len(frame),len(frame[0])))
+    img_aux = np.zeros((len(frame),len(frame[0])), dtype=np.uint8)
 
     for i in range(len(frame)):
         aux = True
@@ -241,7 +226,7 @@ def obtener_trayectoria(frame):
         Usar funcion obtener contornos.
     """
 
-    img_aux = np.zeros((len(frame),len(frame[0])))
+    img_aux = np.zeros((len(frame),len(frame[0])), dtype=np.uint8)
 
     for i in range(len(frame)):
         aux = True
@@ -260,7 +245,17 @@ def obtener_trayectoria(frame):
 
     return img_aux
 
+def pintar_lineas(frame, lineas, color):
+    for i in range(len(frame)):
+        for j in range(len(frame[0])):
+            if lineas.item(i,j) is not 0:
+                for i in range(i-1,i+1):
+                    if j-1 > -1 and j+1 < len(frame[0]):
+                        frame.itemset((i, j, 0),color[0])
+                        frame.itemset((i, j, 1),color[1])
+                        frame.itemset((i, j, 2),color[2])
 
-        
+    return frame
+
 
         
