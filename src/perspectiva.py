@@ -125,13 +125,14 @@ class perspectiva(object):
         """
         g = lambda x: 140.3462 + (101.7432 - 140.3462)/(1 + (x/0.5605076)**64.36072)
         tam_reducido = g(self.coef_correcion)
-        
-        self.src = np.float32([[0, len(frame)-1], 
-                            [len(frame[0])-1, len(frame)-1], 
-                            [0, 0], 
-                            [len(frame[0])-1, 0]])
-                            
-        self.dst = np.float32([[tam_reducido/2, len(frame)-1], 
-                            [len(frame[0])-tam_reducido/2, len(frame)-1], 
-                            [0, 0], 
-                            [len(frame[0])-1, 0]])
+
+        self.src = np.float32([[0, len(frame)-1],
+                               [len(frame[0])-1, len(frame)-1],
+                               [0, 0],
+                               [len(frame[0])-1, 0]])
+
+        self.dst = np.float32([[tam_reducido/2, len(frame)-1],
+                               [len(frame[0])-tam_reducido/2, len(frame)-1],
+                               [0, 0],
+                               [len(frame[0])-1, 0]])
+                               

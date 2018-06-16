@@ -53,7 +53,7 @@ class direccion(object):
         """
         Obtiene la dirección para guiar al vehiculo.
         Recibe la imagen de la camara.
-        Devuelve un texto R(Recto), RI(Recto-Izquierda), 
+        Devuelve un texto R(Recto), RI(Recto-Izquierda),
         RD(Recto-Derecha), I(Izquierda), D(Derecha) o Error.
         RI y RD se mostraran cuando el angulo de giro no sea menor a 45 grados.
         I y D se mostraran cuando el angulo de giro sea mayor a 45 grados.
