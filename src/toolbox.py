@@ -159,6 +159,7 @@ def obtener_contornos(frame, umbral_bajo, umbral_alto):
 
 def deteccion_lineas_hough(frame):
     """
+    *Experimental*
     https://docs.opencv.org/3.4.0/d9/db0/tutorial_hough_lines.html
     Detecta lineas en una imagen binarizada y las dibuja sobre la imagen
     Es conveniente que la imagen no solo sea binaria sino que sea un 
@@ -167,7 +168,6 @@ def deteccion_lineas_hough(frame):
     devuelve la imagen con las lineas
     Parámetros: 
     - frame: imagen de origen
-    
     """
 
     retorno = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
@@ -209,6 +209,15 @@ def obtener_unico_borde(frame, modo):
     return img_aux
 
 def obtener_polinomio(frame):
+    """
+        *Experimental*
+        Recibe una imagen binaria donde los valores 
+        que no son cero, representan una linea, y 
+        mediante ajuste de polinomio intenta obtener 
+        el polinomio asociado a la curva.
+
+        Devuelve la imagen con el polinomio dibujado
+    """
     datax = []
     datay = []
     ret = frame
@@ -224,7 +233,8 @@ def obtener_polinomio(frame):
     f = np.poly1d(z)
     t = np.arange(min(datax),max(datax), 1)
     for i in range(1,len(t)):
-        cv2.line(ret, (int(f(t[i-1])), t[i-1]),(int(f(t[i])),t[i]), (0,0,255), 3)
+        cv2.line(ret, (int(f(t[i-1])), t[i-1]),
+            (int(f(t[i])),t[i]), (0,0,255), 3)
 
     return ret
 
@@ -234,6 +244,8 @@ def obtener_trayectoria(frame):
     Parámetros:
     - frame: imagen binarizada donde solo esten los dos bordes de la linea.
         Usar funcion obtener contornos.
+
+    Devuelve la imagen con la trayectoria pintada
     """
 
     img_aux = np.zeros((len(frame),len(frame[0])), dtype=np.uint8)
@@ -256,6 +268,16 @@ def obtener_trayectoria(frame):
     return img_aux
 
 def pintar_lineas(frame, lineas, color):
+    """
+    Pinta lineas en la imagen de origen
+    - frame: imagen donde queremos pintar las lineas
+    - lineas: imagen binaria donde los pixeles que 
+            no son 0 se interpretan como linea.
+    - color: color en el que se va a pintar la linea
+            en BGR (b,g,r)
+
+    Devuelve la imagen con las lineas pintadas
+    """
     for i in range(len(frame)):
         for j in range(len(frame[0])):
             if lineas.item(i,j) is not 0:
