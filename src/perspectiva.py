@@ -80,8 +80,10 @@ class perspectiva:
             vid, fps = stream.get_video_stream(color_stream)
 
             #Binarizo
-            #umbral, img_binarizada = toolbox.binarizar_otsu(vid,255,cv2.THRESH_BINARY_INV)
-            img_binarizada = funcion_binarizar(vid)
+            if color_stream is 0:
+                _, img_binarizada = funcion_binarizar(vid)
+            else:
+                img_binarizada = funcion_binarizar(vid)
 
             #Calculo angulo
             c = self.calcular_coef(img_binarizada)

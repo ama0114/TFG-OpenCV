@@ -10,91 +10,6 @@ from direccion import direccion
 from perspectiva import perspectiva
 import os
 
-""" def main():
-    dir = direccion(0.02,len(stream.get_frame(1)[0]))
-    im_spc1, im_spc2, im_spc3, im_spc4, fig = crear_marco_comparacion(stream.get_frame(1))
-    salir = [False]
-    umbral = 0
-    fpsStats = []
-    img = stream.get_frame(1)
-    print("Luminosidad " + str(toolbox.calcular_luminosidad(img)))
-    raw_input("Pulsa intro para calcular el coeficiente de correcion de distorsion por perspectiva")
-    persp.calcular_coef_angulo(stream)
-    print("El coeficiente calculado es: " + str(persp.coef_correcion))
-    raw_input("Retira la plantilla, pulsa intro para continuar")
-    #menu(stream, persp)
-    while True:
-        #0 - B/N, 1 - Color RGB
-        vid, fps = stream.get_video_stream(0)
-
-        #Añado los fps a una lista para despues mostrar estadisticas
-        fpsStats.append(fps)
-
-        #Binarizo la imagen 
-        #Uso cv2.THRESH_BINARY_INV ya que necesito que la linea sea blanca y el resto negro
-        #img_binarizada = toolbox.binarizar_umbral_fijo(vid, 147, 255, cv2.THRESH_BINARY_INV)
-        umbral, img_binarizada = toolbox.binarizar_otsu(vid,255,cv2.THRESH_BINARY_INV)
-        #img_binarizada = toolbox.binarizar_umbral_adaptativo(vid, 255, 
-        #cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 20, 7)
-        img_correjida = persp.correjir_distorsion_perspectiva(img_binarizada)
-
-        
-        
-        #lineas = toolbox.deteccion_lineas_hough(bordes)
-
-        #borde_izq = toolbox.obtener_unico_borde(bordes,0)
-        #borde_der =  toolbox.obtener_unico_borde(bordes,1)
-
-        bordes = toolbox.obtener_contornos(img_correjida, 50, 200)
-        tray = toolbox.obtener_trayectoria(bordes)
-        bordes_tray = bordes + tray
-        texto, angulo = dir.obtener_direccion(tray)
-        #pol = toolbox.obtener_polinomio(borde_izq)
-        
-        #Muestro la imagen
-        #cv2.imshow('Binarizada', img_binarizada)
-        #cv2.putText(bordes_tray, texto + "              " + str(round(angulo,2)), 
-        #(10,50), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255,255,255), 1)
-        #cv2.putText(vid, texto + "              " + str(round(angulo,2)), 
-        #(10,50), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0,0,0), 1)
-        
-        #cv2.imshow('Original', vid)
-        #cv2.imshow('Trayectoria', bordes_tray)
-        
-        mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, 
-                        img_binarizada, vid, img_correjida, bordes_tray)
-
-        #Funcion auxiliar para capturar el evento de cierre de la figura
-        def handle_close(evt):
-            del salir[:]
-            salir.append(True)
-        
-        fig.canvas.mpl_connect('close_event', handle_close)
-        if salir[0] is True:
-            break
-        #cv2.imshow("Detected Lines (in red) - Probabilistic Line Transform", lineas)
-        #cv2.imshow("Borde izquierdo", borde_izq)
-        #cv2.imshow("Borde derecho", borde_der)
-        #cv2.imshow("Tray", tray)
-        #cv2.imshow("Polinomio", pol)
-        
-
-        # salimos pulsando s
-        if cv2.waitKey(1) & 0xFF == ord('s'):
-            print("Minimos fps: " + str(min(fpsStats)))
-            print("Maximos fps: " + str(max(fpsStats)))
-            print("Media fps: " + str(np.average(fpsStats)))
-
-            ''' anchura_calculada, anchura_medida = toolbox.calcular_ancho_linea(img_binarizada, 
-            56, 13, 144, 176, 1.6, 130, 4)
-            print("Anchura calculada " + str(anchura_calculada))
-            print("Anchura medida " + str(anchura_medida))
-            print("Porcentraje error " + str(abs(100-(anchura_medida/anchura_calculada*100))) + "%") '''
-
-            if umbral > 0:
-                print("El umbral calculado mediante el algoritmo de otsu es: " + str(umbral))
-            break """
-
 def main():
 
     stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
@@ -111,18 +26,6 @@ def crear_marco_comparacion(img):
     for row in ax:
         for col in row:
             image_spaces.append(col.imshow(img, cmap='gray'))
-
-    """ #Creo subplots
-    ax1 = plt.subplot(2,2,1)
-    ax2 = plt.subplot(2,2,2)
-    ax3 = plt.subplot(2,2,3)
-    ax4 = plt.subplot(2,2,4)
-
-    #Creo espacios para mostrar imagenes
-    im_spc1 = ax1.imshow(img, cmap='gray')
-    im_spc2 = ax2.imshow(img, cmap='gray')
-    im_spc3 = ax3.imshow(img, cmap='gray')
-    im_spc4 = ax4.imshow(img, cmap='gray') """
 
     #Hago el plot dinamico
     plt.ion()
@@ -142,22 +45,31 @@ def mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, im1, im2, i
     plt.pause(0.001)
 
 def menu(stream, persp, binarizar_hsv):
-    opcion = 0
-    while(opcion is not 5):
-        opcion = input("1-Binarizar luminosidad \n 2-Binarizar color \n 3-Muestra proceso \n 4-Ejecucion normal \n 5-Salir \n")
+    opcion = -1
+    while(opcion is not 0):
+        print("******* Menu ***********")
+        
+        opcion = input(" 1-Prueba binarizar luminosidad \n 2-Prueba binarizar color \n 3-Muestra proceso \n 4-Ejecucion normal \n 0-Salir \n")
+        print("************************")
         if opcion is 1:
+            print("************************")
+            print("Prueba binarizar por luminosidad, pulsa 's' para salir.")
+            print("************************")
             binarizar_luminosidad(stream)
-            opcion = 0
+            opcion = -1
         elif opcion is 2:
+            print("************************")
+            print("Prueba binarizar por color, pulsa 's' para salir.")
+            print("************************")
             binarizar_color(binarizar_hsv)
-            opcion = 0
+            opcion = -1
         elif opcion is 3:
             menu_aux(stream, persp, binarizar_hsv, muestra_proceso) 
-            opcion = 0
+            opcion = -1
         elif opcion is 4:
             menu_aux(stream, persp, binarizar_hsv, ejecucion_normal)
-            opcion = 0
-        elif opcion is 5:
+            opcion = -1
+        elif opcion is 0:
             quit()
         else:
             print("Error, intentalo de nuevo\n")
@@ -165,7 +77,8 @@ def menu(stream, persp, binarizar_hsv):
 
 def binarizar_luminosidad(stream):
     fps_stats = []
-    while True:
+    salir = False
+    while not salir:
         vid, fps = stream.get_video_stream(0)
         umbral, img_binarizada = toolbox.binarizar_otsu(vid,255,cv2.THRESH_BINARY_INV)
         cv2.imshow('Original', vid)
@@ -173,18 +86,20 @@ def binarizar_luminosidad(stream):
         fps_stats.append(fps)
         if cv2.waitKey(1) & 0xFF == ord('s'):
             imprimir_fps_stats(fps_stats)
-            print("Umbral de binarizacion" + str(umbral))
+            print("Umbral de binarizacion: " + str(umbral))
             cv2.destroyAllWindows()
-            break
+            salir = True
 
 def binarizar_color(binarizar_hsv):
     binarizar_hsv.calibrar_color()
 
 def menu_aux(stream, persp, binarizar_hsv, ejecucion):
 
-    opcion = 0
-    while opcion is not 3:
-        opcion = input("1-Binarizar Color\n 2-Binarizar Luminosidad\n 3-Salir\n")
+    opcion = -1
+    while opcion is not 0:
+        print("************************")
+        opcion = input("1-Binarizar Color\n 2-Binarizar Luminosidad\n 0-Salir\n")
+        print("************************")
         if opcion is 1:
             binarizar_color(binarizar_hsv)
 
@@ -197,17 +112,19 @@ def menu_aux(stream, persp, binarizar_hsv, ejecucion):
             def funcion_adaptador(frame):
                 umbral, frame = toolbox.binarizar_otsu(frame,255,cv2.THRESH_BINARY_INV)
 
-                return frame
+                return umbral, frame
 
             calcular_coef_angulo_interaccion(persp, stream, funcion_adaptador, 0)
             
             ejecucion(0, funcion_adaptador, stream, persp)
 
-        elif opcion is 3:
-            opcion = 0
+        elif opcion is 0:
+            opcion = -1
             break
         else:
-            print("Error, introduce una opción correcta\n")
+            print("************************")
+            print("Error, introduce una opcion correcta\n")
+            print("************************")
 
 def pinta_indicadores(frame, dir):
     centro = [len(frame[0])/2,(len(frame[0])/2)-1]
@@ -232,9 +149,12 @@ def ejecucion_normal(color_stream, funcion_binarizado, stream, persp):
     dir = direccion(rango_seguro, len(stream.get_frame(1)[0]))
     while True:
         vid, fps = stream.get_video_stream(1)
+        
+        umbral = 0
+
         if color_stream is 0:
             vid_bn = cv2.cvtColor(vid, cv2.COLOR_BGR2GRAY)
-            img_binarizada = funcion_binarizado(vid_bn)
+            umbral, img_binarizada = funcion_binarizado(vid_bn)
         else:
             img_binarizada = funcion_binarizado(vid)
 
@@ -256,7 +176,21 @@ def ejecucion_normal(color_stream, funcion_binarizado, stream, persp):
         vid_persp = toolbox.pintar_lineas(vid_persp, tray_persp, [255,0,0])
 
         cv2.putText(vid, texto + "              " + str(round(angulo,2)), 
-        (10,50), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0,0,255), 1)
+        (10,20), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255,0,255), 1)
+
+        cv2.putText(vid_persp, 
+        "Lum:              " + str(round(toolbox.calcular_luminosidad(vid),2)), 
+        (10,40), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255,0,255), 1)
+
+        cv2.putText(vid_persp, 
+        "Fps:              " + str(round(fps,2)), 
+        (10,20), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255,0,255), 1)
+
+        if color_stream is 0:
+            cv2.putText(vid_persp, 
+            "Umb:              " + str(round(umbral,2)), 
+            (10,60), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255,0,255), 1)
+
         cv2.imshow('Guia', vid)
         cv2.imshow('Tray', vid_persp)
 
@@ -267,15 +201,20 @@ def ejecucion_normal(color_stream, funcion_binarizado, stream, persp):
             break
 
 def calcular_coef_angulo_interaccion(persp, stream, funcion, color_stream):
+    print("************************")
     raw_input("Pulsa intro para calcular el coeficiente de correcion de distorsion por perspectiva")
+    print("Coloque la plantilla delante de la camara")
     persp.calcular_coef_angulo(stream, color_stream, funcion)
     print("El coeficiente calculado es: " + str(persp.coef_correcion))
     raw_input("Retira la plantilla, pulsa intro para continuar")
+    print("************************")
 
 def imprimir_fps_stats(fps_stats):
+    print("************************")
     print("Minimos fps: " + str(min(fps_stats)))
     print("Maximos fps: " + str(max(fps_stats)))
     print("Media fps: " + str(np.average(fps_stats)))
+    print("************************")
 
 def muestra_proceso(color_stream, funcion_binarizado, stream, persp):
 
@@ -295,9 +234,12 @@ def muestra_proceso(color_stream, funcion_binarizado, stream, persp):
         #Añado los fps a una lista para despues mostrar estadisticas
         fps_stats.append(fps)
 
-        img_correjida = persp.correjir_distorsion_perspectiva(vid)
-
-        img_binarizada = funcion_binarizado(img_correjida)
+        if color_stream is 0:
+            _, img_correjida = funcion_binarizado(vid)
+            img_binarizada = persp.correjir_distorsion_perspectiva(img_correjida)
+        else:
+            img_binarizada = funcion_binarizado(img_correjida)
+            img_correjida = persp.correjir_distorsion_perspectiva(vid)
 
         bordes = toolbox.obtener_contornos(img_binarizada, 50, 200)
         tray = toolbox.obtener_trayectoria(bordes)
