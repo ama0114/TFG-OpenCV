@@ -1,21 +1,58 @@
 \capitulo{3}{Conceptos teóricos}
 
-En aquellos proyectos que necesiten para su comprensión y desarrollo de unos conceptos teóricos de una determinada materia o de un determinado dominio de conocimiento, debe existir un apartado que sintetice dichos conceptos.
+\section{Implementación hardware}
+En este proyecto trabajaremos con AGVs. Necesitaremos 3 elementos principales para implementarlo:
 
-Algunos conceptos teóricos de \LaTeX \footnote{Créditos a los proyectos de Álvaro López Cantero: Configurador de Presupuestos y Roberto Izquierdo Amo: PLQuiz}.
+\begin{itemize}
+	\item Una cámara que capte imágenes, situada adecuadamente en el AGV.
+	
+	\item Una ordenador que ejecute el programa.
+	
+	\item Un elemento para transmitir las instrucciones que genere nuestro programa al sistema de control del vehiculo.
+	
+\end{itemize}
 
-\section{Secciones}
+Tras analizar los diferentes elementos y la forma de combinarlos, podemos obtener dos formas de organización de estos elementos, veamos ambas, y sus ventajas e inconvenienetes.
+ 
 
-Las secciones se incluyen con el comando section.
+\subsection{Implementación total en el AGV}
+En esta implementación se colocarán todos los elementos en el AGV, ejecutando el programa en el ordenador del propio vehículo.
+\subsubsection{Ventajas}
+\begin{itemize}
 
-\subsection{Subsecciones}
+	\item No se necesita ningún elemento extra.
+	
+	\item La transmisión de la imagen y de las instrucciones es inmediata y por conexión física, lo que asegura una buena transmisión de la información.
+	
+\end{itemize} 
 
-Además de secciones tenemos subsecciones.
+\subsubsection{Desventajas} 
+\begin{itemize}
 
-\subsubsection{Subsubsecciones}
+	\item La capacidad de procesamiento del ordenador del vehiculo no es muy grande.
+	
+	\item Esta implementación dificulta el control simultaneo de varios AGVs.
+	
+\end{itemize}
 
-Y subsecciones. 
+\subsection{Externalización del ordenador que ejecuta el programa} 
 
+En esta implementación se externaliza el ordenador donde se ejecuta el programa, a un ordenador fijo, más potente.
+\subsubsection{Ventajas}
+\begin{itemize}
+	\item El ordenador externo nos ofrece mayor capacidad de procesamiento.
+	
+	\item Poder ver las instrucciones y situación en tiempo real que se están mandando.
+	
+\end{itemize}
+
+\subsubsection{Desventajas}
+\begin{itemize}
+	\item Se necesita hardware extra, además del que lleva el AGV.
+	
+	\item Necesitamos hardware que nos permita un buen flujo de imágenes hacia el ordenador, y una buena transmisión de las instrucciones hacia el vehículo.
+	
+\end{itemize} 
 
 \section{Referencias}
 
