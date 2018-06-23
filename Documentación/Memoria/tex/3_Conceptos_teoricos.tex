@@ -54,7 +54,105 @@ En esta implementación se externaliza el ordenador donde se ejecuta el programa
 	
 \end{itemize} 
 
-\section{Referencias}
+\section{Procesado de imagen}
+Para realizar una detección efectiva de la línea guía en la imagen, tenemos que realizar un procesamiento de la imagen, pasandola por distintos filtros para finalmente obtener la trayectoria que representa la línea guía.
+
+\subsection{Binarización}
+Binarizar es el proceso que nos permite distinguir ciertas partes o elementos de una imagen aplicando una serie de valores umbrales. La forma en la que se distinguen los elementos es generando una imagen binaria, donde los elementos destacados tienen un valor, y el resto de la imagen tiene otro valor.
+\imagen{img_binaria}{Izquierda, imagen binaria. Derecha imagen real.} 
+
+Primero, tenemos que entender como funciona una pantalla y una cámara, para comprender el formato de imagen más usado actualmente, RGB.
+
+Una imagen RGB está formada por 3 matrices de valores de mismas dimensiones, una matriz para los rojos, otra para los verdes, y otra para los azules (Red-Green-Blue). Este formato, es utilizado actualmente para la representación de imágenes en pantalla, y para la captación de imágenes, ya que se ajusta al formato físico tanto de pantallas como de sensores de cámaras.
+Veamos algunos conceptos relacionados con esto:
+
+\begin{itemize}
+
+	\item Pantalla
+	
+\end{itemize}
+
+Una pantalla está formada por diminutos puntos de color, conocidos como pixeles. Cada pixel tiene 3 "luces", una para rojos, otra para verdes y otra para azules. El formato RGB da a cada una de estas luces un valor, que las hará lucir con mayor o menor intensidad.
+\imagen{pixels}{Pixels de una pantalla LCD. Fuente: youtube.com}
+
+La resolución tanto de la pantalla como de la imagen es un aspecto relevante, ya que influirá en la forma en la que la pantalla representará la imagen.
+ 
+La resolución de la pantalla es el número de pixels de ancho, por el número de pixels de alto. La resolución de la imagen es el tamaño de la matriz de ancho, por el tamaño de la matriz de alto.
+
+Cuando ambas son iguales, cada valor de la matriz RGB se interpretará en cada uno de los pixeles de la pantalla. En el caso de que sean diferentes, se hará un reescalado de imagen.
+
+Los valores que pueden tomar son desde 0, apagado, hasta 255, intensidad máxima. La combinación de intensidades de las luces RGB formará los distintos colores. 
+\imagen{RGB_rueda}{Combinación de colores RGB. Fuente: wikipedia.org}
+
+Como vemos, tenemos $256^3$ combinaciones diferentes, lo que nos da un rango de 16777216 colores posibles.
+
+\begin{itemize}
+
+	\item Cámara
+	
+\end{itemize}
+
+La forma de funcionamiento de una cámara se basa en un sensor con celdas sensibles a la luz, que permiten registrar la intensidad con la que incide la luz.
+Una vez más, cada una de estas celdas se corresponderá con un una de las luces de un pixel. Para poder registrar los valores RGB se descompone la luz en sus 3 colores primarios, rojo, verde y azul. Se registra la intensidad de cada color, y se genera la imagen RGB.
+\imagen{sensor_camara}{Esquema del funcionamiento del sensor de una cámara. Fuente: globalspec.com}
+
+Una vez visto el porqué del formato RGB, podemos empezar a explicar los métodos de binarización.
+
+\subsubsection{Binarización por luminosidad}
+Este tipo de binarización consiste en generar una imagen binaria, mediante un umbral aplicado a una imagen donde podamos ver la luminosidad de cada pixel.
+Para realizar este tipo de binarización necesitamos una imagen en escala de grises, donde solo tenemos luminosidad. Nuestra cámara nos devuelve imágenes RGB, por lo que debemos realizar una conversión. 
+
+Esta conversión no es algo trivial, ya que los colores primarios de la luz, RGB, no tienen la misma luminosidad. Por lo que la solución mas simple que se nos podría ocurrir, realizar la media para cada pixel de sus valores RGB sería errónea.
+
+En su lugar, debemos corregir la luminosidad de cada matriz de color, para igualar estas diferencias de luminosidad que por propia naturaleza los colores primarios tienen. 
+
+Para ello, multiplicaremos cada matriz por un valor corrector.
+Según la documentación de OpenCV\cite{OpenCVRGBGRAY}, la formula que nos permite hacer esta transformación es:
+
+RGB[A] to Gray:$Y=0.299*R+0.587*G+0.114*B$
+
+Donde Y es la imagen resultante.
+
+Una vez obtenemos la imagen en escala de grises, podemos empezar con la binarización.
+
+Para binarizar, primero tenemos que saber cuantos pixels hay de cada valor entre 0 y 255, para tratar de buscar grupos grandes de pixels que compartan valores similares, y así distinguir unos de otros. 
+
+Esta información nos la da el \textbf{histograma de la imagen}.
+
+El histograma de una imagen es la representación de la distribución de los valores de los pixels de la misma.
+
+En el eje X tendremos de izquierda a derecha valores de 0 a 255. En el eje Y de abajo a arriba valores desde 0 hasta en máximo número de pixels encontrados en ese valor de x.
+
+\imagen{img-histograma}{Imagen en escala de grises de la línea guía.}
+\imagen{histograma}{Histograma de la Figura 3.5.}
+
+Como podemos apreciar, hay dos picos claros en el histograma, uno correspondiente a la línea guía (pixels oscuros, pico izquierdo del histograma), y el resto correspondientes al fondo blanco (pixels claros, pico derecho del histograma), concuerda con la imágen ya que hay mayor cantidad de pixels claros que de oscuros. El umbral tiene que estar entre ambos picos para diferenciar unos pixels de otros.
+
+La forma más simple que se nos puede ocurrir es la de escoger un valor aleatorio entre ambos picos y entonces, recorrer todos los pixels de la imagen en escala de grises, y a cada pixel asignarle un valor si esta por encima del umbral, u otro valor su esta por debajo.
+
+Esta forma, siendo perfectamente valida, es poco recomendable si trabajamos con flujos de datos continuos, como por ejemplo vídeos, o streamings.
+Normalmente en este tipo de flujos de imágenes, la luminosidad puede variar, por lo que el umbral al ser fijo, puede provocar errores en la binarización.
+
+La solución a esto es usar un umbral dinámico, calculado en función del histograma de cada imagen.
+
+La forma que hemos usado para calcular este umbral ha sido mediante el Algoritmo de Otsu\cite{wikiotsu}, ya implementado en OpenCV.
+
+Lo que hace el algoritmo de Otsu es separar la imagen mediante el umbral en dos zonas. Buscamos que la dispersión dentro de cada segmento sea la mínima (que los pixels dentro de ese segmento se parezcan), pero que entre ambos segmentos sea lo máximo posible.
+
+Para esto, inicialmente calcularemos la media aritmética de los valores de gris de toda la imagen, y después solo de cada zona del histograma. Con estos valores podemos calcular las varianzas de cada zona. 
+
+Lo que tenemos que hacer es mantener las variazas de cada zona lo más pequeñas posibles, y conseguir que la varianza entre ambas zonas sea la máxima.
+
+Para conseguir esto, haremos el cociente de la varianza entre las zonas y la suma de las varianzas de cada zona, buscando que este cociente sea el máximo posible. 
+
+
+
+
+
+
+
+\subsubsection{Binarización por color}
+
 
 Las referencias se incluyen en el texto usando cite \cite{wiki:latex}. Para citar webs, artículos o libros \cite{koza92}.
 
