@@ -145,23 +145,126 @@ Lo que tenemos que hacer es mantener las variazas de cada zona lo más pequeñas
 
 Para conseguir esto, haremos el cociente de la varianza entre las zonas y la suma de las varianzas de cada zona, buscando que este cociente sea el máximo posible. 
 
+Veamoslo de una forma más técnica:
 
+$K_0(t)$ y $K_1(t)$ son las zonas del histograma, separadas por el umbral t.
 
+$p(g)$ es la probabilidad del valor gris g, donde g puede ir desde 0 hasta 255, según el formato de escala de grises que estamos usando.
 
+La probabilidad de ocurrencia para cada zona será:
+\begin{itemize}
 
+\item En la zona que va de 0 a t:
 
+$P_0(t)= \sum_{g=0}^{t}p(g)$ 
+
+\item En la zona que va de t+1 hasta 255:
+
+$P_1(t)= \sum_{g=t+1}^{255}p(g)$ o $1-P_0(t)$
+
+\end{itemize}
+
+Siendo $\bar{g}$ la media aritmética de los valores de gris para toda la imagen, y $\bar{g_0}$ y $\bar{g_1}$ la media para cada zona, podemos calcular las varianzas de los segmentos:
+
+\begin{itemize}
+
+\item En la zona que va de 0 a t:
+
+$\sigma{_0^2} = \sum_{g=0}^{t}(g-\bar{g_0})^2p(g)$
+
+\item En la zona que va de t+1 hasta 255:
+
+$\sigma{_1^2} = \sum_{g=t+1}^{255}(g-\bar{g_1})^2p(g)$
+
+\end{itemize}
+
+Ahora necesitaremos las varianzas entre los segmentos, y la suma de la varianza de ambos segmentos.
+
+\begin{itemize}
+
+\item Varianza entre segmentos:
+
+$\sigma{_zw^2} = P_0(t)*(\bar{g_0}-\bar{g})^2 + P_1(t)*(\bar{g_1}-\bar{g})^2$
+
+\item Suma de las varianzas de cada segmento:
+
+$\sigma{_in^2} = P_0(t)*\sigma{_0^2}(t)+P_1(t)*\sigma{_1^2}(t)$
+
+\end{itemize}
+
+Por último, nos queda obtener el cocientre de la varianza entre segmentos y la suma de las varianzas de cada segmento.
+
+$Q(t) = \displaystyle\frac{\sigma{_zw^2}}{\sigma{_in^2}}$
+
+Este es el cociente que tenemos que maximizar. El umbral será el valor de t.
+
+En OpenCV es sencillo hacer este tipo de binarización, ya que contamos con una función que lo realiza instantáneamente, y nos devuelve tanto el umbral que ha usado, como la imagen ya binarizada.
+
+\begin{verbatim}
+umbral, img_binaria = cv.threshold(img,0,255,cv.THRESH_BINARY+cv.THRESH_OTSU)
+\end{verbatim}
+
+Indicamos que queremos hacer la binarización con el algoritmo de Otsu. El valor que se les da a los pixels por debajo del umbral es 0 y el valor por encima es 255. La imagen de origen es img.
+
+El resultado es este:
+
+\imagen{img_bin_otsu}{Resultado de la binarización de la Figura 3.5}
+
+Como vemos, en esta imagen se puede diferenciar perfectamente la línea guía del resto de elementos de la imagen.
 
 \subsubsection{Binarización por color}
+Inicialmente, en el formato RGB tenemos colores, pero están separados en 3 matrices diferentes, por lo que es complicado poder binarizar de una forma efectiva. 
 
+Existe in formato de imagen conocido como HSV\cite{hsl_hsv} (Hue, Saturation, Value), donde la matriz H corresponde con los colores puros de la imagen, la matriz S corresponde a los valores de saturación de cada pixel, y la matriz V corresponde con los valores de negro de cada pixel.
+
+Si representamos esto en un prisma, obtenemos:
+
+\imagen{hsv_prism}{Cilindro de colores HSV. Fuente: wikipedia.org}
+
+En este tipo de formato tenemos la posibilidad de quedarnos con un pequeño fragmento del cilindro, dividiéndolo según el valor de H, con lo que podríamos binarizar la imagen según un rango de color concreto.
+
+Veamos como pasar de RGB a HSV.
+
+Lo primero que necesitamos es pasar los valores RGB a un entorno en 2 dimensiones. En RGB además de los 3 colores primarios, tenemos las mezclas de colores primarios, amarillo, magenta y cyan. Si a esto añadimos el color blanco puro, y el color negro puro, obtenemos un cubo. 
+Este cubo puede ser representado en 2 dimensiones como un hexágono perfecto, usando como centro del hexágono los vértices de color blanco puro y negro puro. 
+Los valores de RGB serán los que determinen la posición del pixel dentro del cubo, la cual será proyectada en dos dimensiones sobre el hexágono.
+
+\imagen{hex_rgb_hsv}{Conversión de RGB a HSV. Fuente: wikipedia.org}
+
+Con esto podemos obtener el ángulo del color de nuestro pixel, H. Como OpenCV trabaja con matrices de valores enteros de 8 bits, no podemos meter en la matriz valores que salgan del rango $[0,255]$ por lo que el ángulo será dividido entre 2, pudiendo estar entre 0 y 180.
+
+El valor de negro, V, es el mayor de los valores RGB. Como OpenCV trabaja con enteros de 8 bits, este valor encaja perfectamtente.
+
+El valor de la saturación, S, se calcula a partir del cubo RGB antes mencionado. Suponemos que el hexágono tiene un radio de 0 a 1. Al representar el color RGB en el plano, estará mas o menos alejado del radio del hexagono, este valor se conoce como Chroma, C. Para calcular la saturación, dividiremos C entre V, lo cual nos dará la saturación. Posteriormente convertiremos este valor en escala de 0 a 255, para que OpenCV pueda trabajar con ello.
+
+Repitiendo este proceso para cada uno de los pixels de la imagen, tendremos nuestra imagen en formato HSV.
+
+Una vez tenemos hecho esto, el proceso de binarización es sencillo. Basta con elegir en la rueda de color el ángulo de los colores que queramos. Para el ángulo 0 tenemos el rojo, 60 amarillo, 120 verde, 180 cyan, 240 azul y 300 magenta. Transformaremos el ángulo para que OpenCV lo interprete adecuadamente, simplemente es dividirlo entre 2.
+
+Una vez tengamos el ángulo del color, estableceremos un margen de seguridad\cite{track_hsv}, para coger todos los pixels con un tono similar. Este margen ha de ser de +10 y -10 para H, y con S y V podemos jugar un poco aunque lo ideal es abarcar el máximo rango posible. Un rango recomendado es entre 100 y 255.
+
+\imagen{img_bin_color}{Resultado de la binarización por color, escogiendo la gama de amarillos.}
+
+En este proyecto se ha simplificado todo este proceso al máximo, ya que es algo complejo. Al usuario se le pedirá calibrar el color mediante unas ventanas de OpenCV, una donde se ve la imagen a color y otra donde se ve el resultado de la binarización. Para elegir un color simplemente tiene que pinchar encima de ese color en la imagen.
 
 Las referencias se incluyen en el texto usando cite \cite{wiki:latex}. Para citar webs, artículos o libros \cite{koza92}.
 
 
-\section{Imágenes}
+\section{Transformación de perspectiva}
+Como hemos visto en secciones anteriores, la principal funcionalidad buscada en este proyecto es el poder ver la línea guía no solo debajo del AGV, también delante, en perspectiva. Para esto simplemente tenemos que colocar la cámara en una posición determinada, bastante levantada del suelo, y con un ángulo que nos permita ver la máxima perspectiva posible, sin llegar a sobrepasar el horizonte, ya que la información que necesitamos está en el suelo, la línea guía.
 
-Se pueden incluir imágenes con los comandos standard de \LaTeX, pero esta plantilla dispone de comandos propios como por ejemplo el siguiente:
+El problema de situar la cámara en una posición así, es que no podemos ver las distancias reales en la imagen, puesto que lo estamos viendo todo en perspectiva. Para ver las distancias reales, tendríamos que colocar la cámara paralela al suelo y a una determinada altura, lo cual es complicado. Habría que tener una especie de brazo por delante del robot con la cámara colgando.
 
-\imagen{escudoInfor}{Autómata para una expresión vacía}
+Por este motivo, lo que se usa para resolver este problema es una transformación de perspectiva. En concreto, una transformación que, a partir de una imagen tomada desde una situación en la que la cámara forma un cierto ángulo con el suelo, genera una imagen virtual que se vea totalmente paralela al suelo, podríamos llamarlo una "vista de pájaro".
+
+\imagen{bird_view}{Izquierda, vista de pájaro. Derecha, vista original.}
+
+OpenCV no tiene una función especifica para realizar esto, pero tiene una función que permite transformar perspectivas mediante unas coordenadas de origen y unas de destino\citep{persp_trans}. 
+
+Generalmente esta función
+
+
+
 
 
 
