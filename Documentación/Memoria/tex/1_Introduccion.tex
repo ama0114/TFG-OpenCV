@@ -1,10 +1,8 @@
 \capitulo{1}{Introducción}
-En esta memoria se muestra el desarrollo y diferentes tipos de pruebas de un software capaz de interpretar información de una imagen y convertir esa información en instrucciones para guiar un vehículo de guiado autónomo (AGV).
+Los AGV, vehículos de guiado autónomo, actualmente son ampliamente utilizados en el mundo industrial. Su función principal es la de llevar algún tipo de carga de una zona a otra dentro de un recinto. Para ello utilizan distintos métodos de guiado, desde detección de pulsos o bandas electromagnéticas, hasta guiado óptico con cámaras.
 
-Para conseguir esto, se ha creado una plantilla con una linea negra sobre un fondo blanco, la cual hará de guía para el AGV. 
+Los métodos actuales de guiado óptico se basan en colocar una cámara muy cerca del suelo, en una posición paralela a este, de tal forma que puedan ver una "guía", una linea de algún tono que contraste con el suelo, para guiarse. El problema de esta solución, es que la imagen que la cámara es capaz de ver es un pequeño fragmento de la línea, con el que únicamente es capaz de detectar si está o no sobre la línea, permitiendo corregir la trayectoria cuando se detecta que el AGV se desvía, cuando "pierde la línea".
 
-Como cámara usaremos un smartphone, montado sobre un soporte con ruedas, para poderlo mover libremente. 
+Esta solución, se puede mejorar si aplicáramos algunos de los métodos que se están usando para el guiado de vehículos autónomos en carretera, donde no solo se detecta si el coche está dentro de los margenes del carril, sino que además son capaces de ver en perspectiva lo que tienen delante. Esto permite, además de guiar el vehículo, estimar la trayectoria que tiene que seguir en los siguientes instantes, permitiendo realizar ajustes más precisos tanto en la velocidad como en la dirección. Se podría decir que son capaces de ver su futuro, el sitio por el que tienen que pasar a continuación.
 
-La imagen se transmitirá mediante wifi a un router, y del router al ordenador mediante un cable ethernet. Para optimizar al máximo posible la transmisión de la información y evitar perdidas.
-
-Este es el hardware básico con el que se iniciará el proyecto, y variará en función de los avances del mismo.
+En este proyecto, se buscará implementar una funcionalidad que permita realizar este tipo de guiado en perspectiva, en el ámbito de la robótica industrial.

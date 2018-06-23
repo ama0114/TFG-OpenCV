@@ -1,6 +1,50 @@
 \capitulo{2}{Objetivos del proyecto}
 
-En este proyecto se busca desarrollar un software capaz de interpretar una imagen, distinguir en esa imagen una línea guía, y obtener la trayectoria que sigue esa guía; para posteriormente generar una serie de instrucciones capaces de dirigir a un vehículo de guiado autónomo (AGV).
-Esta funcionalidad se conseguirá bien mediante el desarrollo de funciones, o empleando funciones contenidas en librerías.
+\section{Objectivos generales}
+Desarrollar un software capaz de interpretar una imagen, para generar un conjunto de instrucciones.
 
-También tiene el objetivo de probar en diferentes entornos todas las funciones y desarrollos que se vayan realizando, así como de documentar y registrar esas pruebas adecuadamente; con el fin último de poder reproducir el funcionamiento de una parte o de todo el software en un entorno similar al que se han realizado las pruebas, y ser capaces de obtener resultados similares a los obtenidos en esas pruebas.
+\begin{itemize}
+	\item Distinguir en esa imagen una línea guía.
+	
+	\item Obtener la trayectoria que sigue esa guía.
+	
+	\item Generar una serie de instrucciones capaces de dirigir a un vehículo de guiado autónomo (AGV).
+\end{itemize} 
+
+\section{Objectivos funcionales}
+\begin{itemize}
+	\item El usuario podrá elegir el tipo de binarización, por luminosidad o por color.
+	
+	\item El usuario podrá colocar la cámara en diferente ángulo respecto del suelo, dentro de los margenes de un mínimo de 30 grados y un máximo de 70.
+	
+	\item El usuario podrá usar una plantilla para corregir la distorsión por perspectiva.
+	
+	\item El usuario podrá probar los distintos tipos de binarización fuera del flujo del programa principal, en vista de realizar ajustes y pruebas.
+	
+	\item El usuario podrá ver las distintas fases por las que pasa la imagen, desde que es capturada hasta que se detecta la trayectoria, en vista de realizar ajustes y pruebas.
+	
+	\item El usuario podrá ver las instrucciones de guiado, situación de luminosidad, fotogramas por segundo y situación de trayectoria en el flujo principal del programa.
+	
+\end{itemize}
+
+
+\section{Objectivos tecnológicos}
+\begin{itemize}
+	\item Obtener un flujo de imagen continuo, por lo que necesitarmos un hardware capaz de transmitir  de forma continua.
+	
+	\item Obtener un procesamiento de imagen de más de 50 fotogramas por segundo, ya que el AGV requiere de una instrucción cada 2 centésimas de segundo.
+	
+	\item Desarrollo con interfaz en linea de comandos, para hacer la aplicación lo más ligera posible.
+	
+	\item Generar un conjunto de pruebas de todas las funciones creadas y/o probadas.
+	
+	\item Controlar la luminosidad en la imágen para poder reproducir el conjunto de pruebas.
+	
+	\item Utilización de OpenCV para el procesamiento de la imágen.
+	
+	\item Utilización de SciPy para generar funciones mediante regresión lineal.
+	
+	\item Utilización de SciPy para generar funciones mediante regresión lineal. 
+	
+	\item Utilización de MatPlotLib para crear ventanas donde ver comparaciones de imágenes.
+\end{itemize}
