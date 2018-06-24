@@ -1,3 +1,29 @@
 \capitulo{6}{Trabajos relacionados}
+El mundo de los vehículos de guiado autónomo se remonta hasta 1953. En este año se creó lo que podemos considerar como el primer AGV de la historia, era un remolcador industrial cuya función era llevar un remolque siguiendo un cable, en un almacén de comestibles\cite{primer_agv}. 
 
-Este apartado sería parecido a un estado del arte de una tesis o tesina. En un trabajo final grado no parece obligada su presencia, aunque se puede dejar a juicio del tutor el incluir un pequeño resumen comentado de los trabajos y proyectos ya realizados en el campo del proyecto en curso. 
+Los sistemas de guiado han evolucionado, pasando por métodos físicos donde se usaba el magnetismo, hasta el guiado óptico. 
+
+Siempre que se ha usado el guiado óptico ha sido enfocado hacia el suelo, tratando de ver si el vehículo se sale de la línea guía.
+
+\imagen{gui_optico}{Sistema de guiado óptico tradicional. Fuente: goetting-agv.com}
+
+\imagen{magnetic_guide}{Sistema de guiado por magnetismo. Fuente: roboteq.com}
+
+De momento en el campo de la robótica industrial no se ha empleado ningún sistema de visión en perspectiva de lineas para guiar vehículos. En el campo de la automoción si que se usan este tipo de sistemas.
+
+\subsection{Artículos}
+
+Se ha encontrado un trabajo parecido, también trabajando en perspectiva, pero el sistema de guiado es mediante reconocimiento de marcas\cite{guiado_marcas}.
+
+Sus autores son Jeisung Lee, Chang-Ho Hyun y Mignon Park. 
+
+El sistema lo que hace es buscar una marca predefinida en el sistema, que tiene un triangulo apuntando hacia una dirección. Una vez encontrado ese triangulo, se dirige hacia él hasta estar encima, y entonces cambia su dirección hacia la dirección en la que apunta el triangulo, y así sucesivamente.
+
+Este sistema tiene ciertas ventajas y desventajas frente al realizado en este proyecto, veamos:
+
+\begin{itemize}
+	\item La ventaja principal es el poder modificar rápidamente el trazado que ha de seguir el vehículo, simplemente moviendo las marcas a nuestro antojo. Además del ahorro económico de no tener que pintar todo el trazado que el vehículo tiene que realizar.
+	
+	\item Esta ventaja conlleva una desventaja, si no orientamos bien una de las marcas, se nos pierde, se tapa al poner algún objeto encima o se deteriora, podemos perder el control del vehículo, ya que seguirá recto hasta encontrar la siguiente marca.
+	
+\end{itemize}

@@ -310,7 +310,7 @@ Una vez que conocemos como realizar está corrección mediante coordenadas, tene
 
 La forma más simple de llevar esto acabo es poniendo una figura geométrica ante la cámara, en nuestro caso un cuadrado. Como ya hemos visto en figuras anteriores, como por ejemplo la Figura 3.1, en la cámara no vemos un cuadrado, sino un trapecio. Esto significa que la perspectiva está agrandando los objetos contra más cerca están de la cámara, a si que para corregirla lo que debemos hacer es reducir la parte inferior de la imagen, hasta que las líneas del cuadrado sean paralelas.
 
-Para realizar esto con la función de transformación de perspectiva de OpenCV tenemos que elegir como coordenadas de origen las cuatro esquinas de nuestra imagen, y como destino dejar fijas las esquinas superiores de la imagen, y reducir la parte inferior, moviendo las esquinas hacia el centro de la imagen. De esta manera corregiremos la perspectiva, pero nos quedará una imagen como la que se aprecia en la Figura 3.11, con dos triángulos negros en los extremos, que se corresponden con la reducción hecha en la parte inferior.
+Para realizar esto con la función de transformación de perspectiva de OpenCV tenemos que elegir como coordenadas de origen las cuatro esquinas de nuestra imagen, y como destino dejar fijas las esquinas superiores de la imagen, y reducir la parte inferior, moviendo las esquinas hacia el centro de la imagen\cite{coord_persp}. De esta manera corregiremos la perspectiva, pero nos quedará una imagen como la que se aprecia en la Figura 3.11, con dos triángulos negros en los extremos, que se corresponden con la reducción hecha en la parte inferior. 
 
 \subsubsection{Relación del ángulo de la cámara con la transformación de perspectiva}
 
