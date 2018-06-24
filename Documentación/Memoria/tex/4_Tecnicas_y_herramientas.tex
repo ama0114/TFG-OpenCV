@@ -2,11 +2,9 @@
 
 \section{Técnicas de desarrollo}
 
-\subsection{Metodología ágil}
+\subsection{Metodologías}
 
-Este proyecto se ha resuelto mediante metodología ágil. 
-
-Cabe destacar que este proyecto no es un proyecto software común en el que tenemos unos requisitos iniciales mas o menos claros, y tenemos alguna idea del final. En este caso lo que buscamos es probar diferentes códigos, herramientas, librerías para satisfacer un primer requisito esencial, la detección de lineas en el suelo. Si conseguimos satisfacer ese requisito, podremos proponer nuevos requisitos en base al resultado obtenido.
+Lo primero a destacar es que este proyecto no es un proyecto software común en el que tenemos unos requisitos iniciales mas o menos claros, y tenemos alguna idea del producto final. En este caso lo que buscamos es probar diferentes códigos, herramientas, librerías para satisfacer el requisito principal, la detección de lineas en el suelo. Si conseguimos satisfacer ese requisito, podremos proponer nuevos requisitos en base al resultado obtenido.
 
 Entonces, no hay un objetivo final claro, si bien, lo ideal seria avanzar lo máximo posible, también se puede dar el caso de probar y probar diferentes elementos, y no llegar a obtener un resultado esperado.
 
@@ -18,7 +16,8 @@ Por ser un proyecto software, las ventajas de usar una metodología ágil son cl
 	\item La comunicación con el cliente se hace a lo largo de todo el desarrollo, favoreciendo que el producto final sea lo que esperaba.
 \end{itemize}
 
-Una de las metodologías ágiles más usadas es Scrum, cuyo principio clave es que los clientes pueden cambiar de idea sobre lo que quieren y necesitan. 
+\subsection{Scrum}
+Una de las metodologías ágiles más usadas es Scrum, cuyo principio clave es que los clientes pueden cambiar de idea sobre lo que quieren y necesitan. Esto nos conviene, ya que en las distintas etapas de nuestro proyecto, se irán proponiendo nuevas funcionalidades y pruebas.
 En Scrum hay 3 roles diferenciados:
 \begin{itemize}
 	\item Product Owner: es el cliente. Propietario de la idea o proyecto a desarrollar. 
@@ -26,7 +25,7 @@ En Scrum hay 3 roles diferenciados:
 	\item Equipo Scrum: equipo de personas que va a realizar el proyecto. Es conveniente que sea un equipo multidisciplinario, en el que cada persona sea experta o conocedora de un campo diferente a las demás. El equipo debe de ser de 5 a 9 personas, para favorecer la comunicación y fluidez del desarrollo.
 \end{itemize}
 
-Se basa en 3 principios básicos, en comparación con metodologías antiguas:
+Las ventajas de usar este tipo de metodología son claras:
 \begin{itemize}
 	\item Favorecer la comunicación del equipo en lugar de la excesiva documentación.
 	\item Buscar la calidad del resultado en los conocimientos de las personas que han participado en el desarrollo, y no en los procesos empleados para hacerlo.
@@ -35,9 +34,9 @@ Se basa en 3 principios básicos, en comparación con metodologías antiguas:
 
 Para este proyecto en concreto, el alumno tomara el rol de Equipo Scrum y ScrumManager. El profesor actuará como cliente.
 
-Como antes se ha explicado, este no es un proyecto software común, por lo que partiremos desde un requisito inicial, y cuando el cliente lo consideré valido y completado, propondrá mas requisitos.
+Como antes se ha explicado, este no es un proyecto software común, por lo que partiremos desde un requisito inicial básico, y cuando el cliente lo consideré valido y completado, propondrá mas requisitos.
 
-En cada sprint se explorarán diferentes herramientas en busca de un objetivo, se harán pruebas con alguna de esas herramientas, estableciendo los parámetros iniciales de cada prueba, el resultado esperado y obtenido. El software evolucionará con cada prueba.
+En cada sprint se explorarán o implementarán diferentes herramientas en busca de un objetivo, se harán pruebas funcionales con alguna de esas herramientas, estableciendo los parámetros iniciales de cada prueba, el resultado esperado y obtenido. El software evolucionará con cada prueba.
 
 \section{Herramientas de documentación}
 
@@ -45,7 +44,7 @@ En cada sprint se explorarán diferentes herramientas en busca de un objetivo, s
 
 Latex es un sistema de composición de texto, que busca la creación de documentos con una alta calidad tipográfica.
 
-Para la documentacion de este proyecto se ha usado TexMaker, que es gratuito bajo la licencia GPL.
+La documentacion de este proyecto se ha creado usando TexMaker, software gratuito bajo la licencia GPL.
 
 Página oficial editor Latex: http://www.xm1math.net/texmaker/
 
@@ -55,13 +54,19 @@ Página oficial MikTex: https://miktex.org/
 
 \section{Herramientas de gestión}
 
-\subsection{Trello}
-Trello es una herramienta online de gestión de tareas intuitiva y simple. Podemos crear diferentes tableros y crear tareas dentro de estos. La vamos a usar principalmente para comunicarnos entre profesor y alumno. Crearemos 3 tableros, tareas por hacer, tareas en desarrollo y tareas completadas.
+\subsection{Git}
+Git es un sistema de control de versiones, actualmente el más utilizado. Está integrado en diferentes plataformas para albergar proyectos como por ejemplo: GitHub, GitLab y Bitbucket.
+Ha sido elegido por ser el que hemos usado durante toda la carrera, lo cual facilitara la utilización.
 
-Página de trello: https://trello.com/
+Git tiene licencia de software libre GNU LGPL v2.1.
 
 \subsection{GitHub}
-Github es una plataforma online para albergar proyectos desarrollados mediante un sistema de control de versiones git. 
+GitHub es una plataforma online para albergar proyectos desarrollados mediante un sistema de control de versiones git. 
+
+Ha sido elegido frente a otras alternativas como GitLab o Bitbucket, por la simplicidad de organización de su página web, y por la integración con extensiones como ZenHub.
+
+Es gratuita para proyectos open source.
+
 Es una herramienta mundialmente conocida en el mundo del desarrollo de software, y una de las más usadas para este tipo de propósitos.
 
 Principalmente tiene 3 tipos de elementos:
@@ -74,13 +79,17 @@ Principalmente tiene 3 tipos de elementos:
 La usaremos para albergar el código del proyecto, y para aplicar metodologías ágiles y scrum. Los Sprints los representaremos con Milestones. Las tareas que vayan surgiendo en cada Sprint como Issues, y la resolución de las diferentes tareas se harán con commits. He elegido esta herramienta por haberla usado en alguna asignatura en la carrera y estar familiarizado con ella, y por ser uno de los repositorios de git más usados.
 
 \subsection{ZenHub}
-Es una extension para Google Chrome. Extiende las posibilidades de GitHub, añadiendo elementos como tableros para organizar las tareas, nuevas medidas para evaluar el desarrollo del proyecto y gráficas asociadas a estas medidas. He elegido esta herramienta por ser un gran añadido a GitHub, y por haberla usado en alguna asignatura de la carrera.
+Es una extension para Google Chrome. Extiende las posibilidades de GitHub, añadiendo elementos como tableros para organizar las tareas, nuevas medidas para evaluar el desarrollo del proyecto y gráficas asociadas a estas medidas. También podemos gestionar el backlog mediante los tableros.
+
+He elegido esta herramienta por ser un gran añadido a GitHub, y por haberla usado en alguna asignatura de la carrera.  
+
+Es gratuita para proyectos open source.
 
 
 \section{Herramientas de desarrollo}
 
 \subsection{Python}
-El lenguaje de programación usado para este proyecto es python. Ha sido elegido, primero porque las librerias de OpenCV están para este lenguaje, lo cual es un requisito imprescindible; y segundo por la facilidad de uso, la versatilidad y la gran cantidad de librerias externas con las que cuenta.
+El lenguaje de programación usado para este proyecto es python. Ha sido elegido, primero porque las librerías de OpenCV están para este lenguaje, lo cual es un requisito imprescindible; y segundo por la facilidad de uso, la versatilidad y la gran cantidad de librerías externas con las que cuenta.
 
 Concretamente se ha usado python en su versión 2.7.5.
 Nos hubiera gustado dar el salto a python 3, pero no hay librerías de OpenCV de forma oficial para esta versión, solo librerías traducidas de python 2 a python 3, por usuarios, por lo que no contamos con un soporte oficial y nos podemos encontrar con errores y sorpresas desagradables.
@@ -88,19 +97,21 @@ Nos hubiera gustado dar el salto a python 3, pero no hay librerías de OpenCV de
 
 \subsection{PyLint}
 PyLint es una herramienta para analizar y encontrar errores en códigos python. Se puede añadir a IDEs de forma sencilla, y se pueden personalizar los distintos avisos que proporciona. 
-Además permite refactorizar código y cuenta con los estándares para el desarrollo de códigos en python.
+Además permite refactorizar código y cuenta la guía de estilos pep8\cite{pep8} para estructurar adecuadamente y mejorar la interpretación del código.
+
+Ha sido elegido como ayuda a la hora de programar, por su integración con el IDE Visual Studio Code.
 
 \subsection{OpenCV}
 OpenCV es una librería software de vision aritificial y machine learning. Nos proporcionará todos los elementos software necesarios para poder obtener y procesar imágenes. 
 OpenCV se distribuye bajo licencia BSD. 
 Esta librería está implementada para varios lenguajes de programación, aunque la elección fue python por la facilidad de uso, la ligereza del lenguaje, y las posibilidades de extension que ofrece.
 
+Ha sido elegida por ser la librería por excelencia para realizar proyectos de procesamiento de imágenes y visión artificial.
+
 \subsection{Visual Studio Code}
-Visual Studio Coce es el IDE elegido para este proyecto. Es un IDE sencillo, compatible con una grán variedad de lenguajes de programación y compatible con Linux, Windows y MacOS.
+Visual Studio Coce es el IDE elegido para este proyecto. Es un IDE sencillo, compatible con una gran variedad de lenguajes de programación y compatible con Linux, Windows y MacOS.
  
 Se pueden añadir extensiones de una forma muy sencilla dentro del propio IDE, de hecho es el propio IDE el que nos sugiere instalar algunas extensiones dependiendo del lenguaje de programación que estemos usando. 
-
-En mi caso, en cuanto detecto que en mi repositorio había ficheros python, me recomendó instalar la extension de python, la cual incluye pylint, el debugger de python y alguna otra herramienta más.
 
 Además de todo esto, es compatible con git de una forma muy sencilla, simplemente abrimos la carpeta de nuestro repositorio y ya entra en funcionamiento el control de versiones.
 
@@ -113,8 +124,18 @@ Su propietario es Microsoft y sus licencias son:
 \end{itemize}
 
 \subsection{IPWebcam}
-Aplicación android, con dos versiones, gratuita y de pago. Actualmente se usa la versión gratuita.
-Su funcionalidad es crear un streaming online en directo, accesible desde una url. Es útil puesto que me permite tener la cámara totalmente libre, sin ataduras, pudiéndola mover como desee.
+Aplicación android, con dos versiones, gratuita y de pago. En este proyecto usaremos la versión gratuita.
+Su funcionalidad es crear un streaming local de vídeo en directo, accesible desde una url. Es útil puesto que me permite tener la cámara totalmente libre, sin ataduras, pudiéndola mover como desee.
+
+Ha sido elegida por su simplicidad de funcionamiento, y por poder realizar ajustes desde una web accesible desde la url generada por la aplicación.
+
+Se exploró otra opción, el usar la cámara integrada del portatil, pero tiene ciertas desventajas frente a esta opción:
+
+\begin{itemize}
+	
+	\item La primera desventaja clara es que no es lo mismo mover un smartphone a mover el portátil, y de cara a realizar pruebas del programa, vamos a tener que mover la cámara en la mayoría de ocasiones.
+	
+\end{itemize}
 
 A la hora de realizar pruebas esto es una gran ventaja, en lugar de estar moviendo el ordenador portátil de un lado a otro con la webcam propia del equipo, o con una cámara conectada por cable; simplemente puedo tener el móvil en un pequeño soporte con ruedas y moverlo libremente a lo largo de la linea. Además me permite tenerlo en diferentes entornos con diferentes luminosidades. Y también hay que tener en cuenta que la cámara de un smartphone es mucho mejor que la de un ordenador portátil, en cuanto a calidad de imagen y captación de luz, por lo que ofrece mayor versatilidad de cara a trabajar en diferentes entornos. Es por esto que he elegido un dispositivo como un smartphone y esta aplicación para la obtención de la imagen con la que voy a trabajar en el proyecto.
 

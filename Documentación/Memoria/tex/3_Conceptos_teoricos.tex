@@ -54,6 +54,10 @@ En esta implementación se externaliza el ordenador donde se ejecuta el programa
 	
 \end{itemize} 
 
+Para este proyecto, hemos elegido la opción de transmitir la imagen de la cámara vía inalambrica, concreamente wifi, a un ordenador externo, y ejecutar el programa en el ordenador externo. Esto nos permite tener libertad de mover la cámara a nuestro gusto, lo cual es beneficioso de cara a realizar pruebas del programa.
+
+El alcance del proyecto no incluye el transmitir de vuelta instrucciones, ya que lo que buscamos es detectar líneas, pero esta transmisión se haría igualmente vía inalambrica, poniendo de acuerdo las instrucciones generadas por el programa y las instrucciones que interpreta el sistema controlador del vehículo.
+
 \section{Procesado de imagen}
 Para realizar una detección efectiva de la línea guía en la imagen, tenemos que realizar un procesamiento de la imagen, pasandola por distintos filtros para finalmente obtener la trayectoria que representa la línea guía.
 
@@ -265,7 +269,11 @@ Como hemos visto en secciones anteriores, la principal funcionalidad buscada en 
 \imagen{angulo_altura}{Angulo y altura de la cámara respecto del suelo.}
 \imagen{distancia}{Distancia a la que es capaz de ver la cámara en esa posición.}
 
-Como vemos, la cámara no está a una gran altura del suelo, aún así, es capaz de ver a una distancia considerable, casi 5 veces de la altura a la que se encuentra. Por supuesto en función del ángulo está distancia será mayor o menor. Tenemos que considerar también que al aumentar el ángulo, perdemos visión en la parte inferior de la imagen, por lo que no podremos ver exactamente lo que el vehículo tiene debajo, sino que empezaremos a ver la línea a una distancia determinada respecto de la situación real del vehículo.
+Como vemos, la cámara no está a una gran altura del suelo, aún así, es capaz de ver a una distancia considerable, casi 5 veces de la altura a la que se encuentra. Por supuesto en función del ángulo está distancia será mayor o menor. 
+
+Si tenemos en cuenta que la cámara en un AGV está colocada a unos 50cm de altura, podemos multiplicar las distancias obtenidas en la Tabla 3.1 por un factor de 6. Llegando a ver a unos dos metros y medio de distancia en el caso de colocar la cámara a 55º.
+
+Tenemos que considerar también que al aumentar el ángulo, perdemos visión en la parte inferior de la imagen, por lo que no podremos ver exactamente lo que el vehículo tiene debajo, sino que empezaremos a ver la línea a una distancia determinada respecto de la situación real del vehículo.
 
 \tablaSmall{Valor del ángulo y distancia a la que es capaz de ver}{l c c}{valores_angulo_distancias}
 { \multicolumn{1}{l}{Angulo} & Distancia Min & Distancia Max\\}{ 
@@ -335,13 +343,13 @@ La detección de bordes es un tipo de procesado de imagen que permite obtener lo
 El algoritmo de Canny puede ser dividido en 5 fases:
 \begin{itemize}
 
-	\item Aplicar un filtro Gaussiano para suavizar la imagen, buscando reducir el ruido de la misma.
+	\item Aplicar un filtro Gaussiano para suavizar la imagen, buscando reducir el ruido de la misma. Este tipo de filtro lo que hace es desenfocar la imagen, asignando a un pixel un valor promedio respecto de los pixels que tiene alrededor. Con esto se consigue suavizar los pixels con ruido, que pueden dar lugar a errores en la detección de bordes.
 	
-	\item Encontrar los gradientes de intensidad de la imagen.
+	\item A partir de la imagen desenfocada, buscaremos los bordes. Un borde puede apuntar en muchas direcciones, el algoritmo de Canny usa cuatro filtros para detectar bordes horizontales, verticales o diagonales (0º, 45º, 90º y 135º). El operador de deteccion de bordes, devuelve la derivada en dirección horizontal y vertical, a partir de esas direcciones podemos determinar el gradiente.
 	
-	\item Aplicar una supresión no-máxima para deshacernos de los bordes detectados erróneamente.
+	\item Aplicar una supresión no-máxima para deshacernos de los bordes detectados erróneamente. Para cada pixel detectado como borde se compara con los pixels en la dirección del gradiente. Si es más fuerte que los otros pixels, mantendremos el pixel, si no, lo suprimiremos.
 	
-	\item Aplicar una binarización de doble umbral por gradiente para determinar los bordes fuertes y débiles.
+	\item Tras realizar un primer filtrado por gradiente, aplicamos una binarización de doble umbral por gradiente para determinar los bordes fuertes y débiles. Se comparan los gradientes de los bordes resultantes, etiquetándolos como bordes débiles, si están entre los dos umbrales, borde fuerte si están por encima del umbral mayor, y desechando los que estén por debajo del umbral menor.
 	
 	\item Encontrar los bordes por histéresis, buscando  la cercanía con algún otro borde fuerte. Suprimir los débiles no conectados a bordes fuertes.
 	
@@ -369,11 +377,79 @@ bordes = cv2.Canny(img, th1, th2, aperture, L2gradient)
 	
 \end{itemize}
 
+\imagen{edge_detection}{Detección de bordes a partir de la imagen binaria.}
+
 \section{Generación de la trayectoria}
 Una vez obtenidos los bordes de la línea, obtener la trayectoria es algo sencillo. Basta con calcular el punto medio entre los dos bordes, y asignarle un valor de 255 para registrarlo como línea. Se ha implementado una función que recoge esta funcionalidad. 
 
 \imagen{tray_bordes}{Detección de la trayectoria a partir de los bordes.}
 
 \section{Sistema de guiado básico}
+El problema del cual surgía este proyecto, es que los sistemas actuales de guiado solo detectan si nos salimos o no de la línea guía. Teniendo la trayectoria ya definida, podemos crear algo con un funcionamiento parecido, pero a partir de la trayectoria. 
+
+\imagen{guiado}{Pantalla del sistema de guiado básico.}
+
+\subsection{Posición del vehículo respecto de la línea}
+Lo que haremos será detectar la posición de la trayectoria en la zona inferior de la imagen, y ver si está a la izquierda o a la derecha del centro de la imagen. La trayectoria es la línea azul, el centro de la imagen esta marcado con el indicador verde en la zona inferior de la imagen.
+
+Con estos dos elementos ya podemos tener un sistema muy básico que nos diga si estamos a la derecha o a la izquierda de la trayectoria ideal.
+
+Partiendo de esta idea, nos bastaría con generar una instrucción que enviaríamos al controlador del vehículo, diciéndole hacia donde se tiene que dirigir, si estamos dejando la línea a la izquierda del centro, le mandaríamos girar a la izquierda, si fuese a la derecha, le mandaríamos girar a la derecha.
+
+\subsection{Mejoras de en generación de instrucciones de giro}
+
+\subsubsection{Mejora en el ángulo de giro}
+Una gran mejora que podemos realizar, si está soportada por el controlador del vehículo, es poder controlar el ángulo de giro en función de lo que nos estemos desviando del centro. 
+
+Es irreal que ante una mínima desviación, y una gran desviación, la orden que le demos al vehículo sea igual, ya que en el primer caso con una leve corrección sería suficiente, mientras que en el segundo necesitaremos una corrección más grande.
+
+La solución planteada a este problema es usar una función que nos calcule el ángulo de giro en función de la cantidad de pixels que nos estemos alejando del centro de la imagen. Mediante regresión, podemos obtener está función, dando como valores de X la cantidad de pixels de desviación y como Y el ángulo deseado. A menor desviación, menor ángulo, si estamos sobre el centro ideal, ángulo de giro 0.
+
+\subsubsection{Mejora en la frecuencia de corrección}
+Otro problema que nos podemos plantear es si de verdad necesitamos estar corrigiendo continuamente al vehículo, o podemos hacer un guiado más natural.
+
+Cuando las personas conducimos, no estamos todo el rato buscando el centro del carril, ya que sería casi imposible, lo que hacemos es tener unos margenes "seguros" donde nos podemos colocar, y en el momento en el que nos acercamos al limite de uno de esos margenes es cuando corregimos la trayectoria.
+
+La idea es llevar esto al sistema de guiado, establecer unos márgenes a la derecha y a la izquierda del centro ideal, y mientras la trayectoria esté dentro de estos márgenes, mandar al vehículo seguir recto. En la Figura 3.17 podemos ver estos márgenes, las líneas rojas en la parte inferior de la imagen, próximas al centro.
+
+Los márgenes se generarán en la etapa de calibración del programa, se solicitará al usuario un valor entre 0 y 0.3, y se multiplicará este valor por la resolución horizontal de la imagen. Esto nos dará un valor en pixels, y estos pixels serán la distancia del margen a la izquierda y derecha del centro. Obviamente si damos de margen 0, no tendremos margen y estaremos en la situación en la que el programa nos corrige continuamente. El limite superior es 0.3 ya que si superamos este valor, el margen sería demasiado grande, llevan al programa hasta casi perder la línea.
+
+La funcionalidad concreta es, mientras la línea de la trayectoria este entre estos márgenes, el programa seguirá generando la instrucción para seguir recto. En el momento que nos salgamos de uno de estos márgenes, el margen pasará a ser el centro, por lo que el programa nos corregirá hasta volver al centro. Una vez que lleguemos al centro, el margen volverá a su posición anterior.
+
+En este proyecto las instrucciones que genera el sistema de guiado se muestran por pantalla. Podemos ver un indicador númerico con el ángulo de giro y un indicador textual que puede tomar los valores:
+
+\begin{itemize}
+
+	\item RI, recto izquierda, indica que el ángulo se tiene que interpretar como un giro a la izquierda. Para ángulos menores o iguales de 45º.
+	
+	\item RD, recto derecha, indica que el ángulo se tiene que interpretar como un giro a la derecha. Para ángulos menores o iguales de 45º.
+	\item I, similar a RI pero para ángulos mayores de 45º.
+	
+	\item D, similar a RD pero para ángulos mayores de 45º.
+	
+\end{itemize}
+
+Para llevar esto a una implementación real, tendríamos que ponernos de acuerdo con el sistema controlador del vehículo en la estructura de las instrucciones generadas, por ejemplo, un array de valores, una tupla... 
+En este proyecto como no tenemos conexión real con un vehículo, las instrucciones se generan para ser visualizadas en pantalla.
+
+\imagen{guiado_fin}{Comparación de situaciones en el sistema de guiado.}
+
+En la Figura 3.18 podemos ver como en el momento en el que la línea de trayectoria sobrepasa uno de los márgenes, en concreto el izquierdo, el margen se mueve hacia el centro, y el programa comienza a generar instrucciones para corregir la trayectoria, en este caso nos manda realizar un giro hacia a la izquierda. El ángulo ira disminuyendo según el centro de la imagen se vuelva a acercar a la trayectoria, volviendo a la situación donde genera la instrucción de ir recto.
+
 
 \section{Sistema de guiado virtual}
+Este sistema de guiado sería el siguiente avance. Consistiría en recrear virtualmente la situación en la que está el vehículo. 
+
+Con el sistema de guiado básico, ademas de podernos guiar de una forma simple, no perdemos la trayectoria de vista. Lo siguiente que tenemos que hacer es aplicar algún tipo de transformada a la imagen binaria de la trayectoria, para obtener el polinomio aproximado que represente esa trayectoria. Una vez hecho esto, podemos generar un entorno virtual en dos dimensiones según la posición en la que se encuentra el vehículo y la trayectoria que debe seguir.
+
+A partir de este entorno virtual, podemos no solo guiarnos sino preparar el vehículo para la trayectoria que tiene que realizar a continuación, ajustar la velocidad si se aproxima una curva muy pronunciada, ajustar el ángulo de giro para igualar el radio de giro de la curva...
+
+Si volvemos un poco atrás, concretamente a la Tabla 3.1, podemos obtener las medidas que necesitaríamos para representar de forma virtual la situación del vehículo. Veamos un ejemplo de este entorno virtual:
+
+\imagen{guiado_virtual}{Entorno virtual para el sistema de guiado virtual.}
+
+En esta imagen podemos ver como las medidas de la tabla nos pueden ayudar a saber la distancia que hay entre el vehículo (Punto rojo) y el comienzo de la trayectoria(Distancia Min), y la distancia máxima hasta la que podemos ver(Distancia max). La trayectoria está representada mediante la línea curva azul.
+
+Esta sería la representación virtual del entorno, y nos ayudaría a generar unas instrucciones de guiado mucho más precisas. 
+
+Este sistema de guiado se escapa del alcance de este proyecto, donde buscamos el llegar a tener los elementos necesarios para recrear este entorno virtual. La trayectoria en vista de pájaro con sus dimensiones reales, la situación del robot y un sistema para mantener la trayectoria lo más centrada posible.
