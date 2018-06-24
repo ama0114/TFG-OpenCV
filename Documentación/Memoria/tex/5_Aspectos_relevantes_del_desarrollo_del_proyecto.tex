@@ -145,9 +145,13 @@ Las pruebas están organizadas según la investigación:
 	
 	\href{https://youtu.be/WzJjXKeKpaI}{Resolución 176x144 calidad 20}	
 	
+	Lo que se ha ido haciendo es modificar la resolución y calidad de la imagen hasta que hemos obtenido la tasa de frames deseada, 50 fps. Esta tasa se ha alcanzado en la prueba de resolución 176x144, calidad del streaming 20.
+	
 	\item Pruebas de luminosidad, en busca de implementar una función que calcule la luminosidad de la imagen. Podemos verlas en el siguiente vídeo:
 	
 	\href{https://youtu.be/CuTADdioU4g}{Prueba de la función que calcula la luminosidad}	
+	
+	En este caso hemos modificado la luminosidad del ambiente en el que se encontraba la cámara para ver como la función se comportaba. El resultado fue satisfactorio, ya que vemos que cuando disminuimos la luminosidad, la funcion lo detecta adecuadamente.
 	
 	\item Pruebas de binarización, tanto por luminosidad como por color. Podemos verlas en los siguientes vídeos:
 	
@@ -160,11 +164,15 @@ Las pruebas están organizadas según la investigación:
 	\href{https://youtu.be/4CW4r9qdo4Y}{Binarizar por luminosidad con Otsu}
 	
 	\href{https://youtu.be/Rks5PkxDeZQ}{Binarizar por color}
-		
+	
+	La funcionalidad buscada en esta prueba es la de obtener una función que se comportara bien a la hora de binarizar. Hemos encontrado dos funciones capaces de esto, binarización mediante el algoritmo de Otsu, poco sensible a las variaciones de luminosidad, binarización por color, sensible a las variaciones de luminosidad. En condiciones de luminosidad constante, ambas funciones se comportan bien.
 	
 	\item Prueba de calculo del coefciente para resolver la distorsión de perspectiva. Podemos verla en el siguiente vídeo: 
 	
 	\href{https://youtu.be/Y9QgFIMXSiU}{Prueba de calculo del coeficiente}
+	
+	En esta prueba lo que buscamos es realizar un test y anotaciones de los diferentes coeficientes que devuelve la función que calcula el coeficiente para relacionarlo con el ángulo que tiene la cámara respecto del suelo.	
+	
 	\item Pruebas de la resolución de la distorsión de perspectiva. Podemos verlas en los siguientes vídeos:
 	
 	\href{https://youtu.be/rUQrHbA_H8A}{Tomar medidas del ancho de la línea}
@@ -183,11 +191,16 @@ Las pruebas están organizadas según la investigación:
 	
 	\href{https://youtu.be/pRE8zerfp7E}{Ver el coeficiente calculado con el ángulo}
 	
+	En esta serie de pruebas se busca realizar la asociación del coeficiente calculado con la transformación de la perspectiva. El resultado es satisfactorio ya que conseguimos implementar esta funcionalidad.
+	
 	\item Pruebas del sistema de guiado. Podemos verlas en los siguientes vídeos:
 	
 	\href{https://youtu.be/ODr3q91MLk0}{Prueba del sistema de guiado}
 	
 	\href{https://youtu.be/8j69cDydXfA}{Sistema de guiado final con todos los elementos visualizables}
+	
+	En estas pruebas vemos que el sistema de guiado se comporta de la forma esperada, por lo que son satisfactorias.
+	
 \end{itemize}
 
 La función de luminosidad se ha usado en todas las etapas de procesado de la imagen, para saber las condiciones del entorno y poder reproducir la prueba bajo las mismas condiciones.

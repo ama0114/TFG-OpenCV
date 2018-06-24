@@ -339,6 +339,9 @@ $y = 140.3462 + (101.7432 - 140.3462)/(1 + (x/0.5605076)^64.36072)$
 
 Esta función nos permite obtener los pixels a reducir a parir del coeficiente. El coeficiente se obtendrá a través de la función antes mencionada en la etapa de calibración del programa.
 
+Por último dentro de este aspecto cabe decir que los ángulos mínimo y máximo, 40º y 60º tienen un sentido y es que si el ángulo es menor de 40º prácticamente perdemos la funcionalidad buscada, que es ver en perspectiva, y pasamos a ver en el plano, muy cerca del suelo. Por encima de 60º como ya hemos visto en alguna prueba, la cámara empieza a ver por encima del horizonte, por lo cual perdemos información.
+
+Es por esto, que el ángulo mínimo aconsejado es 40º y el máximo 60º. Las funciones que realizan esta transformación están preparadas para funcionar con ángulos entre estos márgenes.
 
 
 \section{Detección de bordes}
