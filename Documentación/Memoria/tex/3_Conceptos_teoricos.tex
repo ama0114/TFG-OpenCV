@@ -247,11 +247,38 @@ Una vez tengamos el ángulo del color, estableceremos un margen de seguridad\cit
 
 En este proyecto se ha simplificado todo este proceso al máximo, ya que es algo complejo. Al usuario se le pedirá calibrar el color mediante unas ventanas de OpenCV, una donde se ve la imagen a color y otra donde se ve el resultado de la binarización. Para elegir un color simplemente tiene que pinchar encima de ese color en la imagen.
 
-Las referencias se incluyen en el texto usando cite \cite{wiki:latex}. Para citar webs, artículos o libros \cite{koza92}.
+Todo esto se implementará en una clase donde se almacenará el rango de color y la funcionalidad para obtenerlo.
+
+Finalmente, la función de OpenCV que nos permitirá realizar la binarización es:
+\begin{verbatim}
+inRange(matriz, umbralbajo, umbralalto)
+\end{verbatim}
+
+Donde matriz es la imagen en formato HSV, umbralbajo es el vector de valores HSV resultantes de restar a los valores del color original el margen, y umbralalto, resultante de sumar a los valores del color el margen.
 
 
 \section{Transformación de perspectiva}
 Como hemos visto en secciones anteriores, la principal funcionalidad buscada en este proyecto es el poder ver la línea guía no solo debajo del AGV, también delante, en perspectiva. Para esto simplemente tenemos que colocar la cámara en una posición determinada, bastante levantada del suelo, y con un ángulo que nos permita ver la máxima perspectiva posible, sin llegar a sobrepasar el horizonte, ya que la información que necesitamos está en el suelo, la línea guía.
+
+\subsubsection{Colocación de la cámara}
+
+\imagen{angulo_altura}{Angulo y altura de la cámara respecto del suelo.}
+\imagen{distancia}{Distancia a la que es capaz de ver la cámara en esa posición.}
+
+Como vemos, la cámara no está a una gran altura del suelo, aún así, es capaz de ver a una distancia considerable, casi 5 veces de la altura a la que se encuentra. Por supuesto en función del ángulo está distancia será mayor o menor. Tenemos que considerar también que al aumentar el ángulo, perdemos visión en la parte inferior de la imagen, por lo que no podremos ver exactamente lo que el vehículo tiene debajo, sino que empezaremos a ver la línea a una distancia determinada respecto de la situación real del vehículo.
+
+\tablaSmall{Valor del ángulo y distancia a la que es capaz de ver}{l c c}{valores_angulo_distancias}
+{ \multicolumn{1}{l}{Angulo} & Distancia Min & Distancia Max\\}{ 
+40º & 0cm & 12cm\\
+45º & 1.5cm & 19cm\\
+50º & 3cm & 37cm\\
+55º & 4cm & 40cm\\
+60º & 5cm & Por encima del horizonte\\
+}
+
+En la Tabla 3.1 está la relación de valores. Distancia Min es la distancia entre el vehiculo y la parte inferior de la imagen. Distancia Max es la distancia hasta la que ve nuestra cámara. En el caso de colocarla con 60º, vemos que ve por encima del horizonte, por lo que no es aconsejable. Este proyecto no está preparado para este tipo de ángulo de cámara, ya que toda la información que necesitamos están el suelo, ver por encima del horizonte es perder información, y tener que realizar más filtrados de imagen, lo cual empeora el rendimiento del programa. 
+
+\subsubsection{Obtener vista de pájaro}
 
 El problema de situar la cámara en una posición así, es que no podemos ver las distancias reales en la imagen, puesto que lo estamos viendo todo en perspectiva. Para ver las distancias reales, tendríamos que colocar la cámara paralela al suelo y a una determinada altura, lo cual es complicado. Habría que tener una especie de brazo por delante del robot con la cámara colgando.
 
@@ -259,63 +286,94 @@ Por este motivo, lo que se usa para resolver este problema es una transformació
 
 \imagen{bird_view}{Izquierda, vista de pájaro. Derecha, vista original.}
 
-OpenCV no tiene una función especifica para realizar esto, pero tiene una función que permite transformar perspectivas mediante unas coordenadas de origen y unas de destino\citep{persp_trans}. 
+OpenCV no tiene una función especifica para realizar esto, pero tiene una función que permite transformar perspectivas mediante unas coordenadas de origen y unas de destino\cite{persp_trans}. Las coordenadas simplemente son puntos dentro de la imagen, arrays de dos valores correspondiendo a las coordenadas X e Y.
 
-Generalmente esta función
+\imagen{ej_corr_persp}{Correción mediante coordenadas}
+
+Podemos ver como mediante las cuatro coordenadas de origen, obtenidas mediante las esquinas de la carta, se puede obtener la carta "plana", para esto simplemente tendremos que decirle al programa en las coordenadas de destino la forma que debería de tener, en este caso un rectángulo.
+
+Una vez que conocemos como realizar está corrección mediante coordenadas, tenemos que ver como corregir la distorsión de nuestra imagen, donde se encuentra esa distorsión.
+
+La forma más simple de llevar esto acabo es poniendo una figura geométrica ante la cámara, en nuestro caso un cuadrado. Como ya hemos visto en figuras anteriores, como por ejemplo la Figura 3.1, en la cámara no vemos un cuadrado, sino un trapecio. Esto significa que la perspectiva está agrandando los objetos contra más cerca están de la cámara, a si que para corregirla lo que debemos hacer es reducir la parte inferior de la imagen, hasta que las líneas del cuadrado sean paralelas.
+
+Para realizar esto con la función de transformación de perspectiva de OpenCV tenemos que elegir como coordenadas de origen las cuatro esquinas de nuestra imagen, y como destino dejar fijas las esquinas superiores de la imagen, y reducir la parte inferior, moviendo las esquinas hacia el centro de la imagen. De esta manera corregiremos la perspectiva, pero nos quedará una imagen como la que se aprecia en la Figura 3.11, con dos triángulos negros en los extremos, que se corresponden con la reducción hecha en la parte inferior.
+
+\subsubsection{Relación del ángulo de la cámara con la transformación de perspectiva}
+
+Para obtener la cantidad exacta de pixels que se han de reducir en la imagen anterior, se han llevado a cabo una serie de pruebas, con diferentes ángulos de cámara.
+
+Se ha implementado una función que obtiene un coeficiente en función del ángulo que tiene la cámara con el suelo. Para ello utiliza la plantilla del cuadrado. Obtiene la altura del trapecio que se ve en la imagen, obtiene la diferencia entre la base y el lado superior del trapecio, y hace el cociente entre estos dos valores.
+
+Se han anotado para cada ángulo probado la cantidad de pixels necesarios para corregir la distorsión.
+
+Podemos ver los valores del ángulo, coeficiente y pixels a reducir en la Tabla 3.2.
+
+Haciendo una regresión podemos obtener una función que nos relacione el coeficiente único de cada ángulo, con la cantidad de pixels a reducir.
+
+\tablaSmall{Valores obtenidos en las pruebas de corrección de distorsión de perspectiva}{l c c}{valores_correcion_perspectiva}
+{ \multicolumn{1}{l}{Angulo} & Coeficiente & Pixels\\}{ 
+40º & 0.506 & 100px\\
+45º & 0.530 & 105px\\
+50º & 0.550 & 110px\\
+55º & 0.576 & 135px\\
+60º & 0.613 & 140px\\
+}
+
+Cogemos como valores de x los coeficientes, como valroes de y los pixels, y hacemos la regresión. La función resultante es:
+
+$y = 140.3462 + (101.7432 - 140.3462)/(1 + (x/0.5605076)^64.36072)$
+
+Esta función nos permite obtener los pixels a reducir a parir del coeficiente. El coeficiente se obtendrá a través de la función antes mencionada en la etapa de calibración del programa.
 
 
 
+\section{Detección de bordes}
+La detección de bordes es un tipo de procesado de imagen que permite obtener los bordes de los elementos de una imagen. Uno de los algoritmos más simples y más usados es el algoritmo de Canny\cite{canny_edge}. 
 
+\subsection{Fases del algoritmo de Canny.}
 
-
-\section{Listas de items}
-
-Existen tres posibilidades:
-
+El algoritmo de Canny puede ser dividido en 5 fases:
 \begin{itemize}
-	\item primer item.
-	\item segundo item.
-\end{itemize}
 
-\begin{enumerate}
-	\item primer item.
-	\item segundo item.
-\end{enumerate}
-
-\begin{description}
-	\item[Primer item] más información sobre el primer item.
-	\item[Segundo item] más información sobre el segundo item.
-\end{description}
+	\item Aplicar un filtro Gaussiano para suavizar la imagen, buscando reducir el ruido de la misma.
 	
-\begin{itemize}
-\item 
+	\item Encontrar los gradientes de intensidad de la imagen.
+	
+	\item Aplicar una supresión no-máxima para deshacernos de los bordes detectados erróneamente.
+	
+	\item Aplicar una binarización de doble umbral por gradiente para determinar los bordes fuertes y débiles.
+	
+	\item Encontrar los bordes por histéresis, buscando  la cercanía con algún otro borde fuerte. Suprimir los débiles no conectados a bordes fuertes.
+	
 \end{itemize}
 
-\section{Tablas}
+\subsection{Implementación de Canny en OpenCV.}
 
-Igualmente se pueden usar los comandos específicos de \LaTeX o bien usar alguno de los comandos de la plantilla.
+En OpenCV esta está implementada como\cite{canny_doc}
 
-\tablaSmall{Herramientas y tecnologías utilizadas en cada parte del proyecto}{l c c c c}{herramientasportipodeuso}
-{ \multicolumn{1}{l}{Herramientas} & App AngularJS & API REST & BD & Memoria \\}{ 
-HTML5 & X & & &\\
-CSS3 & X & & &\\
-BOOTSTRAP & X & & &\\
-JavaScript & X & & &\\
-AngularJS & X & & &\\
-Bower & X & & &\\
-PHP & & X & &\\
-Karma + Jasmine & X & & &\\
-Slim framework & & X & &\\
-Idiorm & & X & &\\
-Composer & & X & &\\
-JSON & X & X & &\\
-PhpStorm & X & X & &\\
-MySQL & & & X &\\
-PhpMyAdmin & & & X &\\
-Git + BitBucket & X & X & X & X\\
-Mik\TeX{} & & & & X\\
-\TeX{}Maker & & & & X\\
-Astah & & & & X\\
-Balsamiq Mockups & X & & &\\
-VersionOne & X & X & X & X\\
-} 
+\begin{verbatim}
+bordes = cv2.Canny(img, th1, th2, aperture, L2gradient)
+\end{verbatim}
+
+\begin{itemize}
+
+	\item img, imagen sobre la que se va a aplicar el algoritmo.
+	
+	\item th1 primer valor para reaizar la histéresis.
+	
+	\item th2 segundo valor para realizar la histéresis. 
+	
+	\item aperture, tamaño de la apertira para el operador Sobel, usado para destacar los bordes de la imagen.
+	
+	\item L2gradient, bandera booleana, en verdadero aplica la regla L2 más precisa para calcular la magnitud del gradiente de la imagen. Si está a falso aplica la regla L1.
+	
+\end{itemize}
+
+\section{Generación de la trayectoria}
+Una vez obtenidos los bordes de la línea, obtener la trayectoria es algo sencillo. Basta con calcular el punto medio entre los dos bordes, y asignarle un valor de 255 para registrarlo como línea. Se ha implementado una función que recoge esta funcionalidad. 
+
+\imagen{tray_bordes}{Detección de la trayectoria a partir de los bordes.}
+
+\section{Sistema de guiado básico}
+
+\section{Sistema de guiado virtual}
