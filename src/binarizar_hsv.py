@@ -79,11 +79,11 @@ class binarizar_hsv(object):
 
         #Ajustando los rangos de color, saturacion y luminosidad
         #Para captar diferentes variaciones del color
-        lower_y[0] = lower_y[0]-20 if lower_y[0]-20 > 0 else 0
+        lower_y[0] = lower_y[0]-10 if lower_y[0]-20 > 0 else 0
         lower_y[1] = lower_y[1]-100 if lower_y[1]-100 > 0 else 0
         lower_y[2] = lower_y[2]-100 if lower_y[2]-100 > 0 else 0
 
-        upper_y[0] = upper_y[0]+20
+        upper_y[0] = upper_y[0]+10
         upper_y[1] = upper_y[1]+100 if upper_y[1]+100 < 256 else 255
         upper_y[2] = upper_y[2]+100 if upper_y[2]+100 < 256 else 255
 
