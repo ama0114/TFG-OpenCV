@@ -58,6 +58,7 @@ Para este proyecto, hemos elegido la opción de transmitir la imagen de la cáma
 
 El alcance del proyecto no incluye el transmitir de vuelta instrucciones, ya que lo que buscamos es detectar líneas, pero esta transmisión se haría igualmente vía inalambrica, poniendo de acuerdo las instrucciones generadas por el programa y las instrucciones que interpreta el sistema controlador del vehículo.
 
+
 \section{Procesado de imagen}
 Para realizar una detección efectiva de la línea guía en la imagen, tenemos que realizar un procesamiento de la imagen, pasandola por distintos filtros para finalmente obtener la trayectoria que representa la línea guía.
 
@@ -259,6 +260,11 @@ inRange(matriz, umbralbajo, umbralalto)
 \end{verbatim}
 
 Donde matriz es la imagen en formato HSV, umbralbajo es el vector de valores HSV resultantes de restar a los valores del color original el margen, y umbralalto, resultante de sumar a los valores del color el margen.
+
+\section{Calculo de la luminosidad de la imagen}
+A la hora de realizar pruebas tenemos que conocer los parámetros ambientales del entorno en el que estamos, el más importante para este proyecto es la luminosidad de la imagen. Para calcular esta luminosidad hemos transformado la imagen a escala de grises, con el mismo procedimiento visto anteriormente, y hemos hecho la media de valores de la imagen.
+
+La luminosidad máxima sería de 255, en el caso de ser una imagen donde todos los pixels sean blanco puro, y 0 en el caso de que sean negro puro. Entre estos dos valores estará la luminosidad de la imagen.
 
 
 \section{Transformación de perspectiva}

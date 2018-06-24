@@ -1,7 +1,193 @@
 \capitulo{5}{Aspectos relevantes del desarrollo del proyecto}
 
-Este apartado pretende recoger los aspectos más interesantes del desarrollo del proyecto, comentados por los autores del mismo.
-Debe incluir desde la exposición del ciclo de vida utilizado, hasta los detalles de mayor relevancia de las fases de análisis, diseño e implementación.
-Se busca que no sea una mera operación de copiar y pegar diagramas y extractos del código fuente, sino que realmente se justifiquen los caminos de solución que se han tomado, especialmente aquellos que no sean triviales.
-Puede ser el lugar más adecuado para documentar los aspectos más interesantes del diseño y de la implementación, con un mayor hincapié en aspectos tales como el tipo de arquitectura elegido, los índices de las tablas de la base de datos, normalización y desnormalización, distribución en ficheros3, reglas de negocio dentro de las bases de datos (EDVHV GH GDWRV DFWLYDV), aspectos de desarrollo relacionados con el WWW...
-Este apartado, debe convertirse en el resumen de la experiencia práctica del proyecto, y por sí mismo justifica que la memoria se convierta en un documento útil, fuente de referencia para los autores, los tutores y futuros alumnos.
+\section{Definición como proyecto de investigación}
+
+Lo primero a destacar es que este proyecto no es un proyecto software común en el que tenemos unos requisitos iniciales mas o menos claros, y tenemos alguna idea del producto final. En este caso lo que buscamos es probar diferentes códigos, herramientas, librerías para satisfacer el requisito principal, la detección de lineas en el suelo. Si conseguimos satisfacer ese requisito, podremos proponer nuevos requisitos en base al resultado obtenido. En definitiva, es más un proyecto enfocado en investigación, pero sin olvidarnos de que tenemos que crear un producto funcional que recoja los resultados de las investigaciones realizadas.
+
+\section{Metodología ágil}
+Como antes hemos explicado, este proyecto tiene una gran parte enfocada a la investigación, para adaptar esto a las metodologías ágiles, hemos tenido que:
+
+\begin{itemize}
+	\item Modificar la duración de los sprints hasta dar por satisfactoria la investigación realizada en el sprint. 
+	\item En base a los resultados de cada investigación, proponer nuevos requisitos, sin tener un objetivo final.
+\end{itemize}
+
+Por supuesto, el resto de líneas de trabajo de las metodologías ágiles se han seguido cumpliendo:
+
+\begin{itemize}
+	\item Reuniones al finalizar cada sprint.
+	\item Organizar tareas en un tablero canvas.
+	\item Entregar y realizar una demostración de la investigación al finalizar cada sprint.
+\end{itemize}
+
+\section{Relación con conocimientos obtenidos en la carrera}
+
+Lo primero a destacar es el uso de Python, lenguaje de programación visto en varias asignaturas de la carrera, como Algoritmia, Sistemas Inteligentes o Minería de Datos. 
+
+En estas asignaturas también se han usado algunas de las librerías empleadas en este proyecto, como MatPlotLib o NumPy.
+
+Los conocimientos de algoritmos de visión artificial, se han obtenido en la asignatura de Hardware de Aplicación Específica. Aunque en esta asignatura no se usa OpenCV, sino Matlab, la gran mayoría de funciones que se usan en Matlab para realizar el procesamiento de imagen, tienen una replica exacta en OpenCV.
+
+\section{Conocimientos externos a la carrera}
+
+El problema de la transformación de perspectiva es complejo, y no se ha visto durante la carrera, por lo que he tenido que buscar información por internet. La información técnica de este tipo de problemas se sale de los conocimientos propios de un informático, están más destinados a personas especializadas en Óptica, aún así, hay tutoriales y otros proyectos donde se trata este tipo de problema desde un punto más amigable para un informático. 
+
+Un tutorial que me ayudo a comprender como realizar la transformación de perspectiva es este:
+
+https://nikolasent.github.io/opencv/2017/05/07/Bird's-Eye-View-Transformation.html
+
+\section{Restricciones del proyecto}
+
+\tablaSmall{Resolucion 800x600 y Fps}{l c c c}{resolucion_fps800600}
+{ \multicolumn{1}{l}{Calidad streaming} & Min Fps &  Max Fps & Media Fps\\}{ 
+100 & 1.43 & 6.85 & 3.82\\
+75 & 4.67 & 16.13 & 11.49\\
+50 & 2.15 & 19.23 & 12.04\\
+}
+
+\tablaSmall{Resolucion 640x480 y Fps}{l c c c}{resolucion_fps640480}
+{ \multicolumn{1}{l}{Calidad streaming} & Min Fps &  Max Fps & Media Fps\\}{ 
+100 & 2.28 & 7.3 & 5.57\\
+75 & 1.07 & 23.26 & 15.73\\
+50 & 2.47 & 22.73 & 16.13\\
+}
+
+\tablaSmall{Resolucion 176x144 y Fps}{l c c c}{resolucion_fps176144}
+{ \multicolumn{1}{l}{Calidad streaming} & Min Fps &  Max Fps & Media Fps\\}{ 
+20 & 5.26 & 200.00 & 58.20\\
+}
+
+No tenemos que olvidar que el fin último de este proyecto es implementarlo en un entorno industrial, donde todo tiene que estar meticulosamente controlado. 
+
+Un requisito importante que se impuso desde el principio del proyecto es que un AGV necesita recibir una instrucción cada 2 centésimas de segundo, realizando una operación simple, obtenemos que necesitamos procesar 50 imágenes por segundo para poder satisfacer este requisito.
+
+El hardware con el que cuento no es demasiado potente, ni esta específicamente diseñado para cumplir este requisito, como si lo estaría en una implementación real. Aun así, al principio del proyecto se realizaron unas pruebas de resolución y calidad de imagen, en busca de esta tasa de fotogramas.
+
+Los resultados se muestran en las tablas: Tabla 5.3, Tabla 5.4 y Tabla 5.5.
+
+Una vez obtenida la tasa de frames deseada, se empezó con la siguiente fase del proyecto.
+
+\section{Fases del proyecto}
+Las fases de este proyecto partían de un requisito a cumplir, realizando un trabajo de investigación, y posteriormente generando una implementación y realizando pruebas en el entorno. 
+
+\subsection{Binarización}
+\subsubsection{Binarizacion por luminosidad}
+Inicialmente se planteó la binarización por luminosidad, se investigaron diferentes algoritmos como Otsu, Umbral Adaptativo por Vecindad y Umbral fijo, siendo el más efectivo el algoritmo de Otsu. 
+
+El algoritmo de umbral fijo no era capaz de aguantar la variación de luminosidad. 
+
+El algoritmo de Umbral Adaptativo por Vecindad no está preparado para este tipo de problemas, está enfocado a usarse en imágenes donde la luz incide de forma desigual, siendo capaz de calcular un umbral en función de la luminosidad de los vecinos del pixel que se este procesando.
+
+El algoritmo de Otsu calcula el umbral en función de la luminosidad de la imagen, lo cual es ideal para este proyecto ya que se puede adaptar a las variaciones de iluminación. En la versión final del proyecto, se muestra tanto la luminosidad de la imagen, como el umbral de Otsu que se está usando para binarizar la imagen.
+
+\imagen{lum_umbral}{Pantalla donde se muestra tanto la luminisdad de la imagen como el umbral de binarizacion generado por el algoritmo de Otsu.}
+
+Bajo la experiencia de todas las pruebas realizadas, la luminosidad medida de está forma puede llegar a bajar hasta a valores de 2, donde prácticamente toda la imagen es negra, y llegar hasta valores de 200, donde la imagen es blanca entera. Llegar a generar una imagen en un entorno real donde la cámara capte el color blanco puro es prácticamente imposible, por esto nunca llegaremos a acercarnos a valores de 255. 
+
+\subsubsection{Binarizacion por color}
+
+En etapas más avanzadas del proyecto se probó la binarización por color, mediante el formato de imagen HSV obteniendo buenos resultados, y una implementación más realista, de cara a que no es necesario que el fondo donde se coloca la imagen sea uniforme, sino que puede ser de cualquier tipo, siempre que no sea del mismo color o similar que la linea que intentamos detectar. Aun así este tipo de binarización es mucho más sensible a las variaciones de luz, por lo que también tiene esa desventaja.
+
+\subsection{Transofmación de perspectiva}
+Para realizar esto primero se implementaron unas funciones que tenían cierta lógica, pero no acabaron funcionando como se esperaba, aunque sirvieron como punto de partida para usar algunas de las otras funciones que OpenCV tiene para resolver este problema.
+
+\subsubsection{Función inicial}
+
+Inicialmente se creó una función que solo trabajaba con imágenes binarizadas. Lo que hacía era mediante la plantilla del cuadrado, calculaba un "coeficiente de reducción" que servía para saber la cantidad de pixels a reducir en cada fila de la imagen. 
+
+Lo que hacemos es a partir del trapecio que se genera al ver el cuadrado en perspectiva, calcular la diferencia entre su base y su lado superior. Esta diferencia es la que tenemos que "solventar" para hacer que sean iguales, y por tanto un cuadrado. 
+El trapecio está formado por filas de pixels, por lo que podemos dividir esa diferencia en pixels de los lados entre el número de filas que tiene de alto el trapecio, lo que nos dará la cantidad de pixels que tenemos que reducir en cada fila.
+
+Por ejemplo en la fila donde está el lado menor del trapecio, la fila 0, tendremos que reducir 0 * coeficiente de reduccion, 0 pixels.
+
+Para la fila de la base, tendremos que reducir el número de fila donde se encuentre (altura del trapecio) * coeficiente, lo que nos dará exactamente la diferencia entre los dos lados antes calculada, dejando del mismo tamaño el lado superior e inferior.
+
+Las filas del medio del trapecio seguirán el mismo algoritmo, dejando a todas iguales al lado menor del trapecio, y por tanto dejandolo en forma cuadrada.
+
+Este algoritmo a pesar de que funciona, tiene un problema y es que no guarda la relación de aspecto de los objetos del mundo real. El cuadrado que debería ser cuadrado, es rectangular, a si que no nos vale.
+
+Pero lo que si hemos conseguido es un algoritmo capaz de generar un coeficiente único para cada ángulo que forma la cámara con el suelo.
+
+\subsubsection{Funcion de transformación de perspectiva de OpenCV}
+
+Una vez podemos distinguir el ángulo con el que estamos, podemos relacionar este ángulo con las funciones de OpenCV, pudiendo generar una transformación de perspectiva única y adecuada para cada ángulo.
+
+\subsection{Obtener la trayectoria}
+Esta fase es la más inmediata, solo necesitamos los bordes de la línea con la distorsión por perspectiva resuelta, y obtener el punto medio entre los bordes.
+
+Una vez generada la trayectoria, se pueden aplicar diferentes métodos para estimar el polinomio capaz de adaptarse a la forma que tenga la trayectoria.
+
+
+\subsection{Sistema de guiado}
+Aunque lo ideal es recrear virtualmente el entorno donde está el vehículo, como hemos visto en secciones anteriores, esta funcionalidad es realmente compleja y se escapa del ámbito de este proyecto. Aun así, se puede generar un sistema de guiado básico, con la parte más cercana de la trayectoria que tiene el vehículo. 
+
+La idea inicial era hacer un sistema que simplemente nos dijera si estamos a la izquierda o a la derecha de la trayectoria, pero finalmente se añadieron las funcionalidades del calculo del ángulo de giro en función de la desviación, y el margen de seguridad donde permitimos que el robot siga recto aunque no este exactamente sobre la trayectoria, corrigiendole cuando se salga de este margen.
+
+\section{Pruebas}
+En cada fase se han realizado pruebas y se han dejado expuestas en vídeos en el repositorio.
+
+Las pruebas están organizadas según la investigación:
+
+\begin{itemize}
+	\item Una prueba inicial con el objetivo de obtener 50 Fps.
+	
+	\href{https://youtu.be/r73s9I_8SiI}{Resolución 800x600 calidad 50}
+	
+	\href{https://youtu.be/rdv0COnl-G4}{Resolución 800x600 calidad 75}
+	
+	\href{https://youtu.be/tGip7sWjD8E}{Resolución 800x600 calidad 100}
+	
+	\href{https://youtu.be/saFDDQNjsEs}{Resolución 640x480 calidad 50}
+	
+	\href{https://youtu.be/a3ZxLQB37k0}{Resolución 640x480 calidad 75}
+	
+	\href{https://youtu.be/zu8rWr31fuQ}{Resolución 640x480 calidad 100}
+	
+	\href{https://youtu.be/WzJjXKeKpaI}{Resolución 176x144 calidad 20}	
+	
+	\item Pruebas de luminosidad, en busca de implementar una función que calcule la luminosidad de la imagen.
+	
+	\href{https://youtu.be/CuTADdioU4g}{Prueba de la función que calcula la luminosidad}	
+	
+	\item Pruebas de binarización, tanto por luminosidad como por color.
+	
+	\href{https://youtu.be/Gu_HvPr3cCU}{Binarizar con umbral fijo}
+	
+	\href{https://youtu.be/NCWQ2I-1J_o}{Binarizar con umbral adaptativo de vecindad Media}
+	
+	\href{https://youtu.be/XPxqk3kNXKY}{Binarizar con umbral adaptativo de vecindad Gausiano}
+	
+	\href{https://youtu.be/4CW4r9qdo4Y}{Binarizar por luminosidad con Otsu}
+	
+	\href{https://youtu.be/Rks5PkxDeZQ}{Binarizar por color}
+		
+	
+	\item Prueba de calculo del coefciente para resolver la distorsión de perspectiva. Podemos verla en el siguiente vídeo: 
+	
+	\href{https://youtu.be/Y9QgFIMXSiU}{Prueba de calculo del coeficiente}
+	\item Pruebas de la resolución de la distorsión de perspectiva. Podemos verlas en los siguientes vídeos:
+	
+	\href{https://youtu.be/rUQrHbA_H8A}{Tomar medidas del ancho de la línea}
+	
+	\href{https://youtu.be/ClA-Ei8f18o}{Comprobar medidas de la linea}
+	
+	\href{https://youtu.be/m7t4dcfuFeo}{Prueba a medir el ancho variando la luminosidad}
+	
+	\href{https://youtu.be/Y9QgFIMXSiU}{Correción de la distorsión de perspectiva}
+	
+	\href{https://youtu.be/Ae5aTr3mg6k}{Encontrar la trayectoria con la distorsión resuelta}
+	
+	\href{https://youtu.be/wc00piNmfyI}{Comprobar que la imagen corregida guarda las proporciones de la realidad midiendo ángulos 1.}
+	
+	\href{https://youtu.be/T0djIwql6G8}{Comprobar que la imagen corregida guarda las proporciones de la realidad midiendo ángulos 2.}
+	
+	\href{https://youtu.be/pRE8zerfp7E}{Ver el coeficiente calculado con el ángulo}
+	
+	\item Pruebas del sistema de guiado.
+	
+	\href{https://youtu.be/ODr3q91MLk0}{Prueba del sistema de guiado}
+	
+	\href{https://youtu.be/8j69cDydXfA}{Sistema de guiado final con todos los elementos visualizables}
+\end{itemize}
+
+La función de luminosidad se ha usado en todas las etapas de procesado de la imagen, para saber las condiciones del entorno y poder reproducir la prueba bajo las mismas condiciones.

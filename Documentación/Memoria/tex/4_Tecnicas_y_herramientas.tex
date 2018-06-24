@@ -2,39 +2,33 @@
 
 \section{Técnicas de desarrollo}
 
-\subsection{Metodologías}
-
-Lo primero a destacar es que este proyecto no es un proyecto software común en el que tenemos unos requisitos iniciales mas o menos claros, y tenemos alguna idea del producto final. En este caso lo que buscamos es probar diferentes códigos, herramientas, librerías para satisfacer el requisito principal, la detección de lineas en el suelo. Si conseguimos satisfacer ese requisito, podremos proponer nuevos requisitos en base al resultado obtenido.
-
-Entonces, no hay un objetivo final claro, si bien, lo ideal seria avanzar lo máximo posible, también se puede dar el caso de probar y probar diferentes elementos, y no llegar a obtener un resultado esperado.
-
+\subsection{Metodología ágil}
 Por ser un proyecto software, las ventajas de usar una metodología ágil son claras:
+
 \begin{itemize}
 	\item Las personas que participan en el desarrollo adquieren roles diferenciados.
 	\item El desarrollo es incremental, por etapas. Al final de cada etapa se entrega una parte del software funcional al cliente.
 	\item Partimos de unos requisitos básicos y podemos ir añadiendo más a lo largo del desarrollo, o modificar alguno de los existentes.
 	\item La comunicación con el cliente se hace a lo largo de todo el desarrollo, favoreciendo que el producto final sea lo que esperaba.
+	\item Favorecer la comunicación del equipo en lugar de la excesiva documentación.
+	\item Buscar la calidad del resultado en los conocimientos de las personas que han participado en el desarrollo, y no en los procesos empleados para hacerlo.
+	\item Solapar las fases de desarrollo en lugar de hacerlas de forma secuencial o en cascada.
 \end{itemize}
 
 \subsection{Scrum}
-Una de las metodologías ágiles más usadas es Scrum, cuyo principio clave es que los clientes pueden cambiar de idea sobre lo que quieren y necesitan. Esto nos conviene, ya que en las distintas etapas de nuestro proyecto, se irán proponiendo nuevas funcionalidades y pruebas.
-En Scrum hay 3 roles diferenciados:
+Scrum es un marco de trabajo dentro de las metodologías ágiles, veamos los 3 roles de esta forma de trabajo:
+
 \begin{itemize}
 	\item Product Owner: es el cliente. Propietario de la idea o proyecto a desarrollar. 
 	\item ScrumMaster: experto en Scrum, ayuda tanto al Product Owner como al Equipo Scrum a alcanzar los objetivos finales del proyecto.
 	\item Equipo Scrum: equipo de personas que va a realizar el proyecto. Es conveniente que sea un equipo multidisciplinario, en el que cada persona sea experta o conocedora de un campo diferente a las demás. El equipo debe de ser de 5 a 9 personas, para favorecer la comunicación y fluidez del desarrollo.
 \end{itemize}
 
-Las ventajas de usar este tipo de metodología son claras:
-\begin{itemize}
-	\item Favorecer la comunicación del equipo en lugar de la excesiva documentación.
-	\item Buscar la calidad del resultado en los conocimientos de las personas que han participado en el desarrollo, y no en los procesos empleados para hacerlo.
-	\item Solapar las fases de desarrollo en lugar de hacerlas de forma secuencial o en cascada.
-\end{itemize}
-
 Para este proyecto en concreto, el alumno tomara el rol de Equipo Scrum y ScrumManager. El profesor actuará como cliente.
 
-Como antes se ha explicado, este no es un proyecto software común, por lo que partiremos desde un requisito inicial básico, y cuando el cliente lo consideré valido y completado, propondrá mas requisitos.
+Este proyecto software está más enfocado a investigación, realizar pruebas y obtener resultados, por lo que partiremos desde un requisito inicial básico, y cuando el cliente lo consideré valido y completado, propondrá mas requisitos. 
+
+Esto, aunque no contradice la forma de trabajar de las metodologías ágiles, otorga una perspectiva diferente, ya que no tenemos determinadas unas etapas concretas del desarrollo. Realizaremos etapas más o menos cortas en función de lo que dure la investigación del nuevo requisito y la implementación y pruebas que lo resuelvan.
 
 En cada sprint se explorarán o implementarán diferentes herramientas en busca de un objetivo, se harán pruebas funcionales con alguna de esas herramientas, estableciendo los parámetros iniciales de cada prueba, el resultado esperado y obtenido. El software evolucionará con cada prueba.
 
@@ -78,8 +72,8 @@ Principalmente tiene 3 tipos de elementos:
 
 La usaremos para albergar el código del proyecto, y para aplicar metodologías ágiles y scrum. Los Sprints los representaremos con Milestones. Las tareas que vayan surgiendo en cada Sprint como Issues, y la resolución de las diferentes tareas se harán con commits. He elegido esta herramienta por haberla usado en alguna asignatura en la carrera y estar familiarizado con ella, y por ser uno de los repositorios de git más usados.
 
-\subsection{ZenHub}
-Es una extension para Google Chrome. Extiende las posibilidades de GitHub, añadiendo elementos como tableros para organizar las tareas, nuevas medidas para evaluar el desarrollo del proyecto y gráficas asociadas a estas medidas. También podemos gestionar el backlog mediante los tableros.
+\subsection{Zenhub}
+Zenhub es una extension para Google Chrome. Extiende las posibilidades de GitHub, añadiendo elementos como tableros para organizar las tareas, nuevas medidas para evaluar el desarrollo del proyecto y gráficas asociadas a estas medidas. También podemos gestionar el backlog mediante los tableros.
 
 He elegido esta herramienta por ser un gran añadido a GitHub, y por haberla usado en alguna asignatura de la carrera.  
 
@@ -94,6 +88,7 @@ El lenguaje de programación usado para este proyecto es python. Ha sido elegido
 Concretamente se ha usado python en su versión 2.7.5.
 Nos hubiera gustado dar el salto a python 3, pero no hay librerías de OpenCV de forma oficial para esta versión, solo librerías traducidas de python 2 a python 3, por usuarios, por lo que no contamos con un soporte oficial y nos podemos encontrar con errores y sorpresas desagradables.
 
+Tiene licencia Open Source compatible con GPL.
 
 \subsection{PyLint}
 PyLint es una herramienta para analizar y encontrar errores en códigos python. Se puede añadir a IDEs de forma sencilla, y se pueden personalizar los distintos avisos que proporciona. 
@@ -108,10 +103,34 @@ Esta librería está implementada para varios lenguajes de programación, aunque
 
 Ha sido elegida por ser la librería por excelencia para realizar proyectos de procesamiento de imágenes y visión artificial.
 
+\subsection{SciPy}
+SciPy es una librería escrita en Python, Fortran, C y C++, para Python destinada a la computación técnica y científica. 
+Su licencia es BSD-new license.
+Usaremos la versión más actual, 1.1.0.
+
+\subsection{NumPy}
+NumPy es una librería esencial para trabajar con arrays y matrices en Python. Incluye una gran cantidad de funciones matemáticas para aplicar a este tipo de estructuras de información.
+Tiene licencia BSD-new license
+Usaremos la versión 1.13.1.
+
+\subsection{MatPlotLib}
+MatPlotLib es una librería de representación matemática, aunque también es usada de forma general para gestionar ventanas de interfaz gráfica.
+Tiene licencia BSD-new license
+Usaremos la version 1.3.0.
+
+\subsection{Urllib}
+Urllib es una librería para gestionar conexiones con urls. La usaremos para conectar con la url del servidor de vídeo. 
+Tiene licencia MIT.
+Usaremos la versión 1.17.
+
+\subsection{Time}
+Time es una librería propia de python que permite gestionar eventos temporales. La usaremos para registrar los tiempos de procesado de imagen, y calcular los fotogramas por segundo. 
+
+
 \subsection{Visual Studio Code}
 Visual Studio Coce es el IDE elegido para este proyecto. Es un IDE sencillo, compatible con una gran variedad de lenguajes de programación y compatible con Linux, Windows y MacOS.
  
-Se pueden añadir extensiones de una forma muy sencilla dentro del propio IDE, de hecho es el propio IDE el que nos sugiere instalar algunas extensiones dependiendo del lenguaje de programación que estemos usando. 
+Se pueden añadir extensiones de una forma muy sencilla dentro del propio IDE, de hecho es el propio IDE el que nos sugiere instalar algunas extensiones dependiendo del lenguaje de programación que estemos usando. Además la comunidad puede desarrollar extensiones para el IDE, lo que amplia aún más las posibilidades de personalización.
 
 Además de todo esto, es compatible con git de una forma muy sencilla, simplemente abrimos la carpeta de nuestro repositorio y ya entra en funcionamiento el control de versiones.
 
@@ -129,18 +148,28 @@ Su funcionalidad es crear un streaming local de vídeo en directo, accesible des
 
 Ha sido elegida por su simplicidad de funcionamiento, y por poder realizar ajustes desde una web accesible desde la url generada por la aplicación.
 
-Se exploró otra opción, el usar la cámara integrada del portatil, pero tiene ciertas desventajas frente a esta opción:
+Se exploró otra opción, el usar la cámara integrada del portatil, pero el smartphone tiene unas ventajas muy claras:
 
 \begin{itemize}
 	
-	\item La primera desventaja clara es que no es lo mismo mover un smartphone a mover el portátil, y de cara a realizar pruebas del programa, vamos a tener que mover la cámara en la mayoría de ocasiones.
+	\item Una ventaja clara es que no es lo mismo mover un smartphone a mover el portátil, y de cara a realizar pruebas del programa, vamos a tener que mover la cámara en la mayoría de ocasiones, por lo que contra más pequeña sea la cámara o el dispositivo en el que esta se encuentra, mejor.
+	
+	\item La cámara del smartphone es muy superior a la cámara web del portatil, en cuanto a resolución, tasa de frames, apertura del objetivo... La posibilidad de personalización de la imagen, y la calidad final de la imagen es muy superior a la que nos puede ofrecer la webcam del portatil.
 	
 \end{itemize}
 
-A la hora de realizar pruebas esto es una gran ventaja, en lugar de estar moviendo el ordenador portátil de un lado a otro con la webcam propia del equipo, o con una cámara conectada por cable; simplemente puedo tener el móvil en un pequeño soporte con ruedas y moverlo libremente a lo largo de la linea. Además me permite tenerlo en diferentes entornos con diferentes luminosidades. Y también hay que tener en cuenta que la cámara de un smartphone es mucho mejor que la de un ordenador portátil, en cuanto a calidad de imagen y captación de luz, por lo que ofrece mayor versatilidad de cara a trabajar en diferentes entornos. Es por esto que he elegido un dispositivo como un smartphone y esta aplicación para la obtención de la imagen con la que voy a trabajar en el proyecto.
+Por estos motivos se ha optado por la opción de usar el smartphone como cámara, y es por esto por lo que nos vemos obligados a usar una aplicación capaz de retransmitir vídeo en directo via inalambrica, en este caso la aplicación IPWebcam.
+
+\subsection{Online pixel ruler}
+Online pixel ruler es una herramienta online que permite realizar medidas en imágenes. Se ha optado por esta herramienta por su simplicidad, y su disponibilidad sin necesidad de instalar ningun software. 
+
+Se puede acceder a ella desde la url: https://www.rapidtables.com/web/tools/pixel-ruler.html
 
 
-
-
-
+\subsection{Soporte para la cámara}
+Para permitir el movimiento de la cámara desde la posición que se requiere para realizar este proyecto, se ha creado un soporte con piezas de Lego con ruedas, lo cual nos permite mover la cámara adelante y atrás del recorrido.
  
+\subsection{Plantillas}
+Se han creado diferentes plantillas para representar líneas, ángulos y cuadrados, todos ellos necesarios en las fases de desarrollo o pruebas del proyecto. Las plantillas están creadas a papel, y remarcadas con cinta aislante.
+
+\imagen{plantillas}{Plantillas usadas en el proyecto.}
