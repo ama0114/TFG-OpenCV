@@ -1,8 +1,33 @@
 \capitulo{1}{Introducción}
-Los AGV, vehículos de guiado autónomo, actualmente son ampliamente utilizados en el mundo industrial. Su función principal es la de llevar algún tipo de carga de una zona a otra dentro de un recinto. Para ello utilizan distintos métodos de guiado, desde detección de pulsos o bandas electromagnéticas, hasta guiado óptico con cámaras.
+Los AGV, vehículos de guiado autónomo\cite{wikiagv}, actualmente son ampliamente utilizados en el mundo industrial. Su función principal es la de llevar algún tipo de carga de una zona a otra dentro de un recinto. Para ello utilizan distintos métodos de guiado, desde detección de pulsos o bandas electromagnéticas, hasta guiado óptico con cámaras\cite{guide_sistems}. 
 
 Los métodos actuales de guiado óptico se basan en colocar una cámara muy cerca del suelo, en una posición paralela a este, de tal forma que puedan ver una "guía", una linea de algún tono que contraste con el suelo, para guiarse. El problema de esta solución, es que la imagen que la cámara es capaz de ver es un pequeño fragmento de la línea, con el que únicamente es capaz de detectar si está o no sobre la línea, permitiendo corregir la trayectoria cuando se detecta que el AGV se desvía, cuando "pierde la línea".
 
 Esta solución, se puede mejorar si aplicáramos algunos de los métodos que se están usando para el guiado de vehículos autónomos en carretera, donde no solo se detecta si el coche está dentro de los margenes del carril, sino que además son capaces de ver en perspectiva lo que tienen delante. Esto permite, además de guiar el vehículo, estimar la trayectoria que tiene que seguir en los siguientes instantes, permitiendo realizar ajustes más precisos tanto en la velocidad como en la dirección. Se podría decir que son capaces de ver su futuro, el sitio por el que tienen que pasar a continuación.
 
-En este proyecto, se buscará implementar una funcionalidad que permita realizar este tipo de guiado en perspectiva, en el ámbito de la robótica industrial.
+En este proyecto, se buscará probar e implementar un software que permita realizar este tipo de guiado en perspectiva. En concreto indagaremos en la detección de líneas y el tratamiento de la perspectiva en busca de lograr ver la línea guía en dos dimensiones, para poder obtener sus dimensiones reales. 
+
+\tablaSmall{Comparativa sistemas de guiado\cite{comp_gui}}{l c c c c c c}{comp_sist_guiado}
+{ \multicolumn{1}{l}{Sistema} & F.Colocar &  F.Cambiar & Pasi. & Sucie. & Invis. & Persp.\\}{ 
+Guía Magnética & Sí & Sí & Sí & Sí & Sí & No\\
+Cable de inducción & No & No & No & Sí & Sí & No\\
+Óptico tradicional & Sí & Sí & Sí & No & No & No\\
+Óptico perspectiva & Sí & Sí & Sí & No & No & Sí\\
+}
+
+\begin{itemize}
+	\item F.Colocar, facilidad de colocar.
+	\item F.Cambiar, facilidad de cambiar.
+	\item Pasi, pasivo, no necesita alimentación externa.
+	\item Sucie, suciedad, inmune a la suciedad.
+	\item Invis, invisible, se puede ver el sistema de guiado.
+	\item Persp, perspectiva, podemos usarlo para ver en perspectiva.
+\end{itemize}
+
+Como podemos ver en la Tabla 1.1 el único sistema que nos puede permitir ver en perspectiva para anticipar las maniobras que ha de realizar el robot es el guiado óptico en perspectiva. 
+
+Es cierto que tiene dos inconvenientes como es que no es inmune a la suciedad, y que la línea guía queda a la vista, el problema de la suciedad que puede llegar a ocultar la línea guía se puede solventar usando colores muy llamativos y sistemas de binarización adecuados.
+
+Que la línea se vea  no es un gran problema, simplemente lo planteamos por que los sistemas magnéticos sí son invisibles, pero obviamente si buscamos un guiado óptico, la línea tiene que ser visible.
+
+El resto de aspectos es igual o mejor que sus competidores, es fácil de colocar, fácil de cambiar, es pasivo(no necesita ninguna tipo de alimentación, es una linea pintada en el suelo) y nos permite ver en perspectiva.

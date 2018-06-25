@@ -15,15 +15,15 @@ Desarrollar un software capaz de interpretar una imagen, para generar un conjunt
 \begin{itemize}
 	\item El usuario podrá elegir el tipo de binarización, por luminosidad o por color.
 	
-	\item El usuario podrá colocar la cámara en diferente ángulo respecto del suelo, dentro de los margenes de un mínimo de 30 grados y un máximo de 70.
+	\item El usuario podrá colocar la cámara en diferente ángulo respecto del suelo, dentro de los margenes de un mínimo de 40º y un máximo de 60º.
 	
 	\item El usuario podrá usar una plantilla para corregir la distorsión por perspectiva.
 	
-	\item El usuario podrá probar los distintos tipos de binarización fuera del flujo del programa principal, en vista de realizar ajustes y pruebas.
+	\item El usuario podrá probar los distintos tipos de binarización fuera del flujo del programa principal, para realizar ajustes y pruebas.
 	
-	\item El usuario podrá ver las distintas fases por las que pasa la imagen, desde que es capturada hasta que se detecta la trayectoria, en vista de realizar ajustes y pruebas.
+	\item El usuario podrá ver las distintas fases por las que pasa la imagen, desde que es capturada hasta que se detecta la trayectoria, para realizar ajustes y pruebas.
 	
-	\item El usuario podrá ver las instrucciones de guiado, situación de luminosidad, fotogramas por segundo y situación de trayectoria en el flujo principal del programa.
+	\item El usuario podrá ver las instrucciones de guiado, situación de luminosidad, umbral de binarización(en caso de que se use), fotogramas por segundo y situación de trayectoria en el flujo principal del programa.
 	
 \end{itemize}
 
@@ -31,10 +31,12 @@ Desarrollar un software capaz de interpretar una imagen, para generar un conjunt
 \section{Objetivos tecnológicos}
 \begin{itemize}
 	\item Obtener un flujo de imagen continuo, por lo que necesitaremos un hardware capaz de transmitir  de forma continua.
+
+	\item Obtener una imagen binaria mediante procesado de imagen.
 	
-	\item Obtener un procesamiento de imagen de más de 50 fotogramas por segundo, ya que el AGV requiere de una instrucción cada 2 centésimas de segundo.
+	\item Obtener una vista en dos dimensiones del plano donde se encuentra la línea guía.
 	
-	\item Desarrollo con interfaz en linea de comandos, para hacer la aplicación lo más ligera posible.
+	\item Obtener un procesamiento de imagen de más de 50 fotogramas por segundo\cite{fps}, ya que el AGV requiere de una instrucción cada 2 centésimas de segundo.
 	
 	\item Generar un conjunto de pruebas de todas las funciones creadas y/o probadas.
 	

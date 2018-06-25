@@ -5,25 +5,29 @@ A continuación se exponen las conclusiones obtenidas en la realización del tra
 Para finalizar está memoria, veremos algunas de las conclusiones obtenidas al realizar este proyecto:
 
 \begin{itemize}
-	\item Lo primero, me gustaría dar énfasis a algo que parece trivial, pero en realidad es la parte del proyecto que más conflictos puede generar. El trabajar con flujos de datos continuos y en directo. No solo tenemos que transmitir el vídeo, tiene que llegar con una latencia mínima, con una calidad que permita trabajar con ello, a unos Fps determinados, y sin parones repentinos. Además, podemos enfrentarnos a entornos no controlados que generen dificultad extra en las diferentes fases del proyecto.
+	\item Lo primero, me gustaría dar énfasis a algo que parece trivial, pero en realidad es la parte del proyecto que más conflictos puede generar. El trabajar con flujos de datos continuos y en directo. No solo tenemos que transmitir el vídeo, tiene que llegar con una latencia mínima, con una calidad que permita trabajar con ello, a unos Fps determinados, y sin parones repentinos. Además, podemos enfrentarnos a entornos no controlados que generen dificultad extra en las diferentes fases del proyecto. Esta es una de las conclusiones más relevantes, ya que es algo que inicialmente no te planteas, pero según avanzas en el proyecto te das cuenta de la importancia de ello.
 	
 	\item A continuación destacar la dificultad para alcanzar una robustez lo suficientemente grande como para poder usar este tipo de algoritmos y programas en un entorno profesional. El proceso de binarización es realmente complejo, pudiendo usar gran cantidad de filtros en diferentes ordenes para llegar a obtener la imagen deseada. Eso sí, siempre buscando la mayor optimización posible, ya que no debemos olvidarnos de que este proyecto tiene que funcionar a tiempo real y con una tasa de frames determinada.
 	
-	\item Por último, decir que el enfrentarme a un proyecto no solo de desarrollo software, sino también de investigación ha sido complicado. Aun así, los beneficios superan al esfuerzo realizado, ya que he aprendido no solo a desarrollar un software, sino a investigar en los campos que abarca este proyecto, investigar proyectos similares, documentar una serie de pruebas en base a realizar la investigación y también llevar un diario de investigación en el que ir anotando los progresos realizados. La idea del diario de investigación ha surgido de la asignatura de Fundamentos Físicos de la Informática, en la que usábamos un cuadernillo donde íbamos documentando las diferentes prácticas.
+	\item Por último, decir que el enfrentarme a un proyecto no solo de desarrollo software, sino también de investigación ha sido complicado. Aun así, los beneficios superan al esfuerzo realizado, ya que he aprendido no solo a desarrollar un proyecto software, sino a investigar en los campos que abarca este proyecto, investigar proyectos similares, documentar una serie de pruebas en base a realizar la investigación y también llevar un diario de investigación en el que ir anotando los progresos realizados.
 	
 \end{itemize}
 
-En definitiva, la experiencia ha sido positiva, y muy enriquecedora para mi futuro como desarrollador de software, dandome también algún conocimiento sobre como llevar una investigación.
+En definitiva, la experiencia ha sido positiva, y muy enriquecedora para mi futuro como desarrollador de software, dándome también conocimientos sobre como llevar a cabo una investigación.
  
 \section{Líneas de trabajo futuras}
 
 Las dos principales líneas de trabajo serían estas:
 
 \subsection{Guiado avanzado}
-Como ya hemos expuesto en diferentes partes de esta memoria, la continuación mas inmediata de este proyecto sería, a partir de la trayectoria obtenida en dos dimensiones, y de conocer la posición del vehículo y la trayectoria, recrear virtualmente el entorno del vehículo para buscar una forma de guiado más avanzada. No solo ser capaz de guiarnos por lo que tenemos inmediatamente delante nuestro, sino ser capaces de anticiparnos a la trayectoria que tengamos seguir.
+Como ya hemos expuesto en diferentes partes de esta memoria, la continuación mas inmediata de este proyecto sería, a partir de la trayectoria obtenida en dos dimensiones, y de conocer la posición del vehículo y la trayectoria, recrear virtualmente el entorno del vehículo para buscar una forma de guiado más avanzada. No solo ser capaz de guiarnos por lo que tenemos inmediatamente delante nuestro, sino ser capaces de anticiparnos a la trayectoria que tengamos seguir. 
+
+Esto nos permitirá ajustar la velocidad, interpretar el radio de giro de una curva y estimar cuanto debería de girar el robot su sistema de dirección para cumplir ese radio de curvatura. Por lo que no solo sería más efectivo, sino que podría mejorar las velocidades de transporte.
+
 
 \subsection{Reconocimiento de desniveles}
 Otra mejora que se podría hacer es buscar una forma de recrear el entorno no solo en dos dimensiones, sino en tres, pudiendo reconocer objetos, obstáculos y desniveles. En este articulo\cite{ground_detection} podemos ver un pequeño proyecto que busca está funcionalidad, aunque está aplicado a exteriores, pero se podría aplicar a interiores.
 
 
+\subsection{Robustez}
 Más allá de estas dos funcionalidades, lo siguiente sería hacer el programa lo más robusto posible, de cara a poder filtrar todos los desperfectos que se generen en la imagen, siendo capaz de ver perfectamente la línea guía en todos los posibles entornos que se nos puedan plantear.

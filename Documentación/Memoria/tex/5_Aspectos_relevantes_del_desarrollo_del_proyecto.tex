@@ -22,17 +22,23 @@ Por supuesto, el resto de líneas de trabajo de las metodologías ágiles se han
 
 \section{Relación con conocimientos obtenidos en la carrera}
 
+\subsection{Conocimientos en Python}
 Lo primero a destacar es el uso de Python, lenguaje de programación visto en varias asignaturas de la carrera, como Algoritmia, Sistemas Inteligentes o Minería de Datos. 
 
 En estas asignaturas también se han usado algunas de las librerías empleadas en este proyecto, como MatPlotLib o NumPy.
 
+
+\subsection{Conocimientos de procesamiento de imágenes}
 Los conocimientos de algoritmos de visión artificial, se han obtenido en la asignatura de Hardware de Aplicación Específica. Aunque en esta asignatura no se usa OpenCV, sino Matlab, la gran mayoría de funciones que se usan en Matlab para realizar el procesamiento de imagen, tienen una replica exacta en OpenCV.
+
+\subsection{Idea del diario de investigación}
+La idea del diario de investigación ha surgido de la asignatura de Fundamentos Físicos de la Informática, en la que usábamos un cuadernillo donde íbamos documentando las diferentes prácticas y los resultados obtenidos. Se puede ver aquí\cite{diario}.
 
 \section{Conocimientos externos a la carrera}
 
 El problema de la transformación de perspectiva es complejo, y no se ha visto durante la carrera, por lo que he tenido que buscar información por internet. La información técnica de este tipo de problemas se sale de los conocimientos propios de un informático, están más destinados a personas especializadas en Óptica, aún así, hay tutoriales y otros proyectos donde se trata este tipo de problema desde un punto más amigable para un informático. 
 
-Un tutorial que me ayudo a comprender como realizar la transformación de perspectiva es \href{https://nikolasent.github.io/opencv/2017/05/07/Bird's-Eye-View-Transformation.html}{este}. Aunque en ese tutorial colocan la cámara viendo por encima del horizonte y tienen que realizar unos ajustes extra para obtener la vista solo desde el horizonte hacia abajo. Aun así tiene conceptos como el de reducir la parte inferior de la imagen, que han sido usados en este proyecto.
+Un tutorial que me ayudo a comprender como realizar la transformación de perspectiva es este\cite{coord_persp}. Aunque en ese tutorial colocan la cámara viendo por encima del horizonte y tienen que realizar unos ajustes extra para obtener la vista solo desde el horizonte hacia abajo. Aun así tiene conceptos como el de reducir la parte inferior de la imagen, que han sido usados en este proyecto.
 
 
 
@@ -63,7 +69,7 @@ Un requisito importante que se impuso desde el principio del proyecto es que un 
 
 El hardware con el que cuento no es demasiado potente, ni esta específicamente diseñado para cumplir este requisito, como si lo estaría en una implementación real. Aun así, al principio del proyecto se realizaron unas pruebas de resolución y calidad de imagen, en busca de esta tasa de fotogramas.
 
-Los resultados se muestran en las tablas: Tabla 5.3, Tabla 5.4 y Tabla 5.5.
+Los resultados se muestran en las tablas: Tabla 5.4, Tabla 5.5 y Tabla 5.6.
 
 Una vez obtenida la tasa de frames deseada, se empezó con la siguiente fase del proyecto.
 
@@ -191,7 +197,9 @@ Las pruebas están organizadas según la investigación:
 	
 	\href{https://youtu.be/pRE8zerfp7E}{Ver el coeficiente calculado con el ángulo}
 	
-	En esta serie de pruebas se busca realizar la asociación del coeficiente calculado con la transformación de la perspectiva. El resultado es satisfactorio ya que conseguimos implementar esta funcionalidad.
+	En esta serie de pruebas se busca realizar la asociación del coeficiente calculado con la transformación de la perspectiva. El resultado es satisfactorio ya que conseguimos implementar esta funcionalidad. 
+	
+	Además se realizan pruebas para comprobar que la imagen con la perspectiva en vista de pajaro guarda las mismas relaciones de tamaño que en la vida real. Para ello se ha creado una plantilla con ángulos, se ha colocado delante de la cámara, y se han medido esos mismos ángulos en la imagen en vista de pájaro, comprobando que son exactamente el mismo ángulo que en la realidad. El resultado es satisfactorio.
 	
 	\item Pruebas del sistema de guiado. Podemos verlas en los siguientes vídeos:
 	

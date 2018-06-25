@@ -1,7 +1,7 @@
 \capitulo{3}{Conceptos teóricos}
 
 \section{Implementación hardware}
-En este proyecto trabajaremos con AGVs. Necesitaremos 3 elementos principales para implementarlo:
+En este proyecto está enfocado a AGVs. Necesitaremos 3 elementos principales para implementarlo:
 
 \begin{itemize}
 	\item Una cámara que capte imágenes, situada adecuadamente en el AGV.
@@ -12,7 +12,7 @@ En este proyecto trabajaremos con AGVs. Necesitaremos 3 elementos principales pa
 	
 \end{itemize}
 
-Tras analizar los diferentes elementos y la forma de combinarlos, podemos obtener dos formas de organización de estos elementos, veamos ambas, y sus ventajas e inconvenienetes.
+Tras analizar los diferentes elementos y la forma de combinarlos, podemos obtener dos formas de organización de estos elementos, veamos ambas, y sus ventajas e inconvenientes.
  
 
 \subsection{Implementación total en el AGV}
@@ -29,7 +29,7 @@ En esta implementación se colocarán todos los elementos en el AGV, ejecutando 
 \subsubsection{Desventajas} 
 \begin{itemize}
 
-	\item La capacidad de procesamiento del ordenador del vehiculo no es muy grande.
+	\item La capacidad de procesamiento del ordenador del vehículo no es muy grande.
 	
 	\item Esta implementación dificulta el control simultaneo de varios AGVs.
 	
@@ -54,19 +54,19 @@ En esta implementación se externaliza el ordenador donde se ejecuta el programa
 	
 \end{itemize} 
 
-Para este proyecto, hemos elegido la opción de transmitir la imagen de la cámara vía inalambrica, concreamente wifi, a un ordenador externo, y ejecutar el programa en el ordenador externo. Esto nos permite tener libertad de mover la cámara a nuestro gusto, lo cual es beneficioso de cara a realizar pruebas del programa.
+Para este proyecto, hemos elegido la opción de transmitir la imagen de la cámara vía inalámbrica, concretamente wifi, a un ordenador externo, y ejecutar el programa en el ordenador externo. Esto nos permite tener libertad de mover la cámara a nuestro gusto, lo cual es beneficioso de cara a realizar pruebas del programa.
 
-El alcance del proyecto no incluye el transmitir de vuelta instrucciones, ya que lo que buscamos es detectar líneas, pero esta transmisión se haría igualmente vía inalambrica, poniendo de acuerdo las instrucciones generadas por el programa y las instrucciones que interpreta el sistema controlador del vehículo.
+El alcance del proyecto no incluye el transmitir de vuelta instrucciones, ya que lo que buscamos es detectar líneas, pero esta transmisión se haría igualmente vía inalámbrica, poniendo de acuerdo las instrucciones generadas por el programa y las instrucciones que interpreta el sistema controlador del vehículo.
 
 
 \section{Procesado de imagen}
-Para realizar una detección efectiva de la línea guía en la imagen, tenemos que realizar un procesamiento de la imagen, pasandola por distintos filtros para finalmente obtener la trayectoria que representa la línea guía.
+Para realizar una detección efectiva de la línea guía en la imagen, tenemos que realizar un procesamiento de la imagen, pasándola por distintos filtros para finalmente obtener la trayectoria que representa la línea guía.
 
 \subsection{Binarización}
 Binarizar es el proceso que nos permite distinguir ciertas partes o elementos de una imagen aplicando una serie de valores umbrales. La forma en la que se distinguen los elementos es generando una imagen binaria, donde los elementos destacados tienen un valor, y el resto de la imagen tiene otro valor.
 \imagen{img_binaria}{Izquierda, imagen binaria. Derecha imagen real.} 
 
-Primero, tenemos que entender como funciona una pantalla y una cámara, para comprender el formato de imagen más usado actualmente, RGB.
+Primero, tenemos que entender como funciona una pantalla y una cámara, para comprender el formato de imagen más usado actualmente, RGB\cite{rgb}.
 
 Una imagen RGB está formada por 3 matrices de valores de mismas dimensiones, una matriz para los rojos, otra para los verdes, y otra para los azules (Red-Green-Blue). Este formato, es utilizado actualmente para la representación de imágenes en pantalla, y para la captación de imágenes, ya que se ajusta al formato físico tanto de pantallas como de sensores de cámaras.
 Veamos algunos conceptos relacionados con esto:
@@ -77,14 +77,14 @@ Veamos algunos conceptos relacionados con esto:
 	
 \end{itemize}
 
-Una pantalla está formada por diminutos puntos de color, conocidos como pixeles. Cada pixel tiene 3 "luces", una para rojos, otra para verdes y otra para azules. El formato RGB da a cada una de estas luces un valor, que las hará lucir con mayor o menor intensidad.
+Una pantalla\cite{led} está formada por diminutos puntos de color, conocidos como pixeles\cite{pixel}. Cada pixel tiene 3 "luces", una para rojos, otra para verdes y otra para azules. El formato RGB da a cada una de estas luces un valor, que las hará lucir con mayor o menor intensidad.
 \imagen{pixels}{Pixels de una pantalla LCD. Fuente: youtube.com}
 
 La resolución tanto de la pantalla como de la imagen es un aspecto relevante, ya que influirá en la forma en la que la pantalla representará la imagen.
  
-La resolución de la pantalla es el número de pixels de ancho, por el número de pixels de alto. La resolución de la imagen es el tamaño de la matriz de ancho, por el tamaño de la matriz de alto.
+La resolución de la pantalla\cite{res_pantalla} es el número de pixels de ancho, por el número de pixels de alto. La resolución de la imagen\cite{res_imagen} es el tamaño de la matriz de ancho, por el tamaño de la matriz de alto.
 
-Cuando ambas son iguales, cada valor de la matriz RGB se interpretará en cada uno de los pixeles de la pantalla. En el caso de que sean diferentes, se hará un reescalado de imagen.
+Cuando ambas son iguales, cada valor de la matriz RGB se interpretará en cada uno de los pixeles de la pantalla. En el caso de que sean diferentes, se hará un re-escalado\cite{resize} de imagen.
 
 Los valores que pueden tomar son desde 0, apagado, hasta 255, intensidad máxima. La combinación de intensidades de las luces RGB formará los distintos colores. 
 \imagen{RGB_rueda}{Combinación de colores RGB. Fuente: wikipedia.org}
@@ -104,7 +104,7 @@ Una vez más, cada una de estas celdas se corresponderá con un una de las luces
 Una vez visto el porqué del formato RGB, podemos empezar a explicar los métodos de binarización.
 
 \subsubsection{Binarización por luminosidad}
-Este tipo de binarización consiste en generar una imagen binaria, mediante un umbral aplicado a una imagen donde podamos ver la luminosidad de cada pixel.
+Este tipo de binarización\cite{binar} consiste en generar una imagen binaria, mediante un umbral aplicado a una imagen donde podamos ver la luminosidad de cada pixel.
 Para realizar este tipo de binarización necesitamos una imagen en escala de grises, donde solo tenemos luminosidad. Nuestra cámara nos devuelve imágenes RGB, por lo que debemos realizar una conversión. 
 
 Esta conversión no es algo trivial, ya que los colores primarios de la luz, RGB, no tienen la misma luminosidad. Por lo que la solución mas simple que se nos podría ocurrir, realizar la media para cada pixel de sus valores RGB sería errónea.
@@ -135,7 +135,7 @@ Como podemos apreciar, hay dos picos claros en el histograma, uno correspondient
 
 La forma más simple que se nos puede ocurrir es la de escoger un valor aleatorio entre ambos picos y entonces, recorrer todos los pixels de la imagen en escala de grises, y a cada pixel asignarle un valor si esta por encima del umbral, u otro valor su esta por debajo.
 
-Esta forma, siendo perfectamente valida, es poco recomendable si trabajamos con flujos de datos continuos, como por ejemplo vídeos, o streamings.
+Esta forma, siendo perfectamente valida, es poco recomendable si trabajamos con flujos de datos continuos, como por ejemplo vídeos, o streaming\cite{streaming}.
 Normalmente en este tipo de flujos de imágenes, la luminosidad puede variar, por lo que el umbral al ser fijo, puede provocar errores en la binarización.
 
 La solución a esto es usar un umbral dinámico, calculado en función del histograma de cada imagen.
@@ -277,7 +277,7 @@ Como hemos visto en secciones anteriores, la principal funcionalidad buscada en 
 
 Como vemos, la cámara no está a una gran altura del suelo, aún así, es capaz de ver a una distancia considerable, casi 5 veces de la altura a la que se encuentra. Por supuesto en función del ángulo está distancia será mayor o menor. 
 
-Si tenemos en cuenta que la cámara en un AGV está colocada a unos 50cm de altura, podemos multiplicar las distancias obtenidas en la Tabla 3.1 por un factor de 6. Llegando a ver a unos dos metros y medio de distancia en el caso de colocar la cámara a 55º.
+Si tenemos en cuenta que la cámara en un AGV está colocada a unos 50cm de altura, podemos multiplicar las distancias obtenidas en la Tabla 3.3 por un factor de 6. Llegando a ver a unos dos metros y medio de distancia en el caso de colocar la cámara a 55º.
 
 Tenemos que considerar también que al aumentar el ángulo, perdemos visión en la parte inferior de la imagen, por lo que no podremos ver exactamente lo que el vehículo tiene debajo, sino que empezaremos a ver la línea a una distancia determinada respecto de la situación real del vehículo.
 
@@ -290,13 +290,13 @@ Tenemos que considerar también que al aumentar el ángulo, perdemos visión en 
 60º & 5cm & Por encima del horizonte\\
 }
 
-En la Tabla 3.1 está la relación de valores. Distancia Min es la distancia entre el vehiculo y la parte inferior de la imagen. Distancia Max es la distancia hasta la que ve nuestra cámara. En el caso de colocarla con 60º, vemos que ve por encima del horizonte, por lo que no es aconsejable. Este proyecto no está preparado para este tipo de ángulo de cámara, ya que toda la información que necesitamos están el suelo, ver por encima del horizonte es perder información, y tener que realizar más filtrados de imagen, lo cual empeora el rendimiento del programa. 
+En la Tabla 3.3 está la relación de valores. Distancia Min es la distancia entre el vehiculo y la parte inferior de la imagen. Distancia Max es la distancia hasta la que ve nuestra cámara. En el caso de colocarla con 60º, vemos que ve por encima del horizonte, por lo que no es aconsejable. Este proyecto no está preparado para este tipo de ángulo de cámara, ya que toda la información que necesitamos están el suelo, ver por encima del horizonte es perder información, y tener que realizar más filtrados de imagen, lo cual empeora el rendimiento del programa. 
 
 \subsubsection{Obtener vista de pájaro}
 
 El problema de situar la cámara en una posición así, es que no podemos ver las distancias reales en la imagen, puesto que lo estamos viendo todo en perspectiva. Para ver las distancias reales, tendríamos que colocar la cámara paralela al suelo y a una determinada altura, lo cual es complicado. Habría que tener una especie de brazo por delante del robot con la cámara colgando.
 
-Por este motivo, lo que se usa para resolver este problema es una transformación de perspectiva. En concreto, una transformación que, a partir de una imagen tomada desde una situación en la que la cámara forma un cierto ángulo con el suelo, genera una imagen virtual que se vea totalmente paralela al suelo, podríamos llamarlo una "vista de pájaro".
+Por este motivo, lo que se usa para resolver este problema es una transformación de perspectiva\cite{trans_p}. En concreto, una transformación que, a partir de una imagen tomada desde una situación en la que la cámara forma un cierto ángulo con el suelo, genera una imagen virtual que se vea totalmente paralela al suelo, podríamos llamarlo una "vista de pájaro"\cite{bird}.
 
 \imagen{bird_view}{Izquierda, vista de pájaro. Derecha, vista original.}
 
@@ -320,7 +320,7 @@ Se ha implementado una función que obtiene un coeficiente en función del ángu
 
 Se han anotado para cada ángulo probado la cantidad de pixels necesarios para corregir la distorsión.
 
-Podemos ver los valores del ángulo, coeficiente y pixels a reducir en la Tabla 3.2.
+Podemos ver los valores del ángulo, coeficiente y pixels a reducir en la Tabla 3.3.
 
 Haciendo una regresión podemos obtener una función que nos relacione el coeficiente único de cada ángulo, con la cantidad de pixels a reducir.
 
@@ -453,7 +453,7 @@ Con el sistema de guiado básico, ademas de podernos guiar de una forma simple, 
 
 A partir de este entorno virtual, podemos no solo guiarnos sino preparar el vehículo para la trayectoria que tiene que realizar a continuación, ajustar la velocidad si se aproxima una curva muy pronunciada, ajustar el ángulo de giro para igualar el radio de giro de la curva...
 
-Si volvemos un poco atrás, concretamente a la Tabla 3.1, podemos obtener las medidas que necesitaríamos para representar de forma virtual la situación del vehículo. Veamos un ejemplo de este entorno virtual:
+Si volvemos un poco atrás, concretamente a la Tabla 3.3, podemos obtener las medidas que necesitaríamos para representar de forma virtual la situación del vehículo. Veamos un ejemplo de este entorno virtual:
 
 \imagen{guiado_virtual}{Entorno virtual para el sistema de guiado virtual.}
 
