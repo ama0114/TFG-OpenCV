@@ -107,6 +107,9 @@ imports:
  &#8226;   <a href="#array">array</a>
  &#8226;   <a href="#ast">ast</a>
  &#8226;   <a href="#atexit">atexit</a>
+ &#8226;   <a href="#backports">backports</a>
+ &#8226;   <a href="#backports.configparser">backports.configparser</a>
+ &#8226;   <a href="#backports.configparser.helpers">backports.configparser.helpers</a>
  &#8226;   <a href="#base64">base64</a>
  &#8226;   <a href="#bdb">bdb</a>
  &#8226;   <a href="#binarizar_hsv">binarizar_hsv</a>
@@ -528,6 +531,7 @@ imports:
  &#8226;   <a href="#opcode">opcode</a>
  &#8226;   <a href="#operator">operator</a>
  &#8226;   <a href="#optparse">optparse</a>
+ &#8226;   <a href="#ordereddict">ordereddict</a>
  &#8226;   <a href="#org">org</a>
  &#8226;   <a href="#os">os</a>
  &#8226;   <a href="#os2">os2</a>
@@ -1663,6 +1667,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#ConfigParser">ConfigParser</a>
+ &#8226;   <a href="#backports.configparser.helpers">backports.configparser.helpers</a>
  &#8226;   <a href="#bsddb">bsddb</a>
  &#8226;   <a href="#dumbdbm">dumbdbm</a>
  &#8226;   <a href="#ejecucion.py">ejecucion.py</a>
@@ -1753,8 +1758,11 @@ imported by:
 imported by:
     <a href="#_dummy_thread">_dummy_thread</a>
  &#8226;   <a href="#_thread">_thread</a>
+ &#8226;   <a href="#backports.configparser">backports.configparser</a>
+ &#8226;   <a href="#backports.configparser.helpers">backports.configparser.helpers</a>
  &#8226;   <a href="#backports.functools_lru_cache">backports.functools_lru_cache</a>
  &#8226;   <a href="#builtins">builtins</a>
+ &#8226;   <a href="#configparser">configparser</a>
  &#8226;   <a href="#copyreg">copyreg</a>
  &#8226;   <a href="#cycler">cycler</a>
  &#8226;   <a href="#dateutil.parser._parser">dateutil.parser._parser</a>
@@ -2464,7 +2472,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#ejecucion.py">ejecucion.py</a>
+    <a href="#backports.configparser.helpers">backports.configparser.helpers</a>
+ &#8226;   <a href="#ejecucion.py">ejecucion.py</a>
  &#8226;   <a href="#future.backports.misc">future.backports.misc</a>
  &#8226;   <a href="#numpy.core.arrayprint">numpy.core.arrayprint</a>
 
@@ -2885,7 +2894,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#ejecucion.py">ejecucion.py</a>
+    <a href="#backports.configparser.helpers">backports.configparser.helpers</a>
+ &#8226;   <a href="#ejecucion.py">ejecucion.py</a>
  &#8226;   <a href="#future.backports.misc">future.backports.misc</a>
  &#8226;   <a href="#numpy.core.arrayprint">numpy.core.arrayprint</a>
  &#8226;   <a href="#pkg_resources._vendor.pyparsing">pkg_resources._vendor.pyparsing</a>
@@ -2914,6 +2924,7 @@ imported by:
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
     <a href="#_thread">_thread</a>
+ &#8226;   <a href="#backports.configparser.helpers">backports.configparser.helpers</a>
  &#8226;   <a href="#ejecucion.py">ejecucion.py</a>
  &#8226;   <a href="#future.backports.misc">future.backports.misc</a>
  &#8226;   <a href="#numpy.core.arrayprint">numpy.core.arrayprint</a>
@@ -3179,9 +3190,65 @@ imported by:
 <div class="node">
   <a name="backports"></a>
   <a target="code" href="///C:/python27/lib/site-packages/backports/__init__.py" type="text/plain"><tt>backports</tt></a>
-<span class="moduletype">Package</span>  <div class="import">
+<span class="moduletype">NamespacePackage</span>  <div class="import">
 imported by:
-    <a href="#backports.functools_lru_cache">backports.functools_lru_cache</a>
+    <a href="#backports.configparser">backports.configparser</a>
+ &#8226;   <a href="#backports.functools_lru_cache">backports.functools_lru_cache</a>
+ &#8226;   <a href="#ejecucion.py">ejecucion.py</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="backports.configparser"></a>
+  <a target="code" href="///C:/python27/lib/site-packages/backports/configparser/__init__.py" type="text/plain"><tt>backports.configparser</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#backports">backports</a>
+ &#8226;   <a href="#backports.configparser.helpers">backports.configparser.helpers</a>
+ &#8226;   <a href="#collections">collections</a>
+ &#8226;   <a href="#functools">functools</a>
+ &#8226;   <a href="#io">io</a>
+ &#8226;   <a href="#itertools">itertools</a>
+ &#8226;   <a href="#re">re</a>
+ &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#warnings">warnings</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#backports.configparser.helpers">backports.configparser.helpers</a>
+ &#8226;   <a href="#configparser">configparser</a>
+ &#8226;   <a href="#ejecucion.py">ejecucion.py</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="backports.configparser.helpers"></a>
+  <a target="code" href="///C:/python27/lib/site-packages/backports/configparser/helpers.py" type="text/plain"><tt>backports.configparser.helpers</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#UserDict">UserDict</a>
+ &#8226;   <a href="#__future__">__future__</a>
+ &#8226;   <a href="#_dummy_thread">_dummy_thread</a>
+ &#8226;   <a href="#_thread">_thread</a>
+ &#8226;   <a href="#_thread.get_ident">_thread.get_ident</a>
+ &#8226;   <a href="#backports.configparser">backports.configparser</a>
+ &#8226;   <a href="#collections">collections</a>
+ &#8226;   <a href="#io">io</a>
+ &#8226;   <a href="#ordereddict">ordereddict</a>
+ &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#thread">thread</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#backports.configparser">backports.configparser</a>
+ &#8226;   <a href="#ejecucion.py">ejecucion.py</a>
 
   </div>
 
@@ -3821,6 +3888,8 @@ imported by:
     <a href="#ConfigParser">ConfigParser</a>
  &#8226;   <a href="#Queue">Queue</a>
  &#8226;   <a href="#ast">ast</a>
+ &#8226;   <a href="#backports.configparser">backports.configparser</a>
+ &#8226;   <a href="#backports.configparser.helpers">backports.configparser.helpers</a>
  &#8226;   <a href="#backports.functools_lru_cache">backports.functools_lru_cache</a>
  &#8226;   <a href="#bsddb">bsddb</a>
  &#8226;   <a href="#decimal">decimal</a>
@@ -3935,8 +4004,14 @@ imported by:
 
 <div class="node">
   <a name="configparser"></a>
-  <a target="code" href="" type="text/plain"><tt>configparser</tt></a>
-<span class="moduletype">MissingModule</span>  <div class="import">
+  <a target="code" href="///C:/python27/lib/site-packages/configparser.py" type="text/plain"><tt>configparser</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#backports.configparser">backports.configparser</a>
+
+  </div>
+  <div class="import">
 imported by:
     <a href="#ejecucion.py">ejecucion.py</a>
  &#8226;   <a href="#numpy.distutils.npy_pkg_config">numpy.distutils.npy_pkg_config</a>
@@ -9291,7 +9366,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#backports.functools_lru_cache">backports.functools_lru_cache</a>
+    <a href="#backports.configparser">backports.configparser</a>
+ &#8226;   <a href="#backports.functools_lru_cache">backports.functools_lru_cache</a>
  &#8226;   <a href="#contextlib">contextlib</a>
  &#8226;   <a href="#csv">csv</a>
  &#8226;   <a href="#dateutil.parser">dateutil.parser</a>
@@ -11359,7 +11435,9 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#dateutil.parser._parser">dateutil.parser._parser</a>
+    <a href="#backports.configparser">backports.configparser</a>
+ &#8226;   <a href="#backports.configparser.helpers">backports.configparser.helpers</a>
+ &#8226;   <a href="#dateutil.parser._parser">dateutil.parser._parser</a>
  &#8226;   <a href="#dateutil.zoneinfo">dateutil.zoneinfo</a>
  &#8226;   <a href="#ejecucion.py">ejecucion.py</a>
  &#8226;   <a href="#fileinput">fileinput</a>
@@ -11411,7 +11489,8 @@ imported by:
   <a name="itertools"></a>
   <tt>itertools</tt> <span class="moduletype"><i>(builtin module)</i></span>  <div class="import">
 imported by:
-    <a href="#collections">collections</a>
+    <a href="#backports.configparser">backports.configparser</a>
+ &#8226;   <a href="#collections">collections</a>
  &#8226;   <a href="#ctypes.macholib.dyld">ctypes.macholib.dyld</a>
  &#8226;   <a href="#cycler">cycler</a>
  &#8226;   <a href="#dateutil.rrule">dateutil.rrule</a>
@@ -21568,7 +21647,9 @@ imported by:
   <a target="code" href="" type="text/plain"><tt>ordereddict</tt></a>
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
-    <a href="#pkg_resources._vendor.pyparsing">pkg_resources._vendor.pyparsing</a>
+    <a href="#backports.configparser.helpers">backports.configparser.helpers</a>
+ &#8226;   <a href="#ejecucion.py">ejecucion.py</a>
+ &#8226;   <a href="#pkg_resources._vendor.pyparsing">pkg_resources._vendor.pyparsing</a>
  &#8226;   <a href="#pyparsing">pyparsing</a>
 
   </div>
@@ -23233,6 +23314,7 @@ imported by:
  &#8226;   <a href="#_MozillaCookieJar">_MozillaCookieJar</a>
  &#8226;   <a href="#_osx_support">_osx_support</a>
  &#8226;   <a href="#_strptime">_strptime</a>
+ &#8226;   <a href="#backports.configparser">backports.configparser</a>
  &#8226;   <a href="#base64">base64</a>
  &#8226;   <a href="#cookielib">cookielib</a>
  &#8226;   <a href="#csv">csv</a>
@@ -31500,6 +31582,8 @@ imported by:
  &#8226;   <a href="#_osx_support">_osx_support</a>
  &#8226;   <a href="#_thread">_thread</a>
  &#8226;   <a href="#atexit">atexit</a>
+ &#8226;   <a href="#backports.configparser">backports.configparser</a>
+ &#8226;   <a href="#backports.configparser.helpers">backports.configparser.helpers</a>
  &#8226;   <a href="#base64">base64</a>
  &#8226;   <a href="#bdb">bdb</a>
  &#8226;   <a href="#bsddb">bsddb</a>
@@ -32078,6 +32162,7 @@ imported by:
 imported by:
     <a href="#_strptime">_strptime</a>
  &#8226;   <a href="#_thread">_thread</a>
+ &#8226;   <a href="#backports.configparser.helpers">backports.configparser.helpers</a>
  &#8226;   <a href="#bsddb">bsddb</a>
  &#8226;   <a href="#collections">collections</a>
  &#8226;   <a href="#ejecucion.py">ejecucion.py</a>
@@ -32972,6 +33057,7 @@ imported by:
     <a href="#BaseHTTPServer">BaseHTTPServer</a>
  &#8226;   <a href="#Tkinter">Tkinter</a>
  &#8226;   <a href="#UserDict">UserDict</a>
+ &#8226;   <a href="#backports.configparser">backports.configparser</a>
  &#8226;   <a href="#bsddb">bsddb</a>
  &#8226;   <a href="#commands">commands</a>
  &#8226;   <a href="#contextlib">contextlib</a>

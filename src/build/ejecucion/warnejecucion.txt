@@ -53,7 +53,7 @@ missing module named 'setuptools.extern.packaging.version' - imported by setupto
 missing module named 'backports.ssl_match_hostname' - imported by setuptools.ssl_support, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
 missing module named wincertstore - imported by setuptools.ssl_support, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
 missing module named _manylinux - imported by setuptools.pep425tags, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
-missing module named configparser - imported by setuptools.py36compat, numpy.distutils.system_info, numpy.distutils.npy_pkg_config, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
+missing module named ordereddict - imported by backports.configparser.helpers, pyparsing, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py, pkg_resources._vendor.pyparsing
 missing module named 'setuptools.extern.six' - imported by setuptools, setuptools.extension, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
 missing module named _imp - imported by pkg_resources, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
 missing module named pkg_resources.extern.six - imported by pkg_resources.extern, pkg_resources, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
@@ -61,7 +61,6 @@ missing module named 'pkg_resources.extern.six.moves' - imported by pkg_resource
 missing module named pkg_resources.extern.appdirs - imported by pkg_resources.extern, pkg_resources, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
 missing module named pkg_resources.extern.packaging - imported by pkg_resources.extern, pkg_resources, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
 missing module named 'pkg_resources.extern.pyparsing' - imported by pkg_resources._vendor.packaging.requirements, pkg_resources._vendor.packaging.markers
-missing module named ordereddict - imported by pyparsing, pkg_resources._vendor.pyparsing
 missing module named _thread.RLock - imported by _thread, pyparsing, pkg_resources._vendor.pyparsing
 missing module named 'com.sun' - imported by pkg_resources._vendor.appdirs
 missing module named com - imported by pkg_resources._vendor.appdirs
@@ -89,7 +88,7 @@ missing module named numpy.core.signbit - imported by numpy.core, numpy.testing.
 missing module named numpy.core.number - imported by numpy.core, numpy.testing.nose_tools.utils, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
 missing module named pathlib - imported by numpy.compat.py3k, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
 missing module named 'importlib.machinery' - imported by numpy.compat.py3k, pkg_resources, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
-missing module named _thread.get_ident - imported by _thread, future.backports.misc, numpy.core.arrayprint, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
+missing module named _thread.get_ident - imported by _thread, future.backports.misc, numpy.core.arrayprint, backports.configparser.helpers, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
 missing module named reprlib.recursive_repr - imported by reprlib, future.backports.misc, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
 missing module named rourl2path - imported by urllib, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
 missing module named termios - imported by getpass, tty, C:\Users\Antonio\TFG-OpenCV\src\ejecucion.py
