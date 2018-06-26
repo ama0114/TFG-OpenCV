@@ -1,1 +1,3 @@
 Documentación/* linguist-vendored=true
+src/build/* linguist-vendored=true
+src/dist/* linguist-vendored=true
