@@ -13,6 +13,12 @@ def main():
     """
     Programa principal
     """
+
+    print "*************************************"
+    print "Seguimiento de lineas en OpenCV"
+    print "para AGVs\n"
+    print "Autor: ama0114\n"
+    print "*************************************"
     
     stream = get_url_stream()
     persp = perspectiva()
@@ -21,6 +27,8 @@ def main():
     menu(stream, persp, bin_hsv)
 
 def get_url_stream():
+    """ Comprueba que tenemos conexión con la url que 
+    se solicita al usuario, y devuelve el objeto stream"""
     ex = True
     while ex is True:
         try:
