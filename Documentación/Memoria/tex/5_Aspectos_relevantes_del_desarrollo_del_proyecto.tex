@@ -52,6 +52,10 @@ Un requisito importante que se impuso desde el principio del proyecto es que un 
 
 El hardware con el que cuento no es demasiado potente, ni esta específicamente diseñado para cumplir este requisito, como si lo estaría en una implementación real. Aun así, al principio del proyecto se realizaron unas pruebas de resolución y calidad de imagen, en busca de esta tasa de fotogramas.
 
+Los resultados se muestran en las tablas: Tabla 5.4, Tabla 5.5 y Tabla 5.6.
+
+Una vez obtenida la tasa de frames deseada, se empezó con la siguiente fase del proyecto.
+
 \tablaSmall{Resolucion 800x600 y Fps}{l c c c}{resolucion_fps800600}
 { \multicolumn{1}{l}{Calidad streaming} & Min Fps &  Max Fps & Media Fps\\}{ 
 100 & 1.43 & 6.85 & 3.82\\
@@ -70,10 +74,6 @@ El hardware con el que cuento no es demasiado potente, ni esta específicamente 
 { \multicolumn{1}{l}{Calidad streaming} & Min Fps &  Max Fps & Media Fps\\}{ 
 20 & 5.26 & 200.00 & 58.20\\
 }
-
-Los resultados se muestran en las tablas: Tabla 5.4, Tabla 5.5 y Tabla 5.6.
-
-Una vez obtenida la tasa de frames deseada, se empezó con la siguiente fase del proyecto.
 
 \section{Fases del proyecto}
 Las fases de este proyecto partían de un requisito a cumplir, realizando un trabajo de investigación, y posteriormente generando una implementación y realizando pruebas en el entorno. 
@@ -185,13 +185,14 @@ función implementada en esta etapa.
 
 En este caso hemos modificado la luminosidad del ambiente en el que se encontraba la cámara para ver como la función se comportaba. El resultado esperado era que el valor que devolvía la función disminuyera acorde con la disminución de luminosidad, y aumentara cuando la luminosidad del entorno aumentara. El resultado es satisfactorio, ya que cumple perfectamente este funcionamiento.
 	
-	Podemos verlas en el siguiente vídeo:
+	Podemos verla en el siguiente vídeo:
 	
 	\href{https://youtu.be/CuTADdioU4g}{Prueba de la función que calcula la luminosidad}	
 	
 	\item Pruebas de binarización, tanto por luminosidad como por color. 
 	
 	En las pruebas de binarización por luminosidad el entorno está formado por un fondo blanco y una cinta aislante negro.
+	
 En las pruebas de binarización por color el entorno es un tapete de color verde oscuro, y la línea de cartulina amarilla, con el borde remarcado en cinta aislante.
 
 Buscaremos la mayor pureza de imagen posible, que no contenga
@@ -242,8 +243,6 @@ Tomamos medidas de en la imagen para preparar el algoritmo.
 
 Una vez pensado el algoritmo, elegimos una fila cualquiera, la 70 por ejemplo y realizamos mediciones en la imagen para comprobar que el algoritmo está bien diseñado. El algoritmo es el que se menciona en la Figura 5.26.
 
-	
-	
 	
 	Podemos verlas en los siguientes vídeos:
 	
@@ -303,7 +302,9 @@ El resultado es satisfactorio, midiendo el mismo ángulo en la imagen y en la re
 	
 	Modificaremos la posición de la cámara para ver como afecta al programa.
 	
-El parámetro a revisar es el ángulo que genera la función de guía, y el indicador de dirección.	
+El parámetro a revisar es el ángulo que genera la función de guía, y el indicador de dirección.
+
+En estas pruebas vemos que el sistema de guiado se comporta de la forma esperada, por lo que son satisfactorias.	
 	
 	Podemos verlas en los siguientes vídeos:
 	
@@ -311,7 +312,6 @@ El parámetro a revisar es el ángulo que genera la función de guía, y el indi
 	
 	\href{https://youtu.be/8j69cDydXfA}{Sistema de guiado final con todos los elementos visualizables}
 	
-	En estas pruebas vemos que el sistema de guiado se comporta de la forma esperada, por lo que son satisfactorias.
 	
 \end{itemize}
 

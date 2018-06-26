@@ -302,7 +302,7 @@ Tenemos que considerar también que al aumentar el ángulo, perdemos visión en 
 60º & 6.36cm & 83cm\\
 }
 
-En la Tabla 3.3 está la relación de valores. Distancia Min es la distancia entre el vehiculo y la parte inferior de la imagen. Distancia Max es la distancia hasta la que ve nuestra cámara. En el caso de colocarla con 66º, vemos que ve por encima del horizonte, por lo que no es aconsejable. Este proyecto no está preparado para este tipo de ángulo de cámara, ya que toda la información que necesitamos están el suelo, ver por encima del horizonte es perder información, y tener que realizar más filtrados de imagen, lo cual empeora el rendimiento del programa.
+En la Tabla 3.3 está la relación de valores. Distancia Min es la distancia entre la perpendicular de la cámara y la parte inferior de la imagen. Distancia Max es la distancia hasta la que ve nuestra cámara. En el caso de colocarla con 66º, vemos que ve por encima del horizonte, por lo que no es aconsejable. Este proyecto no está preparado para este tipo de ángulo de cámara, ya que toda la información que necesitamos están el suelo, ver por encima del horizonte es perder información, y tener que realizar más filtrados de imagen, lo cual empeora el rendimiento del programa.
 
 \imagen{ang}{Asociación de ángulos de la cámara, campo de visión y suelo} 
 
@@ -340,7 +340,7 @@ Una vez que conocemos como realizar está corrección mediante coordenadas, tene
 
 La forma más simple de llevar esto acabo es poniendo una figura geométrica ante la cámara, en nuestro caso un cuadrado. Como ya hemos visto en figuras anteriores, como por ejemplo la Figura 3.4, en la cámara no vemos un cuadrado, sino un trapecio. Esto significa que la perspectiva está agrandando los objetos contra más cerca están de la cámara, a si que para corregirla lo que debemos hacer es reducir la parte inferior de la imagen, hasta que las líneas del cuadrado sean paralelas.
 
-Para realizar esto con la función de transformación de perspectiva de OpenCV tenemos que elegir como coordenadas de origen las cuatro esquinas de nuestra imagen, y como destino dejar fijas las esquinas superiores de la imagen, y reducir la parte inferior, moviendo las esquinas hacia el centro de la imagen\cite{coord_persp}. De esta manera corregiremos la perspectiva, pero nos quedará una imagen como la que se aprecia en la Figura 3.17, parte izquierda, con dos triángulos negros en los extremos, que se corresponden con la reducción hecha en la parte inferior. 
+Para realizar esto con la función de transformación de perspectiva de OpenCV tenemos que elegir como coordenadas de origen las cuatro esquinas de nuestra imagen, y como destino dejar fijas las esquinas superiores de la imagen, y reducir la parte inferior, moviendo las esquinas hacia el centro de la imagen\cite{coord_persp}. De esta manera corregiremos la perspectiva, y nos quedará una imagen como la que se aprecia en la Figura 3.17, parte izquierda, con dos triángulos negros en los extremos, que se corresponden con la reducción hecha en la parte inferior. 
 
 \subsubsection{Relación del ángulo de la cámara con la transformación de perspectiva}
 
@@ -445,7 +445,7 @@ Con estos dos elementos ya podemos tener un sistema muy básico que nos diga si 
 
 Partiendo de esta idea, nos bastaría con generar una instrucción que enviaríamos al controlador del vehículo, diciéndole hacia donde se tiene que dirigir, si estamos dejando la línea a la izquierda del centro, le mandaríamos girar a la izquierda, si fuese a la derecha, le mandaríamos girar a la derecha.
 
-\subsection{Mejoras de en generación de instrucciones de giro}
+\subsection{Mejoras en la generación de instrucciones de giro}
 
 \subsubsection{Mejora en el ángulo de giro}
 Una gran mejora que podemos realizar, si está soportada por el controlador del vehículo, es poder controlar el ángulo de giro en función de lo que nos estemos desviando del centro. 
@@ -456,7 +456,7 @@ La solución planteada a este problema es usar una función que nos calcule el �
 
 Usaremos una función para los giros a la derecha, y otra para los giros a la izquierda.
 
-Si observamos la imagen 3.21, la línea azul puede tomar valores a lo largo de toda la resolución en horizontal. Los valores desde la izquierda de la imagen, hasta el centro (indicador verde, mitad de la resolución horizontal) serán los valores de X para la función de giro a la derecha. Los valores de X para la función de giro a la izquierda, serán desde el indicador verde hasta la resolución máxima, derecha de la imagen.
+Si observamos la imagen 3.21, la línea azul puede tomar valores a lo largo de toda la resolución en horizontal. Los valores desde la izquierda de la imagen, hasta el centro (indicador verde, mitad de la resolución horizontal) serán los valores de X para la función de giro a la izquierda. Los valores de X para la función de giro a la derecha, serán desde el indicador verde hasta la resolución máxima, derecha de la imagen.
 
 Como valores de Y tenemos que usar el rango de giro del vehículo AGV, El ángulo mínimo será 0, que se generará cuando el programa detecte que el AGV esta centrado con la línea (o dentro de la zona segura, se verá en el apartado siguiente), según nos alejemos bien por la izquierda o por la derecha, el ángulo ha de aumentar. El ángulo máximo será el máximo giro posible que pueda realizar el AGV, por ejemplo 90º (esto dependerá del vehículo). Podemos obtener un valor más, para realizar una regresión con algo más de precision, si calculamos la mitad del ángulo de giro, 45º y un cuarto y tres cuartos de la resolución horizontal de la imagen. 
 
@@ -478,7 +478,7 @@ Otro problema que nos podemos plantear es si de verdad necesitamos estar corrigi
 
 Cuando las personas conducimos, no estamos todo el rato buscando el centro del carril, ya que sería casi imposible, lo que hacemos es tener unos margenes "seguros" donde nos podemos colocar, y en el momento en el que nos acercamos al limite de uno de esos margenes es cuando corregimos la trayectoria.
 
-La idea es llevar esto al sistema de guiado, establecer unos márgenes a la derecha y a la izquierda del centro ideal, y mientras la trayectoria esté dentro de estos márgenes, mandar al vehículo seguir recto. En la Figura 3.17 podemos ver estos márgenes, las líneas rojas en la parte inferior de la imagen, próximas al centro.
+La idea es llevar esto al sistema de guiado, establecer unos márgenes a la derecha y a la izquierda del centro ideal, y mientras la trayectoria esté dentro de estos márgenes, mandar al vehículo seguir recto. En la Figura 3.21 podemos ver estos márgenes, las líneas rojas en la parte inferior de la imagen, próximas al centro.
 
 Los márgenes se generarán en la etapa de calibración del programa, se solicitará al usuario un valor entre 0 y 0.3, y se multiplicará este valor por la resolución horizontal de la imagen. Esto nos dará un valor en pixels, y estos pixels serán la distancia del margen a la izquierda y derecha del centro. Obviamente si damos de margen 0, no tendremos margen y estaremos en la situación en la que el programa nos corrige continuamente. El limite superior es 0.3 ya que si superamos este valor, el margen sería demasiado grande, llevando al programa hasta casi perder la línea. 
 
