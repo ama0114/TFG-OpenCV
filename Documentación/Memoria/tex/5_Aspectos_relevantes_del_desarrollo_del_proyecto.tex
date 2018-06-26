@@ -44,6 +44,14 @@ Un tutorial que me ayudo a comprender como realizar la transformación de perspe
 
 \section{Restricciones del proyecto}
 
+
+
+No tenemos que olvidar que el fin último de este proyecto es implementarlo en un entorno industrial, donde todo tiene que estar meticulosamente controlado. 
+
+Un requisito importante que se impuso desde el principio del proyecto es que un AGV necesita recibir una instrucción cada 2 centésimas de segundo, realizando una operación simple, obtenemos que necesitamos procesar 50 imágenes por segundo para poder satisfacer este requisito.
+
+El hardware con el que cuento no es demasiado potente, ni esta específicamente diseñado para cumplir este requisito, como si lo estaría en una implementación real. Aun así, al principio del proyecto se realizaron unas pruebas de resolución y calidad de imagen, en busca de esta tasa de fotogramas.
+
 \tablaSmall{Resolucion 800x600 y Fps}{l c c c}{resolucion_fps800600}
 { \multicolumn{1}{l}{Calidad streaming} & Min Fps &  Max Fps & Media Fps\\}{ 
 100 & 1.43 & 6.85 & 3.82\\
@@ -62,12 +70,6 @@ Un tutorial que me ayudo a comprender como realizar la transformación de perspe
 { \multicolumn{1}{l}{Calidad streaming} & Min Fps &  Max Fps & Media Fps\\}{ 
 20 & 5.26 & 200.00 & 58.20\\
 }
-
-No tenemos que olvidar que el fin último de este proyecto es implementarlo en un entorno industrial, donde todo tiene que estar meticulosamente controlado. 
-
-Un requisito importante que se impuso desde el principio del proyecto es que un AGV necesita recibir una instrucción cada 2 centésimas de segundo, realizando una operación simple, obtenemos que necesitamos procesar 50 imágenes por segundo para poder satisfacer este requisito.
-
-El hardware con el que cuento no es demasiado potente, ni esta específicamente diseñado para cumplir este requisito, como si lo estaría en una implementación real. Aun así, al principio del proyecto se realizaron unas pruebas de resolución y calidad de imagen, en busca de esta tasa de fotogramas.
 
 Los resultados se muestran en las tablas: Tabla 5.4, Tabla 5.5 y Tabla 5.6.
 
@@ -152,7 +154,15 @@ En cada fase se han realizado pruebas y se han dejado expuestas en vídeos en el
 Las pruebas están organizadas según la investigación:
 
 \begin{itemize}
-	\item Una prueba inicial con el objetivo de obtener 50 Fps. Podemos verlas en los siguientes vídeos:
+	\item Una prueba inicial con el objetivo de obtener 50 Fps. Se trabajará en el entorno habitual, en esta etapa no teníamos la función de luminosidad por lo que no hay medidas de esta, pero teníamos la suficiente luminosidad como para que la cámara obtuviera la máxima tasa de Fps, y la imagen fuera perfectamente visible.
+	
+Lo que se ha ido haciendo es modificar la resolución y calidad de la imagen hasta que hemos obtenido la tasa de frames deseada, 50 fps. Esta tasa se ha alcanzado en la prueba de resolución 176x144, con una calidad del streaming 20.
+
+El parámetro que vamos a medir es la tasa de Fps.
+
+La Resolución de la imagen y la calidad del vídeo se modificarán según se especifica en el nombre de cada prueba. 
+
+Podemos verlas en los siguientes vídeos:
 	
 	\href{https://youtu.be/r73s9I_8SiI}{Resolución 800x600 calidad 50}
 	
@@ -168,15 +178,33 @@ Las pruebas están organizadas según la investigación:
 	
 	\href{https://youtu.be/WzJjXKeKpaI}{Resolución 176x144 calidad 20}	
 	
-	Lo que se ha ido haciendo es modificar la resolución y calidad de la imagen hasta que hemos obtenido la tasa de frames deseada, 50 fps. Esta tasa se ha alcanzado en la prueba de resolución 176x144, calidad del streaming 20.
+	\item Pruebas de luminosidad, en busca de implementar una función que calcule la luminosidad de la imagen. 
+
+El parámetro a medir es la luminosidad, en concreto medida con la
+función implementada en esta etapa.
+
+En este caso hemos modificado la luminosidad del ambiente en el que se encontraba la cámara para ver como la función se comportaba. El resultado esperado era que el valor que devolvía la función disminuyera acorde con la disminución de luminosidad, y aumentara cuando la luminosidad del entorno aumentara. El resultado es satisfactorio, ya que cumple perfectamente este funcionamiento.
 	
-	\item Pruebas de luminosidad, en busca de implementar una función que calcule la luminosidad de la imagen. Podemos verlas en el siguiente vídeo:
+	Podemos verlas en el siguiente vídeo:
 	
 	\href{https://youtu.be/CuTADdioU4g}{Prueba de la función que calcula la luminosidad}	
 	
-	En este caso hemos modificado la luminosidad del ambiente en el que se encontraba la cámara para ver como la función se comportaba. El resultado fue satisfactorio, ya que vemos que cuando disminuimos la luminosidad, la funcion lo detecta adecuadamente.
+	\item Pruebas de binarización, tanto por luminosidad como por color. 
 	
-	\item Pruebas de binarización, tanto por luminosidad como por color. Podemos verlas en los siguientes vídeos:
+	En las pruebas de binarización por luminosidad el entorno está formado por un fondo blanco y una cinta aislante negro.
+En las pruebas de binarización por color el entorno es un tapete de color verde oscuro, y la línea de cartulina amarilla, con el borde remarcado en cinta aislante.
+
+Buscaremos la mayor pureza de imagen posible, que no contenga
+distorsiones ni partes mal binarizadas. Podemos ver esto en la previsualización de la binarización.
+
+La funcionalidad buscada en esta prueba es la de obtener una función que se comportara bien a la hora de binarizar. Hemos encontrado dos funciones capaces de esto, binarización mediante el algoritmo de Otsu, poco sensible a las variaciones de luminosidad, y binarización por color, sensible a las variaciones de luminosidad.
+
+En condiciones de luminosidad constante, ambas funciones se comportan bien.
+
+Destacar que mientras que en la binarización por luminosidad, el fondo blanco donde está la línea, no puede sufrir distorsión alguna, ya que aparecerían desperfectos en la imagen, en la binarización por color si podemos tener un fondo de muy diversa indole, siempre y cuando no sea del mismo color o parecido al color de la línea.
+	
+	
+	Podemos verlas en los siguientes vídeos:
 	
 	\href{https://youtu.be/Gu_HvPr3cCU}{Binarizar con umbral fijo}
 	
@@ -188,37 +216,96 @@ Las pruebas están organizadas según la investigación:
 	
 	\href{https://youtu.be/Rks5PkxDeZQ}{Binarizar por color}
 	
-	La funcionalidad buscada en esta prueba es la de obtener una función que se comportara bien a la hora de binarizar. Hemos encontrado dos funciones capaces de esto, binarización mediante el algoritmo de Otsu, poco sensible a las variaciones de luminosidad, binarización por color, sensible a las variaciones de luminosidad. En condiciones de luminosidad constante, ambas funciones se comportan bien.
+	\item Prueba de calculo del coefciente para resolver la distorsión de perspectiva. 
 	
-	\item Prueba de calculo del coefciente para resolver la distorsión de perspectiva. Podemos verla en el siguiente vídeo: 
+	En este caso el entorno será la línea guía, y lo que modificaremos será el ángulo de la cámara.
+	
+El parámetro a medir será el coeficiente que devuelva la función.
+
+En esta prueba lo que buscamos es realizar un test y anotaciones de los diferentes coeficientes que devuelve la función que calcula el coeficiente para relacionarlo con el ángulo que tiene la cámara respecto del suelo.
+	
+	Podemos verla en el siguiente vídeo: 
 	
 	\href{https://youtu.be/Y9QgFIMXSiU}{Prueba de calculo del coeficiente}
 	
-	En esta prueba lo que buscamos es realizar un test y anotaciones de los diferentes coeficientes que devuelve la función que calcula el coeficiente para relacionarlo con el ángulo que tiene la cámara respecto del suelo.	
 	
-	\item Pruebas de la resolución de la distorsión de perspectiva. Podemos verlas en los siguientes vídeos:
+	\item Pruebas de la resolución de la distorsión de perspectiva. 
+	
+	En este caso mediremos el ancho de la línea.
+	
+El entorno es el habitual, linea de cinta aislante negro sobre fondo blanco.
+
+El parámetro a medir es el ancho de la línea en pixels, para ello
+usaremos la herramienta Online Pixel Ruler.
+
+Tomamos medidas de en la imagen para preparar el algoritmo.
+
+Una vez pensado el algoritmo, elegimos una fila cualquiera, la 70 por ejemplo y realizamos mediciones en la imagen para comprobar que el algoritmo está bien diseñado. El algoritmo es el que se menciona en la Figura 5.26.
+
+	
+	
+	
+	Podemos verlas en los siguientes vídeos:
 	
 	\href{https://youtu.be/rUQrHbA_H8A}{Tomar medidas del ancho de la línea}
 	
 	\href{https://youtu.be/ClA-Ei8f18o}{Comprobar medidas de la linea}
 	
+	\item Medida del ancho de línea variando luminosidad
+	
+	En esta prueba comprobamos como afecta la variación de luminosidad en la binarización por luminosidad a la medida del ancho de la línea.
+Se variará la luminosidad del entorno.
+
+El parametro a medir es el ancho de la línea.
+	
 	\href{https://youtu.be/m7t4dcfuFeo}{Prueba a medir el ancho variando la luminosidad}
 	
-	\href{https://youtu.be/Y9QgFIMXSiU}{Correción de la distorsión de perspectiva}
+	\item Primera comprobación de la transformación de perspectiva
+	
+	En esta prueba simplemente buscamos ver a ojo si la función de transformación de perspectiva es capaz de modificar la imagen, buscando realizar la correción de la distorsión.
+	
+Para ello colocaremos la cámara en distintos ángulos y ejecutaremos las funciones de corrección.
+	
+	\href{https://youtu.be/pRE8zerfp7E}{Primera comprobación de la resolución de distorsión por perspectiva}
+	
+	\item Encontrar la trayectoria
+	
+	En esta prueba lo que buscamos es obtener la trayectoria (punto medio entre los dos bordes de la línea).
+	
+El entorno es el habitual, línea guía de cinta aislante negro sobre fondo blanco.
+
+Usaremos las funciones del coeficiente y de la transformación de la imagen. Variaremos la imagen moviendo la cámara.
+
+El resultado esperado es que la línea guía se ve en dos dimensiones, que podamos ver tanto sus bordes como la trayectoria.
+
 	
 	\href{https://youtu.be/Ae5aTr3mg6k}{Encontrar la trayectoria con la distorsión resuelta}
+	
+	\item Comprobación de proporciones reales
+	
+	En esta prueba buscamos comprobar que la imagen resultante de la transformación por perspectiva guarda las mismas dimensiones que la realidad.
+	
+Para ello se ha creado una plantilla con ángulos, de cinta aislante negro sobre fondo blanco.
+
+Colocaremos la plantilla delante de la cámara, tras haber ejecutado las funciones de corrección de distorsión de perspectiva.
+
+Mediremos los ángulos en la imagen, con ayuda de LightShot, un programa para hacer capturas de pantalla, que permite dibujar sobre esta, permitiendo agrandar los ángulos de la imagen. Usaremos finalmente un transportador de ángulos para medir el ángulo sobre la pantalla.
+
+El resultado es satisfactorio, midiendo el mismo ángulo en la imagen y en la realidad.
 	
 	\href{https://youtu.be/wc00piNmfyI}{Comprobar que la imagen corregida guarda las proporciones de la realidad midiendo ángulos 1.}
 	
 	\href{https://youtu.be/T0djIwql6G8}{Comprobar que la imagen corregida guarda las proporciones de la realidad midiendo ángulos 2.}
 	
-	\href{https://youtu.be/pRE8zerfp7E}{Ver el coeficiente calculado con el ángulo}
+	\item Pruebas del sistema de guiado. 
 	
-	En esta serie de pruebas se busca realizar la asociación del coeficiente calculado con la transformación de la perspectiva. El resultado es satisfactorio ya que conseguimos implementar esta funcionalidad. 
+	En estas pruebas lo que hacemos es calcular la trayectoria en la imagen sin resolver la distorsión de perspectiva. Buscamos el encontrar la trayectoria para poder ver si la trayectoria está más a la derecha o a la izquierda del centro de la imagen. Esto nos permitirá guiar al vehículo. 
 	
-	Además se realizan pruebas para comprobar que la imagen con la perspectiva en vista de pajaro guarda las mismas relaciones de tamaño que en la vida real. Para ello se ha creado una plantilla con ángulos, se ha colocado delante de la cámara, y se han medido esos mismos ángulos en la imagen en vista de pájaro, comprobando que son exactamente el mismo ángulo que en la realidad. El resultado es satisfactorio.
+	Modificaremos la posición de la cámara para ver como afecta al programa.
 	
-	\item Pruebas del sistema de guiado. Podemos verlas en los siguientes vídeos:
+El parámetro a revisar es el ángulo que genera la función de guía, y el indicador de dirección.	
+	
+	Podemos verlas en los siguientes vídeos:
 	
 	\href{https://youtu.be/ODr3q91MLk0}{Prueba del sistema de guiado}
 	
