@@ -13,8 +13,8 @@ class webcam_stream(object):
     En este proyecto se ha usado como servidor la aplicación androids
     IPWebcam.
     """
-    def __init__(self, url):
-        self.url = url
+    def __init__(self, url_vid):
+        self.url = url_vid
 
     def get_frame(self, modo):
         """

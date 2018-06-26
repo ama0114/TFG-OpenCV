@@ -13,13 +13,25 @@ def main():
     """
     Programa principal
     """
-    url = raw_input("Dime la url del servidor de video:")
-    stream = webcam_stream(url + '/shot.jpg')
+    
+    stream = get_url_stream()
     persp = perspectiva()
     bin_hsv = binarizar_hsv()
 
     menu(stream, persp, bin_hsv)
 
+def get_url_stream():
+    ex = True
+    while ex is True:
+        try:
+            url = raw_input("Dime la url del servidor de video: ")
+            stream = webcam_stream(url + "/shot.jpg")
+            stream.get_video_stream(0)
+            ex = False
+        except:
+            print("Error, no se ha podido conectar con la url: " + url)
+
+    return stream
 
 def crear_marco_comparacion(img):
     """
@@ -62,6 +74,32 @@ def mostrar_comparacion_imagenes(im_spc1, im_spc2, im_spc3, im_spc4, im1, im2, i
     #Tiempo de pausa, lo menor posible para que el video se muestre fluido
     plt.pause(0.001)
 
+def check_num_int(num):
+    """Comprueba que una variable es númerica y entera y devuelve
+    el numero entero asociado
+    Parametros:
+    -num: el numero a comprobar
+    """
+    try:
+        num = int(num)
+    except ValueError:
+        print "Error. Introduce un numero entero\n"
+
+    return num
+
+def check_num_float(num):
+    """Comprueba que una variable es númerica y decimal y devuelve
+    el numero decimal asociado
+    Parametros:
+    -num: el numero a comprobar
+    """
+    try:
+        num = float(num)
+    except ValueError:
+        print "Error. Introduce un numero decimal\n"
+
+    return num
+
 def menu(stream, persp, binarizar_hsv):
     """
     Menú principal de la aplicación.
@@ -71,11 +109,13 @@ def menu(stream, persp, binarizar_hsv):
     while opcion is not 0:
         print "******* Menu ***********"
 
-        opcion = input(" 1-Prueba binarizar luminosidad \n" +
+        opcion = raw_input(" 1-Prueba binarizar luminosidad \n" +
                        " 2-Prueba binarizar color \n" +
                        " 3-Muestra proceso \n"+
                        " 4-Ejecucion normal \n"+
                        " 0-Salir \n")
+        opcion = check_num_int(opcion)
+
         print "************************"
         if opcion is 1:
             print "************************"
@@ -87,7 +127,7 @@ def menu(stream, persp, binarizar_hsv):
             print "************************"
             print "Prueba binarizar por color, pulsa 's' para salir."
             print "************************"
-            binarizar_color(binarizar_hsv)
+            binarizar_color(binarizar_hsv, stream)
             opcion = -1
         elif opcion is 3:
             menu_aux(stream, persp, binarizar_hsv, muestra_proceso)
@@ -120,12 +160,12 @@ def binarizar_luminosidad(stream):
             cv2.destroyAllWindows()
             salir = True
 
-def binarizar_color(binarizar_hsv):
+def binarizar_color(binarizar_hsv, stream):
     """
     Seccion del menu que permite ejecutar una prueba
     de binarizacion por luminosidad.
     """
-    binarizar_hsv.calibrar_color()
+    binarizar_hsv.calibrar_color(stream)
 
 def menu_aux(stream, persp, binarizar_hsv, ejecucion):
     """
@@ -137,12 +177,13 @@ def menu_aux(stream, persp, binarizar_hsv, ejecucion):
     while opcion is not 0:
 
         print "************************"
-        opcion = input("1-Binarizar Color\n 2-Binarizar Luminosidad\n 0-Salir\n")
+        opcion = raw_input("1-Binarizar Color\n 2-Binarizar Luminosidad\n 0-Salir\n")
         print "************************"
+        opcion = check_num_int(opcion)
 
         if opcion is 1:
 
-            binarizar_color(binarizar_hsv)
+            binarizar_color(binarizar_hsv, stream)
             calcular_coef_angulo_interaccion(persp, stream, binarizar_hsv.binarizar_frame, 1)
             ejecucion(1, binarizar_hsv.binarizar_frame, stream, persp)
 
@@ -196,11 +237,13 @@ def ejecucion_normal(color_stream, funcion_binarizado, stream, persp):
 
     rango_seguro = -1
     while rango_seguro > 0.3 or rango_seguro < 0:
-        rango_seguro = input("Dime el rango seguro para la direccion\n min=0, max=0.3\n")
+        rango_seguro = raw_input("Dime el rango seguro para la direccion\n min=0, max=0.3\n")
+        rango_seguro = check_num_float(rango_seguro)
 
     ang_giro_max = -1
     while ang_giro_max > 90 or ang_giro_max < 0:
-        ang_giro_max = input("Dime el angulo de giro maximo del vehiculo: ")
+        ang_giro_max = raw_input("Dime el angulo de giro maximo del vehiculo[Valor entero]: ")
+        ang_giro_max = check_num_int(ang_giro_max)
 
     dir = direccion(rango_seguro, len(stream.get_frame(1)[0]), ang_giro_max)
     while True:

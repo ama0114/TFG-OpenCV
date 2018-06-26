@@ -28,12 +28,12 @@ class binarizar_hsv(object):
 
         return img_binarizada
 
-    def calibrar_color(self):
+    def calibrar_color(self, stream):
         """
         Permite calibrar el color mediante ventanas de opencv.
         """
-        stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
         salir = False
+        print "Pinche en la imagen en color el color por el que quiera binarizar"
 
         def on_mouse_click(event, x, y, flags, frame):
             """
