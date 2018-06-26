@@ -193,11 +193,16 @@ def ejecucion_normal(color_stream, funcion_binarizado, stream, persp):
     Seccion del menu que permite realizar la ejecución normal del programa.
     """
     fps_stats = []
+
     rango_seguro = -1
     while rango_seguro > 0.3 or rango_seguro < 0:
         rango_seguro = input("Dime el rango seguro para la direccion\n min=0, max=0.3\n")
 
-    dir = direccion(rango_seguro, len(stream.get_frame(1)[0]))
+    ang_giro_max = -1
+    while ang_giro_max > 90 or ang_giro_max < 0:
+        ang_giro_max = input("Dime el angulo de giro maximo del vehiculo: ")
+
+    dir = direccion(rango_seguro, len(stream.get_frame(1)[0]), ang_giro_max)
     while True:
         vid, fps = stream.get_video_stream(1)
         umbral = 0
