@@ -1,14 +1,14 @@
 \capitulo{3}{Conceptos teóricos}
 
-\section{Implementación hardware}
-En este proyecto está enfocado a AGVs. Necesitaremos 3 elementos principales para implementarlo:
+\section{Organización de la infraestructura}
+En este proyecto necesitaremos tres elementos para probar e implementar adecuadamente el sistema de guiado:
 
 \begin{itemize}
-	\item Una cámara que capte imágenes, situada adecuadamente en el AGV.
+	\item Una cámara que capte imágenes, situada adecuadamente sobre el suelo. En este proyecto un smartphone, sobre un soporte construido con Lego.
 	
-	\item Una ordenador que ejecute el programa.
+	\item Una ordenador que ejecute el programa. En este proyecto el ordenador del alumno.
 	
-	\item Un elemento para transmitir las instrucciones que genere nuestro programa al sistema de control del vehiculo.
+	\item Un elemento para transmitir las instrucciones que genere nuestro programa al sistema de control del vehículo. En este proyecto, esta parte no se ha implementado, puesto que está enfocado a la detección de líneas. Aun así, es necesario mencionarlo para entender la organización general de la infraestructura.
 	
 \end{itemize}
 
@@ -16,6 +16,9 @@ Tras analizar los diferentes elementos y la forma de combinarlos, podemos obtene
  
 
 \subsection{Implementación total en el AGV}
+
+\imagen{agvtotal}{Diagrama de la organización completa en el AGV.}
+
 En esta implementación se colocarán todos los elementos en el AGV, ejecutando el programa en el ordenador del propio vehículo.
 \subsubsection{Ventajas}
 \begin{itemize}
@@ -36,6 +39,8 @@ En esta implementación se colocarán todos los elementos en el AGV, ejecutando 
 \end{itemize}
 
 \subsection{Externalización del ordenador que ejecuta el programa} 
+
+\imagen{extcomp}{Diagrama de la organización con el ordenador externalizado.}
 
 En esta implementación se externaliza el ordenador donde se ejecuta el programa, a un ordenador fijo, más potente.
 \subsubsection{Ventajas}
@@ -62,6 +67,8 @@ El alcance del proyecto no incluye el transmitir de vuelta instrucciones, ya que
 \section{Procesado de imagen}
 Para realizar una detección efectiva de la línea guía en la imagen, tenemos que realizar un procesamiento de la imagen, pasándola por distintos filtros para finalmente obtener la trayectoria que representa la línea guía.
 
+\imagen{fases}{Fases del procesado de imagen.}
+
 \subsection{Binarización}
 Binarizar es el proceso que nos permite distinguir ciertas partes o elementos de una imagen aplicando una serie de valores umbrales. La forma en la que se distinguen los elementos es generando una imagen binaria, donde los elementos destacados tienen un valor, y el resto de la imagen tiene otro valor.
 \imagen{img_binaria}{Izquierda, imagen binaria. Derecha imagen real.} 
@@ -78,7 +85,7 @@ Veamos algunos conceptos relacionados con esto:
 \end{itemize}
 
 Una pantalla\cite{led} está formada por diminutos puntos de color, conocidos como pixeles\cite{pixel}. Cada pixel tiene 3 "luces", una para rojos, otra para verdes y otra para azules. El formato RGB da a cada una de estas luces un valor, que las hará lucir con mayor o menor intensidad.
-\imagen{pixels}{Pixels de una pantalla LCD. Fuente: youtube.com}
+\imagen{pixels}{Pixels en diferentes tipos de pantallas. Fuente:\cite{pixel}}
 
 La resolución tanto de la pantalla como de la imagen es un aspecto relevante, ya que influirá en la forma en la que la pantalla representará la imagen.
  
@@ -86,8 +93,9 @@ La resolución de la pantalla\cite{res_pantalla} es el número de pixels de anch
 
 Cuando ambas son iguales, cada valor de la matriz RGB se interpretará en cada uno de los pixeles de la pantalla. En el caso de que sean diferentes, se hará un re-escalado\cite{resize} de imagen.
 
-Los valores que pueden tomar son desde 0, apagado, hasta 255, intensidad máxima. La combinación de intensidades de las luces RGB formará los distintos colores. 
-\imagen{RGB_rueda}{Combinación de colores RGB. Fuente: wikipedia.org}
+Los valores que pueden tomar son desde 0, apagado, hasta 255, intensidad máxima. La combinación de intensidades de las luces RGB formará los distintos colores. Este valor se almacenará en un entero de 8 bits, de ahí los 255 valores disponibles.
+
+\imagen{RGB_rueda}{Combinación de colores RGB. Fuente:\cite{rgb}}
 
 Como vemos, tenemos $256^3$ combinaciones diferentes, lo que nos da un rango de 16777216 colores posibles.
 
@@ -99,7 +107,7 @@ Como vemos, tenemos $256^3$ combinaciones diferentes, lo que nos da un rango de 
 
 La forma de funcionamiento de una cámara se basa en un sensor con celdas sensibles a la luz, que permiten registrar la intensidad con la que incide la luz.
 Una vez más, cada una de estas celdas se corresponderá con un una de las luces de un pixel. Para poder registrar los valores RGB se descompone la luz en sus 3 colores primarios, rojo, verde y azul. Se registra la intensidad de cada color, y se genera la imagen RGB.
-\imagen{sensor_camara}{Esquema del funcionamiento del sensor de una cámara. Fuente: globalspec.com}
+\imagen{sensor_camara}{Esquema del funcionamiento del sensor de una cámara. Fuente:\cite{cam_sens}}
 
 Una vez visto el porqué del formato RGB, podemos empezar a explicar los métodos de binarización.
 
@@ -140,6 +148,8 @@ Normalmente en este tipo de flujos de imágenes, la luminosidad puede variar, po
 
 La solución a esto es usar un umbral dinámico, calculado en función del histograma de cada imagen.
 
+
+\subsubsection{Algoritmo de Otsu}
 La forma que hemos usado para calcular este umbral ha sido mediante el Algoritmo de Otsu\cite{wikiotsu}, ya implementado en OpenCV.
 
 Lo que hace el algoritmo de Otsu es separar la imagen mediante el umbral en dos zonas. Buscamos que la dispersión dentro de cada segmento sea la mínima (que los pixels dentro de ese segmento se parezcan), pero que entre ambos segmentos sea lo máximo posible.
@@ -220,7 +230,9 @@ Como vemos, en esta imagen se puede diferenciar perfectamente la línea guía de
 \subsubsection{Binarización por color}
 Inicialmente, en el formato RGB tenemos colores, pero están separados en 3 matrices diferentes, por lo que es complicado poder binarizar de una forma efectiva. 
 
-Existe in formato de imagen conocido como HSV\cite{hsl_hsv} (Hue, Saturation, Value), donde la matriz H corresponde con los colores puros de la imagen, la matriz S corresponde a los valores de saturación de cada pixel, y la matriz V corresponde con los valores de negro de cada pixel.
+Existe un formato de imagen conocido como HSV\cite{hsl_hsv} (Hue, Saturation, Value), donde la matriz H corresponde con los colores puros de la imagen, la matriz S corresponde a los valores de saturación de cada pixel, y la matriz V corresponde con los valores de negro de cada pixel.
+
+La ventaja principal de HSV frente a RGB es que en HSV tenemos todos los colores "puros", por puros entendemos sin modificación de saturación ni luminosidad, en la misma matriz. Esto es ideal para realizar la binarización por color, ya que en esta matriz podemos diferenciar los colores y elegir el color que que queramos destacar para realizar la binarización.
 
 Si representamos esto en un prisma, obtenemos:
 
@@ -316,9 +328,9 @@ Para realizar esto con la función de transformación de perspectiva de OpenCV t
 
 Para obtener la cantidad exacta de pixels que se han de reducir en la imagen anterior, se han llevado a cabo una serie de pruebas, con diferentes ángulos de cámara.
 
-Se ha implementado una función que obtiene un coeficiente en función del ángulo que tiene la cámara con el suelo. Para ello utiliza la plantilla del cuadrado. Obtiene la altura del trapecio que se ve en la imagen, obtiene la diferencia entre la base y el lado superior del trapecio, y hace el cociente entre estos dos valores.
+Se ha implementado una función que obtiene un coeficiente en función del ángulo que tiene la cámara con el suelo. Para ello utiliza la plantilla del cuadrado. Obtiene la altura del trapecio que se ve en la imagen, obtiene la diferencia entre la base y el lado superior del trapecio, y hace el cociente entre estos dos valores. Esto nos dará el coeficiente.
 
-Se han anotado para cada ángulo probado la cantidad de pixels necesarios para corregir la distorsión.
+Se han anotado para cada ángulo probado la cantidad de pixels que tenemos que reducir en la parte inferior de la imagen para corregir la distorsión.
 
 Podemos ver los valores del ángulo, coeficiente y pixels a reducir en la Tabla 3.3.
 
@@ -333,7 +345,17 @@ Haciendo una regresión podemos obtener una función que nos relacione el coefic
 60º & 0.613 & 140px\\
 }
 
-Cogemos como valores de x los coeficientes, como valroes de y los pixels, y hacemos la regresión. La función resultante es:
+En el experimento los pasos seguidos son:
+\begin{itemize}
+	\item Se colocaba la cámara con un ángulo concreto respecto del suelo.
+	\item Se ejecutaba la función que calcula el coeficiente único de cada ángulo y se anotaba.
+	\item Se probaban distintos valores de reducción de pixels hasta encontrar el valor adecuado que corrigiera la distorsión para ese ángulo.
+	\item Se dejaba registrada la relación entre el coeficiente y los pixels a reducir.
+\end{itemize}
+
+Estos pasos se realizaron para los diferentes ángulos que se muestran en la Tabla 3.3, generando los coeficientes y valores necesarios para realizar la función. 
+
+Cogiendo como valores de X los coeficientes, como valores de Y los pixels que tenemos que reducir, podemos generar la función mediante regresión\cite{regresion}, que nos relacione ambos valores. Esta función nos permitirá obtener los pixels a reducir dándole como parámetro el coeficiente que genera la función según el ángulo que forma la cámara con el suelo. La función obtenida es esta:
 
 $y = 140.3462 + (101.7432 - 140.3462)/(1 + (x/0.5605076)^64.36072)$
 
@@ -412,7 +434,26 @@ Una gran mejora que podemos realizar, si está soportada por el controlador del 
 
 Es irreal que ante una mínima desviación, y una gran desviación, la orden que le demos al vehículo sea igual, ya que en el primer caso con una leve corrección sería suficiente, mientras que en el segundo necesitaremos una corrección más grande.
 
-La solución planteada a este problema es usar una función que nos calcule el ángulo de giro en función de la cantidad de pixels que nos estemos alejando del centro de la imagen. Mediante regresión, podemos obtener está función, dando como valores de X la cantidad de pixels de desviación y como Y el ángulo deseado. A menor desviación, menor ángulo, si estamos sobre el centro ideal, ángulo de giro 0.
+La solución planteada a este problema es usar una función que nos calcule el ángulo de giro en función de la cantidad de pixels que nos estemos alejando del centro de la imagen. 
+
+Usaremos una función para los giros a la derecha, y otra para los giros a la izquierda.
+
+Si observamos la imagen 3.17, la línea azul puede tomar valores a lo largo de toda la resolución en horizontal. Los valores desde la izquierda de la imagen, hasta el centro (indicador verde, mitad de la resolución horizontal) serán los valores de X para la función de giro a la derecha. Los valores de X para la función de giro a la izquierda, serán desde el indicador verde hasta la resolución máxima, derecha de la imagen.
+
+Como valores de Y tenemos que usar el rango de giro del vehículo AGV, El ángulo mínimo será 0, que se generará cuando el programa detecte que el AGV esta centrado con la línea (o dentro de la zona segura, se verá en el apartado siguiente), según nos alejemos bien por la izquierda o por la derecha, el ángulo ha de aumentar. El ángulo máximo será el máximo giro posible que pueda realizar el AGV, por ejemplo 90º (esto dependerá del vehículo). Podemos obtener un valor más, para realizar una regresión con algo más de precision, si calculamos la mitad del ángulo de giro, 45º y un cuarto y tres cuartos de la resolución horizontal de la imagen. 
+
+\imagen{guiado_fun}{Correspondencia de ángulos de giro y de valores de resolución de la imagen.}
+
+Por tanto, los valores con los que realizaremos la regresión son:
+
+\begin{itemize}
+
+	\item Para la función de giro a la izquierda: X: 0, 1/4 de resolución, 1/2 resolución; Y: 90, 45, 0.
+	
+	\item Para la función de giro a la derecha: X: 1/2 de resolución, 3/4 de resolución, resolución máxima; Y: 0, 45, 90.
+\end{itemize}
+
+El ángulo máximo de giro se solicita al usuario, y las funciones se calculan en tiempo ejecución.
 
 \subsubsection{Mejora en la frecuencia de corrección}
 Otro problema que nos podemos plantear es si de verdad necesitamos estar corrigiendo continuamente al vehículo, o podemos hacer un guiado más natural.
@@ -421,9 +462,31 @@ Cuando las personas conducimos, no estamos todo el rato buscando el centro del c
 
 La idea es llevar esto al sistema de guiado, establecer unos márgenes a la derecha y a la izquierda del centro ideal, y mientras la trayectoria esté dentro de estos márgenes, mandar al vehículo seguir recto. En la Figura 3.17 podemos ver estos márgenes, las líneas rojas en la parte inferior de la imagen, próximas al centro.
 
-Los márgenes se generarán en la etapa de calibración del programa, se solicitará al usuario un valor entre 0 y 0.3, y se multiplicará este valor por la resolución horizontal de la imagen. Esto nos dará un valor en pixels, y estos pixels serán la distancia del margen a la izquierda y derecha del centro. Obviamente si damos de margen 0, no tendremos margen y estaremos en la situación en la que el programa nos corrige continuamente. El limite superior es 0.3 ya que si superamos este valor, el margen sería demasiado grande, llevan al programa hasta casi perder la línea.
+Los márgenes se generarán en la etapa de calibración del programa, se solicitará al usuario un valor entre 0 y 0.3, y se multiplicará este valor por la resolución horizontal de la imagen. Esto nos dará un valor en pixels, y estos pixels serán la distancia del margen a la izquierda y derecha del centro. Obviamente si damos de margen 0, no tendremos margen y estaremos en la situación en la que el programa nos corrige continuamente. El limite superior es 0.3 ya que si superamos este valor, el margen sería demasiado grande, llevando al programa hasta casi perder la línea. 
 
-La funcionalidad concreta es, mientras la línea de la trayectoria este entre estos márgenes, el programa seguirá generando la instrucción para seguir recto. En el momento que nos salgamos de uno de estos márgenes, el margen pasará a ser el centro, por lo que el programa nos corregirá hasta volver al centro. Una vez que lleguemos al centro, el margen volverá a su posición anterior.
+Las funciones de corrección entrarán en acción cuando nos salgamos de los margenes. 
+
+El algoritmo sería:
+
+\begin{itemize}
+	\item Si la trayectoria es mejor que el margen izquierdo:
+	Movemos el margen izquierdo al centro, por lo que la función de giro a la izquierda entrará en funcionamiento. 
+	
+	La situación es: la trayectoria está a la izquierda del centro y al mover el margen izquierdo al centro, hemos salido de la zona entre ambos margenes, donde el programa genera la instrucción de ir recto, por tanto entra en acción la función de giro a la izquierda, para dirigirnos hacia la trayectoria, y que esta vuelva a estar en el centro.
+	
+	\item Si la trayectoria es mayor que el margen derecho:
+	Movemos el margen derecho al centro, por lo que la función de giro a la derecha entrará en funcionamiento. 
+	
+	La situación es: la trayectoria está a la derecha del centro y al mover el margen derecho al centro, hemos salido de la zona entre ambos margenes, donde el programa genera la instrucción de ir recto, por tanto entra en acción la función de giro a la derecha, para dirigirnos hacia la trayectoria, y que esta vuelva a estar en el centro.
+	
+	\item Si la trayectoria es igual que el centro:
+	Restauramos los margenes a los valores originales distintos del centro.
+	
+\end{itemize}
+
+Se ejecutaría para cada fotograma, dentro del bucle principal del programa.
+
+En la imagen 3.17 podemos ver el margen izquierdo y el margen derecho pintados de rojo, en la parte inferior de la imagen.
 
 En este proyecto las instrucciones que genera el sistema de guiado se muestran por pantalla. Podemos ver un indicador númerico con el ángulo de giro y un indicador textual que puede tomar los valores:
 
@@ -438,7 +501,8 @@ En este proyecto las instrucciones que genera el sistema de guiado se muestran p
 	
 \end{itemize}
 
-Para llevar esto a una implementación real, tendríamos que ponernos de acuerdo con el sistema controlador del vehículo en la estructura de las instrucciones generadas, por ejemplo, un array de valores, una tupla... 
+Para llevar esto a una implementación real, tendríamos que ponernos de acuerdo con el sistema controlador del vehículo en la estructura de las instrucciones generadas, por ejemplo, un array de valores, una tupla... esto se realizará en futuros proyectos.
+
 En este proyecto como no tenemos conexión real con un vehículo, las instrucciones se generan para ser visualizadas en pantalla.
 
 \imagen{guiado_fin}{Comparación de situaciones en el sistema de guiado.}
@@ -446,8 +510,8 @@ En este proyecto como no tenemos conexión real con un vehículo, las instruccio
 En la Figura 3.18 podemos ver como en el momento en el que la línea de trayectoria sobrepasa uno de los márgenes, en concreto el izquierdo, el margen se mueve hacia el centro, y el programa comienza a generar instrucciones para corregir la trayectoria, en este caso nos manda realizar un giro hacia a la izquierda. El ángulo ira disminuyendo según el centro de la imagen se vuelva a acercar a la trayectoria, volviendo a la situación donde genera la instrucción de ir recto.
 
 
-\section{Sistema de guiado virtual}
-Este sistema de guiado sería el siguiente avance. Consistiría en recrear virtualmente la situación en la que está el vehículo. 
+\section{Sistema de guiado virtual, línea de trabajo futura}
+Este sistema de guiado sería el siguiente avance, en este proyecto no ha sido implementado. Consistiría en recrear virtualmente la situación en la que está el vehículo. 
 
 Con el sistema de guiado básico, ademas de podernos guiar de una forma simple, no perdemos la trayectoria de vista. Lo siguiente que tenemos que hacer es aplicar algún tipo de transformada a la imagen binaria de la trayectoria, para obtener el polinomio aproximado que represente esa trayectoria. Una vez hecho esto, podemos generar un entorno virtual en dos dimensiones según la posición en la que se encuentra el vehículo y la trayectoria que debe seguir.
 
@@ -457,7 +521,7 @@ Si volvemos un poco atrás, concretamente a la Tabla 3.3, podemos obtener las me
 
 \imagen{guiado_virtual}{Entorno virtual para el sistema de guiado virtual.}
 
-En esta imagen podemos ver como las medidas de la tabla nos pueden ayudar a saber la distancia que hay entre el vehículo (Punto rojo) y el comienzo de la trayectoria(Distancia Min), y la distancia máxima hasta la que podemos ver(Distancia max). La trayectoria está representada mediante la línea curva azul.
+En esta imagen podemos ver como las medidas de la tabla nos pueden ayudar a saber la distancia que hay entre el la perpendicular de la cámara con el suelo (Punto rojo) y el comienzo de la trayectoria(Distancia Min), y la distancia máxima hasta la que podemos ver(Distancia max). La trayectoria está representada mediante la línea curva azul.
 
 Esta sería la representación virtual del entorno, y nos ayudaría a generar unas instrucciones de guiado mucho más precisas. 
 

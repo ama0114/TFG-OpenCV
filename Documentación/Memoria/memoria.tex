@@ -421,11 +421,11 @@ D. Jesús Enrique Sierra García
 % Abstract en castellano
 \renewcommand*\abstractname{Resumen}
 \begin{abstract}
-Los AGV, vehículos de guiado autónomo, son ampliamente utilizados en la industria para transportar cargas. Actualmente estos AGV se guían mediante diferentes métodos, uno de ellos el guiado óptico mediante detección de lineas. 
+Los AGV, vehículos de guiado autónomo, son ampliamente utilizados en la industria para transportar cargas. Actualmente estos AGV se guían mediante diferentes métodos, uno de ellos el guiado óptico mediante detección de líneas. 
 
-La implementación actual del guiado óptico se basa en una cámara muy cercana y paralela al suelo, que permite detectar si el vehículo está encima de la línea guía o no.
+La implementación actual del guiado óptico se basa en una cámara muy cercana y paralela al suelo, que permite detectar si el vehículo está encima de la línea guía o no. Esto permite conocer al software si el AGV esta a la izquierda o a la derecha de la línea y corregir su posición.
 
-Esta implementación no permite ver en perspectiva lo que el AGV tiene por delante, simplemente detecta si nos salimos de la línea. 
+Esta implementación no permite ver en perspectiva lo que el AGV tiene por delante, simplemente detecta si nos salimos de la línea, lo cual hace que la implementación sea sensible a condiciones de luminosidad o estado del suelo, haciendo que en algunos tipos de suelo industrial sea inviable.
 
 En este proyecto investigaremos diferentes métodos y funcionalidades para poder lograr ver en perspectiva lo que el vehículo tiene por delante, y guiarlo de una forma más efectiva.
 \end{abstract}
@@ -442,9 +442,9 @@ AGV, vehículo de guiado autónomo, binarización de imágenes, detección de l�
 \begin{abstract}
 AGV, automated guided vehicle, are widely used in the industry in order to transport loads. Currently these AGV are guided by different methods, one of them the optical track guidance.
 
-The current implementation of the optical track guidance is based on a camera very close and parallel to the ground, which allows detecting if the vehicle is above the guideline or not.
+The current implementation of the optical track guidance is based on a camera very close and parallel to the ground, which allows detecting if the vehicle is above the guideline or not. This allows the software to know if the AGV is to the left or to the right of the line and correct its position. 
 
-This implementation does not allow to see in perspective what the AGV has in front of it, it simply detects if we get out of line.
+This implementation does not allow to see in perspective what the AGV has in front of it, it simply detects if we get out of line, which makes the implementation sensitive to conditions of luminosity or soil condition, making it unfeasible in some types of industrial floor.
 
 In this project we will investigate different methods and functionalities to be able to see in perspective what the vehicle has in front, and guide it in a more effective way.
 \end{abstract}

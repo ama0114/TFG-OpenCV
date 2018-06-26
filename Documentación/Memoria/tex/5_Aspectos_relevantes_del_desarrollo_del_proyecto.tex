@@ -80,11 +80,24 @@ Las fases de este proyecto partían de un requisito a cumplir, realizando un tra
 \subsubsection{Binarizacion por luminosidad}
 Inicialmente se planteó la binarización por luminosidad, se investigaron diferentes algoritmos como Otsu, Umbral Adaptativo por Vecindad y Umbral fijo, siendo el más efectivo el algoritmo de Otsu. 
 
+Las pruebas realizadas tenían estos requisitos a cumplir:
+
+\begin{itemize}
+
+	\item Que la tasa de Fps fuera adecuada, todos lo consiguieron.
+	
+	\item Que la binarización fuera correcta, Otsu y umbral fijo lo consiguieron. Los algoritmos de Umbrales adaptativo por Vecindad, tanto Media como Gaussiano, generaban ciertas distorsiones en la imagen.
+	
+	\item Que fueran robustos frente a variaciones de luminosidad, solo Otsu consiguió esto. Umbral fijo, como su propio nombre indica, no era capaz de modificar el umbral de binarización, por lo que a partir de cierta luminosidad, la binarización era erronea.
+\end{itemize}
+
 El algoritmo de umbral fijo no era capaz de aguantar la variación de luminosidad. 
 
 El algoritmo de Umbral Adaptativo por Vecindad no está preparado para este tipo de problemas, está enfocado a usarse en imágenes donde la luz incide de forma desigual, siendo capaz de calcular un umbral en función de la luminosidad de los vecinos del pixel que se este procesando.
 
 El algoritmo de Otsu calcula el umbral en función de la luminosidad de la imagen, lo cual es ideal para este proyecto ya que se puede adaptar a las variaciones de iluminación. En la versión final del proyecto, se muestra tanto la luminosidad de la imagen, como el umbral de Otsu que se está usando para binarizar la imagen.
+
+Es por esto, que nos quedamos con el algoritmo de Otsu.
 
 \imagen{lum_umbral}{Pantalla donde se muestra tanto la luminisdad de la imagen como el umbral de binarizacion generado por el algoritmo de Otsu.}
 
@@ -101,14 +114,18 @@ Para realizar esto primero se implementaron unas funciones que tenían cierta l�
 
 Inicialmente se creó una función que solo trabajaba con imágenes binarizadas. Lo que hacía era mediante la plantilla del cuadrado, calculaba un "coeficiente de reducción" que servía para saber la cantidad de pixels a reducir en cada fila de la imagen. 
 
-Lo que hacemos es a partir del trapecio que se genera al ver el cuadrado en perspectiva, calcular la diferencia entre su base y su lado superior. Esta diferencia es la que tenemos que "solventar" para hacer que sean iguales, y por tanto un cuadrado. 
-El trapecio está formado por filas de pixels, por lo que podemos dividir esa diferencia en pixels de los lados entre el número de filas que tiene de alto el trapecio, lo que nos dará la cantidad de pixels que tenemos que reducir en cada fila.
+Lo que hacemos es a partir del trapecio que se genera al ver el cuadrado en perspectiva, calcular la diferencia entre su base, en la imagen tamaño máximo, y su lado superior, en la imagen, tamaño deseado. 
 
-Por ejemplo en la fila donde está el lado menor del trapecio, la fila 0, tendremos que reducir 0 * coeficiente de reduccion, 0 pixels.
+\imagen{trap}{Esquema de medidas para generar un cuadrado a partir de un trapecio.}
+
+Esta diferencia es la que tenemos que "solventar" para hacer que sean iguales, y por tanto un cuadrado. 
+El trapecio está formado por filas de pixels, por lo que podemos dividir esa diferencia en pixels de los lados, entre el número de filas que tiene de alto el trapecio, lo que nos dará la cantidad de pixels que tenemos que reducir en cada fila.
+
+Por ejemplo en la fila 0, la del lado menor del trapecio, tendremos que reducir 0 * coeficiente de reduccion, 0 pixels. Concuerda, puesto que el tamaño buscado es el de esa misma fila.
 
 Para la fila de la base, tendremos que reducir el número de fila donde se encuentre (altura del trapecio) * coeficiente, lo que nos dará exactamente la diferencia entre los dos lados antes calculada, dejando del mismo tamaño el lado superior e inferior.
 
-Las filas del medio del trapecio seguirán el mismo algoritmo, dejando a todas iguales al lado menor del trapecio, y por tanto dejandolo en forma cuadrada.
+Las filas del medio del trapecio seguirán el mismo algoritmo, dejando a todas iguales al lado menor del trapecio, y por tanto dejándolo en forma cuadrada.
 
 Este algoritmo a pesar de que funciona, tiene un problema y es que no guarda la relación de aspecto de los objetos del mundo real. El cuadrado que debería ser cuadrado, es rectangular, a si que no nos vale.
 
