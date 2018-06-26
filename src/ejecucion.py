@@ -13,8 +13,8 @@ def main():
     """
     Programa principal
     """
-
-    stream = webcam_stream('http://192.168.1.10:8080/shot.jpg')
+    url = raw_input("Dime la url del servidor de video:")
+    stream = webcam_stream(url + '/shot.jpg')
     persp = perspectiva()
     bin_hsv = binarizar_hsv()
 
