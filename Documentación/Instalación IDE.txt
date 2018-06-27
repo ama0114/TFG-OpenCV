@@ -6,7 +6,7 @@ Partimos de aqu�:
 http://docs.opencv.org/3.2.0/d5/de5/tutorial_py_setup_in_windows.html
 Desactualizado, pasos para instalarlo correctamente (python 2.7.15, opencv 3.3.0, numpy 1.13.1, matplotlib 1.3.0).
 
-Instalar python 2.7.5 version 32 bits.
+Instalar python 2.7.15 version 32 bits.
 https://www.python.org/downloads/release/python-2715/
 
 Instalar pip para python.
@@ -30,6 +30,20 @@ pip install python-dateutil
 Por �ltimo descargamos opencv
 https://sourceforge.net/projects/opencvlibrary/files/latest/download?source=files
 Lo instalamos. (en realidad no es una instalac�n al uso, simplemente nos crear� una carpeta con las librerias para varios lenguajes de programaci�n)
+
+Podemos realizar esto mismo usando pip. Para instalar pip usar el archivo: https://bootstrap.pypa.io/get-pip.py
+Ejecutar el comando python get-pip.py
+Una vez tengamos pip, podemos instalar las librerías con los comandos:
+
+pip install opencv-python
+pip install matplotlib
+pip install numpy
+pip install scipy
+pip install pylint
+pip install pyinstaller
+
+o bien usando el archivo requirements.txt que se encuentra en la raiz del respositorio.
+
 Vamos donde nos ha instalado las librerias, accedemos a build/python/2.7/x86, copiamos el archivo cv2.py y lo copiamos en C:/Python27/lib/site-packages.
 Descargaremos las librerias ffmpeg para poder abrir archivos de video http://ffmpeg.zeranoe.com/builds/ version static. Copiaremos la carpeta ffmpeg
 en el directorio raiz del sistema. Añadiremos a la variable de entorno el directorio "C:\ffmpeg\bin" para comprobar el correcto funcionamiento,
