@@ -5,8 +5,6 @@ En este apartado mostraremos todas las herramientas necesarias para ponernos a t
 
 El proyecto es accesible desde: \url{https://github.com/ama0114/TFG-OpenCV/}
 
-Para descargarlo, basta con usar la herramienta git\cite{git}
-
 \section{Estructura de directorios}
 Los scripts y clases están dentro de la carpeta src. 
 
@@ -51,7 +49,7 @@ Lo podemos descargar en:
 Una vez hecho esto instalaremos pip para Python. Necesitaremos el archivo get\_pip.py, lo podemos descargar en:
 \url{https://bootstrap.pypa.io/get-pip.py}
 
-Para instalar pip, abrimos un terminal, nos colocamos mediante el comando cd en el directorio donde tengamos el archivo get\_pip.py y ejecutamos: python get\_pip.py
+Para instalar pip, abrimos un terminal, nos colocamos mediante el comando cd en el directorio donde tengamos el archivo get\-pip.py y ejecutamos: python get\-pip.py
 
 Una vez que tengamos pip, instalaremos las librerías necesarias, para ello usaremos los comandos:
 
@@ -66,7 +64,7 @@ Una vez que tengamos pip, instalaremos las librerías necesarias, para ello usar
 
 Con las primeras 4 liberias podremos ejecutar el código desde python, pylint es un parser para python, que nos ayudará en la labor de programación y pyinstaller nos servirá para crear el ejecutable.
 
-Se ha dejado en el repositorio un archivo requirements.txt para instalar todas las librerías con un solo comando. Nos descargamos el archivo y ejecutamos el comando: pip install -r requirements.txt
+Se ha dejado en el repositorio un archivo requirements.txt para instalar todas las librerías con un solo comando. Nos descargamos el archivo, abrimos una consola de comandos, nos desplazamos con el comando cd hasta donde tengamos el archivo y ejecutamos el comando: pip install -r requirements.txt
 
 \subsection{IDE}
 Una vez preparado Python, ya nos podríamos poner a programar desde el propio IDE de Python. 
@@ -81,6 +79,8 @@ La instalación es como la de cualquier programa para Windows.
 Inicialmente este IDE ya viene preparado para trabajar, aun así, si necesitamos realizar alguna configuración, la podemos hacer desde: Archivo, Preferencias, Configuración.
 
 Se nos abrirá una nueva ventana del editor con el archivo de configuración, aquí podemos realizar la configuración que necesitemos.
+
+\imagen{ide}{Interfaz de Visual Studio Code}
 
 \subsection{Git}
 Git es el sistema de control de versiones elegido para este proyecto. Windows no lo trae por defecto, a si que lo tenemos que descargar desde:
@@ -102,31 +102,95 @@ En caso de tenerlo ya clonado, pinchamos en la opción: File, Open Repo y buscam
 
 Una vez hecho esto, la herramienta nos mostrará las ramas del proyecto, los commits realizados, en general toda la información del repositorio. También nos permite hacer las operaciones básicas del repositorio, Pull, Push, Stash, Branch y Pop.
 
+\imagen{gitk}{Interfaz de GitKraken}
+
 \section{Compilación, instalación y ejecución del proyecto}
+Lo primero que tenemos que hacer es iniciar nuestro servidor de vídeo. Para este proyecto hemos usado la aplicación android IPWebcam. La podemos descargar desde aquí:
+\url{https://play.google.com/store/apps/details?id=com.pas.webcam&hl=en}
+
+El streaming se ha de configurar en una resolución de 176x144. La calidad del mismo se puede ajustar ahora desde la aplicación, o más adelante desde la web.
+
+Asegurarnos que el ordenador donde vamos a ejecutar el proyecto y la aplicación tienen conexión. Para ello ir a la dirección IP que nos muestra la aplicación en la pantalla del smartphone en cualquier navegador de Internet en el ordenador. 
+\imagen{ipwebcam}{Pantalla de la aplicación IPWWebcam en el smartphone.}
+Aquí podemos ver la dirección IP que usa la aplicación. En mi caso: 192.168.1.10:8080
+
+Si tenemos conexión deberíamos de ver esto en el navegador:
+\imagen{wipwebcam}{Servidor web de la aplicación IPWebcam}
+Desde aquí podemos gestionar el streaming, incluso encender el led de la cámara y enfocar la imagen.
+También podemos modificar la calidad del streaming.
+
+Cuando el programa solicite la dirección del servidor, hay que dársela de esta forma: http://192.168.1.10:8080 .
+Basta con hacer copia y pega de la barra del navegador de Internet.
 
 Podemos ejecutar el proyecto de diferentes maneras, veamos:
 
 \subsection{Linea de comandos}
-Usando Python desde la linea de comandos, simplemente nos colocamos sobre la carpeta src y ejecutamos el comando: python ejecucion.py 
+Usando Python desde la linea de comandos, simplemente nos colocamos sobre la carpeta src y ejecutamos el comando:
+\begin{itemize}
+	\item python ejecucion.py
+\end{itemize}
 
 El programa se ejecutará.
 
 \subsection{Visual Studio Code}
 Podemos ejecutar el programa desde Visual Studio Code.
 
-
-Hacemos click derecho sobre el archivo ejecucion.py y seleccionamos la opción "Ejecutar archivo Python en la terminal".
-
+Hacemos click derecho sobre el archivo ejecucion.py y seleccionamos la opción: Ejecutar archivo Python en la terminal.
 
 Ejecutará el archivo en la terminal del IDE.
 
 \subsection{Creación del ejecutable}
 Para crear el ejecutable usaremos la herramienta pyinstaller.
 
-Abrimos una consola de comandos nos movemos con el comando cd hasta la carpeta src y ejecutamos el comando: pyinstaller ejecucion.spec
+Abrimos una consola de comandos nos movemos con el comando cd hasta la carpeta src y ejecutamos el comando:
 
-Si nos lanza algún error, será porque nos faltan Dlls en la carpeta Python/Dlls. Estos Dlls los podemos encontrar en la carpeta Python/libs/site-packages. Dentro de aquí tendremos todos los paquetes que tengamos en Python instalados, buscaremos el paquete del que nos falten los Dlls (nos lo indicará pyinstaller) y copiamos sus Dlls en la carpeta Python/Dlls.
+\begin{itemize}
+	\item pyinstaller ejecucion.spec
+\end{itemize}
 
-Como esta tarea es un poco complicada, y suele llevar horas de exploración por internet, se ha dejado un fichero Dlls.zip en el repositorio con los Dlls necesarios para crear el ejecutable de esta versión. Si en un futuro se expande el proyecto, es posible que haya que incluir más.
+\imagen{priconstruccion}{Inicio de la construcción del ejecutable.}
+
+Durante la construcción se generarán varias pantallas de información en la consola de comandos. Acabará en algo igual o similar a esto:
+
+\imagen{finconstruccion}{Fin de la construcción del ejecutable}
+
+Si nos lanza algún error, será porque nos faltan Dlls en la carpeta Python/Dlls, recalcar que la carpeta a la que hacemos referencia con Python es la de instalación de Python. Estos Dlls los podemos encontrar en la carpeta Python/libs/site-packages. Dentro de aquí tendremos todos los paquetes que tengamos en Python instalados, buscaremos el paquete del que nos falten los Dlls (nos lo indicará pyinstaller) y copiamos sus Dlls en la carpeta Python/Dlls.
+
+Como esta tarea es un poco complicada, y suele llevar horas de exploración por internet, se ha dejado un fichero Dlls.zip en el repositorio con los Dlls necesarios para crear el ejecutable de esta versión.
+
+OJO! estos Dlls son para Windows 10, si lo queremos construir para otro sistema operativo seguramente necesitemos cambiarlos. Si en un futuro se expande el proyecto, es posible que haya que incluir más.
+
+Tendremos nuestra carpeta con el ejecutable y todos los archivos necesarios en la carpeta src/dist.
+
+La carpeta se ha de distribuir así tal cual, sin modificar nada. El ejecutable en concreto es el archivo ejecucion.exe
 
 \section{Pruebas del sistema}
+Las pruebas que se han hecho en este proyecto son principalmente pruebas de investigación, de los diferentes algoritmos, midiendo parámetros y probando su eficacia. Las pruebas se han dejado registradas en vídeos en la carpeta Documentacion/Videos.
+
+\url{https://github.com/ama0114/TFG-OpenCV/tree/master/Documentaci%C3%B3n/Videos}
+
+Además se ha generado un diario donde se iban recogiendo todos los resultados de las pruebas, el archivo es Documentacion/Diario.txt.
+
+\url{https://github.com/ama0114/TFG-OpenCV/blob/master/Documentaci%C3%B3n/Diario.txt}
+
+\section{Cambiar conexión de vídeo}
+Si queremos cambiar la forma en la que el programa obtiene el vídeo, simplemente debemos generar una clase python, con la estructura de la clase $webcam_stream.py$.
+
+El método get\_frame(self, modo) se usa para obtener un único frame, como hacer una foto. El parámetro modo indica el formato de la imagen, 0 para blanco y negro, 1 para RGB. 
+
+Si observamos la implementación, vemos que hacemos un bucle de 10 iteraciones para que el buffer de donde se obtiene el vídeo, tenga algún fotograma, sin este bucle, la primera imagen devuelta sería gris, porque el buffer está vacío, y hay que hacer una serie de peticiones para que al menos tenga un frame.
+
+El método get\_video\_stream(self, modo) se usa para obtener frames para realizar una reproducción de vídeo.
+ El parámetro modo indica el formato de la imagen, 0 para blanco y negro, 1 para RGB. 
+ 
+En este caso, no tiene bucles internos, porque se ha de usar dentro de un bucle, el bucle donde querremos obtener el vídeo. Si usamos esta función fuera de un bucle, nos devolverá una imagen gris, puesto que con una sola llamada a la función que conecta con la cámara, no es capaz de llenar el buffer a tiempo.
+
+Si queremos generar una clase con una forma distinta de obtener el vídeo, simplemente tenemos que cumplir la funcionalidad de estos métodos. 
+
+get\_frame(self, modo) tiene que devolver un único frame, se usa para obtener fotos. 
+
+get\_video\_stream(self, modo) tiene que poderse usar dentro de bucles para obtener vídeo.
+
+\section{Utilizar módulos en otras aplicaciones.}
+Los módulos de este programa se han pensado para ser independientes.
+

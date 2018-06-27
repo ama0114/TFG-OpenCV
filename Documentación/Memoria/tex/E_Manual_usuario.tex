@@ -1,11 +1,197 @@
 \apendice{Documentación de usuario}
 
 \section{Introducción}
+En este apartado veremos como usar la aplicación.
 
 \section{Requisitos de usuarios}
+Los requisitos para poder usar la herramienta son:
+\begin{itemize}
+	\item Un smartphone con la aplicación IPWebcam, generando un servidor de vídeo accesible en red local a través de la dirección IP mostrada en la pantalla de la aplicación.
+	
+	\item Un ordenador con Windows 10 donde ejecutar el programa, con conexión a la red local donde este el servidor de vídeo.
+	
+	\item Unas plantillas para probar y ejecutar las diferentes funcionalidades. En concreto: una plantilla de un cuadrado negro sobre fondo blanco, una plantilla de un cuadrado de algún color llamativo con borde negro, una línea guía negra sobre fondo blanco, una línea guía de algún color llamativo con borde negro.
+	
+\end{itemize}
 
 \section{Instalación}
+La herramienta en sí no tiene instalación, simplemente nos la tenemos que descargar desde la release del repositorio.
+
+\url{https://github.com/ama0114/TFG-OpenCV/releases/tag/untagged-e77f1e53d55c0df5d337}
+
+\begin{itemize}
+	\item Descargamos el fichero release\_v1.0.zip
+	\item Dentro de este fichero está la carpeta bin, la extraemos donde queramos.
+\end{itemize}
+
+Y ya está, hecho esto ya tendremos la herramienta lista para funcionar en nuestro sistema.
 
 \section{Manual del usuario}
+
+\subsection{Inicialización}
+Lo primero que nos solicitará la herramienta es la dirección IP de nuestro servidor de vídeo. Se la proporcionaremos con el formato: http://direccionIP:Puerto
+
+Por ejemplo: http://192.168.1.10:8080
+
+Una vez hecho esto, el programa comprobará que tenemos conexión, si no tenemos conexión, nos dará error y nos volverá a pedir la dirección.
+
+Si tenemos conexión, nos llevará al menú principal:
+
+\imagen{inicio}{Inicio de la aplicación}
+
+Una vez en el menú principal tenemos 5 opciones:
+
+\begin{itemize}
+	\item 1-Prueba binarizar luminosidad
+	\item 2-Prueba binarizar color
+	\item 3-Muestra proceso
+	\item 4-Ejecucion normal
+	\item 0-Salir
+\end{itemize}
+
+Elegiremos una de las 5 opciones escribiendo el número asociado en la consola de comandos.
+
+Veamos cada una de ellas:
+
+\subsection{1-Prueba binarizar luminosidad}
+Esta funcionalidad está pensada para que el usuario pueda probar diferentes materiales y entornos para comprobar la binarización por luminosidad. Al elegir esta opción con el valor 1 se nos abrirá una ventana de OpenCV como esta:
+
+\imagen{op1}{Ventanas de OpenCV eligiendo la opción 1 del menú principal.}
+
+Vemos dos imágenes, una binaria y otra en blanco y negro. Para realizar correctamente la binarización, tenemos que colocar elementos negros sobre fondo blanco. En la imagen anterior podemos ver la binarización de la plantilla del cuadrado negro sobre fondo blanco.
+
+Para salir pulsamos S en el teclado cuando estamos sobre cualquiera de las ventanas.
+
+Nos imprimirá los Fps conseguidos.
+
+Volveremos al menú principal.
+
+\subsection{2-Prueba binarizar color}
+Esta funcionalidad está pensada para que el usuario pueda probar diferentes materiales y entornos para comprobar la binarización por color. Al elegir esta opción con el valor 2 se nos abrirá una ventana de OpenCV como esta:
+
+\imagen{op2}{Ventanas de OpenCV eligiendo la opción 2 del menú principal.}
+
+Vemos dos imágenes, una binaria y otra el color. Para seleccionar el color que queramos, pinchamos sobre la imagen en color. Por ejemplo, si queremos el azul, click sobre el azul:
+
+\imagen{azul}{Binarización si elegimos el color azul.}
+
+Para salir pulsamos S en el teclado cuando estemos sobre cualquiera de estas ventanas.
+
+Volveremos al menú principal.
+
+\subsection{3-Muestra proceso}
+Esta funcionalidad está pensada para que el usuario pueda probar como funciona la corrección de distorsión de perspectiva, y detectar posibles anomalías en la imagen corregida. Además se mostrará como se detecta la trayectoria. Para entrar en esta opción escribiremos un 3 en la línea de comandos.
+
+Lo primero que nos pedirá es que elijamos el método de binarización que queramos, en un submenú con estas opciones:
+
+\begin{itemize}
+	\item 1-Binarizar por color
+	\item 2-Binarizar por luminosidad
+	\item 0-Salir
+\end{itemize}
+
+La opción de salir nos devolverá al menú principal.
+
+Si elegimos binarización por color se nos abrirá una ventana como la Figura E.3. Para calibrar el color seguiremos los mismos pasos de la Prueba de binarizar por color.
+
+Si elegimos binarización por luminosidad, pasaremos al siguiente menú.
+
+En el siguiente menú se nos pedirá calibrar la distorsión de perspectiva. Nos aparecerá un mensaje en la línea de comandos como este: Pulsa intro para calcular el coeficiente de corrección de distorsión por perspectiva, pulsaremos intro y se nos abrirá una ventana con la imagen binarizada.
+
+\imagen{perspop}{Imagen de calibración de la distorsión de perspectiva}
+
+Para que la corrección sea adecuada, debemos colocar el cuadrado tal cual aparece en la imagen anterior, buscando que este un poco por encima del limite inferior de la imagen, y lo más recto posible, si es posible que forme una línea recta perfecta en la parte inferior y superior, mejor.
+
+Una vez hecho esto, pulsamos S para salir de esa ventana, y en la ventana de comandos nos aparecerá el coeficiente calculado de la distorsión de perspectiva.
+
+\imagen{coefop}{Línea de comandos tras corregir distorsión de perspectiva}
+
+El coeficiente está relacionado con el ángulo que forma la cámara con el suelo, podemos consultar la relación en la Tabla E.1.
+
+\tablaSmall{Valores obtenidos en las pruebas de corrección de distorsión de perspectiva}{l c}{valores_correcion_perspectiva}
+{ \multicolumn{1}{l}{Angulo} & Coeficiente\\}{ 
+40º & 0.506\\
+45º & 0.530\\
+50º & 0.550\\
+55º & 0.576\\
+60º & 0.613\\
+}
+
+Pulsamos enter para continuar. A continuación se abrirá una ventana como esta:
+
+Para binarización por color:
+\imagen{compara}{Ventana de comparación de imágenes en binarización por color}
+
+Para binarización por luminosidad:
+\imagen{persplum}{Ventana de comparación de imágenes en binarización por color}
+
+Podemos ver que las imágenes que aparecen entre la binarización por color y por luminosidad son diferentes. Esto se debe a que al binarizar por luminisdad, si o si hay que hacer siempre primero la binarización y luego la correción de perspectiva, ya que la correción de perspectiva genera dos zonas grandes negras que después son interpretadas como objetos por la binarización, lo cual es erroneo. En cambio en la binarización por color es indiferente realizar primero la binarización o la corrección.
+
+En esta ventana el usuario puede ver la imagen real, la imagen binarizada, la imagen corregida, en vista de pajaro, y la detección de la trayectoria.
+
+Para salir simplemente cerramos con el aspa roja esta ventana. Nos devolverá al submenú para elegir el tipo de binarización, si queremos volver al principal, escribiremos un 0 en la línea de comandos.
+
+\subsection{4-Ejecución Normal}
+Esta opción permite ejecutar el flujo principal del programa, donde se usarán los sistemas de guiado y de detección de trayectoria, además de algunas otras funcionalidades que iremos viendo.
+
+Entraremos escribiendo un 4 en la línea de comandos desde el menú principal.
+
+Nos pedirá elegir el tipo de binarización que queramos usar, realizar la calibración si es por color, y realizar la calibración de perspectiva. Todo esto es similar a los pasos realizados en la opción 3-Muestra Proceso.
+
+A continuación nos pedirá el valor para el rango seguro de la dirección. 
+
+Veamos que es esto:
+
+El sistema de guiado funciona detectando la distancia de la trayectoria al centro de la imagen, si está en el centro, tenemos que seguir recto, si está a la izquierda o a la derecha, tendremos que girar hacia ella, para volver a estar centrados.
+
+Lo que permite hacer el rango seguro es crear una "zona" al rededor del centro de la imagen, en la que también el programa nos mande ir recto, para que no este continuamente corrigiendonos. Esto se basa en la propia conducción humana, donde no estamos buscando el centro ideal del carril si no que tenemos unos margenes por donde movernos, y cuando nos acercamos a uno de ellos, corregimos la trayectoria.
+
+En esta opción se nos pedirá un valor entre 0 y 0.3. Esto se multiplicará por el tamaño de la imagen en horizontal, y generará un valor en pixels, ese valor será la distancia entre el centro y los bordes del rango seguro donde el programa nos seguirá diciendo que continuemos recto.
+
+\imagen{margenesseguros}{Imagen donde se aprecian los márgenes del rango seguro de la dirección}
+
+En esta imagen podemos ver en la parte inferior en rojo los bordes del rango seguro, en verde está marcado el centro de la imagen.
+
+Una vez hayamos introducido un valor, nos pedirá el ángulo de giro de nuestro vehículo. En este caso como no trabajamos con el vehículo, puede ser cualquiera, pero ha de ser entero positivo. Esto permitirá conocer al programa el ángulo máximo de giro que tiene el vehículo.
+
+\imagen{rangseg}{Ajuste del rango seguro y ángulo de giro de la dirección}
+
+Una vez hecho esto, se nos abrirá una ventana como esta:
+
+\imagen{guiadofin}{Ventana del sistema de guiado y calculo de la trayectoria en perspectiva, binarización por luminosidad}
+
+\imagen{bird_view}{Ventana del sistema de guiado y calculo de la trayectoria en perspectiva, binarización por color}
+
+Vamos a explicar los diferentes elementos. 
+
+En la parte izquierda tenemos la distorsión por perspectiva resuelta, así como la detección de la trayectoria. También podemos ver 3 valores numéricos, los Fps a los que está funcionando el programa, la luminosidad (Lum) ambiente, y el umbral(Umb) de binarización de Otsu, este solo aparece si la binarización es por luminosidad.
+
+Estos valores nos darán información sobre el sistema y la situación del entorno en el que estamos trabajando.
+
+En la parte derecha tenemos el sistema de guiado. Vemos un indicador textual y uno numérico, que pueden tomar estos valores en función de la posición de la trayectoria respecto del centro de la imagen.
+
+Para el indicador textual:
+
+\begin{itemize}
+
+	\item RI, recto izquierda, indica que el ángulo se tiene que interpretar como un giro a la izquierda. Para ángulos menores o iguales de 45º.
+	
+	\item RD, recto derecha, indica que el ángulo se tiene que interpretar como un giro a la derecha. Para ángulos menores o iguales de 45º.
+	\item I, similar a RI pero para ángulos mayores de 45º.
+	
+	\item D, similar a RD pero para ángulos mayores de 45º.
+	
+\end{itemize}
+
+El indicador numérico nos dirá los grados de giro, asociados a la dirección del indicador textual.
+
+Podemos ver como el ángulo de giro disminuye según nos acercamos a la línea, para realizar correcciones de dirección lo más suaves posible.
+
+Es importante destacar que si no vemos uno de los bordes de la línea en la parte inferior de la imagen, el sistema no podrá encontrar la trayectoria y dará error.
+
+Cuando nos salgamos de los margenes de la zona segura, el margen por el que nos hayamos salido se moverá al centro, dando lugar a la activación del sistema de guiado, entonces veremos como la R cambiará a RI o RD, y el ángulo pasará de ser 0 a tener un valor. Ese valor son los grados que debemos de girar la dirección en el sentido RD o RI, para volver a centrarnos sobre la línea guía.
+
+Para salir de esta opción, pulsaremos S en el teclado. Nos devolverá al menú donde se nos permite elegir el tipo de binarización, si queremos salir, escribimos un 0 en la linea de comandos y pulsamos enter.
+
 
 
