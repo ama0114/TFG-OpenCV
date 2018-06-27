@@ -155,27 +155,141 @@ Las pruebas realizadas parten desde los distintos materiales que se podían usar
 
 
 \section{Estudio de viabilidad}
+Necesitamos que el proyecto sea tanto viable económicamente, es decir, que sea rentable; y que sea viable legalmente, es decir, que no viole alguna ley a lo largo del transcurso del mismo. 
 
 \subsection{Viabilidad económica}
 En este apartado se analizarán los costes del proyecto.
 
 \subsubsection{Costes de personal}
+Consideraremos que este proyecto se ha realizado por una persona a lo largo de seis meses: Octubre, Noviembre, Febrero, Marzo, Abril y Mayo. Trabajando 20 días al mes, 4 horas diarias.
+El sueldo de un programador sin experiencia actualmente son 10 euros por hora. Haciendo cálculos:
+$10 euros/hora * 4 horas/dia = 40 euros/dia$
+$40 euros/dia * 20dias/mes = 800 euros/mes$
+$800 euros/mes * 6 meses = 4800 euros de salario$ 
 
 \subsubsection{Costes de hardware}
+En esta sección calcularemos los costes hardware del proyecto. Incluiremos todos los elementos hardware empleados. Consideraremos la vida útil del hardware en 6 años.
+La amortización la calcularemos como:
+
+$Amortización = (Valor del bien)/Vida util$
+
+
+\begin{itemize}
+	\item Ordenador portátil: 500 euros.
+	
+	$500 euros/(12*6)meses = 6.94 euros/mes$
+	
+	Por tanto en 6 meses:
+	
+	$6,94 euros/mes * 6 meses = 41.64 euros brutos$
+	
+	\item Smartphone: 300 euros.
+	$300 euros/(12*6)meses = 4.16 euros/mes$
+	
+	Por tanto en 6 meses:
+	
+	$4.16 euros/mes * 6 meses = 24.96 euros brutos$
+	
+	\item Router: 50 euros.
+	$50 euros/(12*6)meses = 0.69 euros/mes$
+	
+	Por tanto en 6 meses:
+	
+	$0.69 euros/mes * 6 meses = 4.14 euros brutos$
+	
+\end{itemize}
 
 \subsubsection{Costes de software}
+La única licencia no gratuita usada ha sido el sistema operativo Windows 10 Home, que tiene un coste de 120 euros. Estimamos su vida útil en 3 años.
 
-\subsubsection{Costes de materiales e infraestructura}
+$120 euros/(12*3)meses = 4.32 euros/mes$
+	
+Por tanto en 6 meses:
+	
+$4.32 euros/mes * 6 meses = 25.92 euros brutos$
+
+\subsubsection{Costes de materiales}
+Aquí sumaremos los costes de la realización de plantillas. Estos son costes sin amortización, puesto que las plantillas una vez creadas no sirven para nada más.
+
+\begin{itemize}
+	\item Coste de las cartulinas: 10 euros.
+	\item Coste de la cinta aislante: 5 euros.
+\end{itemize}
+
+Además hemos creado un soporte con Lego, con un coste aproximado de 5 euros.
 
 \subsubsection{Costes de totales}
+Vamos a estimar los costes del trabajador según los Tipos de Cotización Régimen General Ejercicio 2018\cite{cot}.
+
+Porcentajes de cotización:
+\begin{itemize}
+	\item Contingencias comunes: 23.6.
+	\item Desempleo: 5.5
+	\item 0.6
+\end{itemize}
+
+Realizando la suma, tenemos un porcentaje de: 29.7
+
+Por tanto el coste real del trabajador serán: $4800 + (4800*29.7) = 4942.56 euros$
+
+Sumando el resto de costes: 
+$4942.46 + 41.64 + 24.96 + 4.14 + 25.92 = 5039.12 euros$
+
+\subsubsection{Beneficio}
+En este apartado estimaremos los beneficios que se podrían obtener de este software. EL software por si solo no se puede distribuir, se ha de distribuir junto con el vehículo que tiene que guiar.
+
+Suponemos que esta herramienta de guiado se implementa en 300 vehículos y que el coste añadido por cada vehículo que lo implemente es de 20 euros anuales.
+
+$ 300 vehiculos * 20 euros/vehículo = 6000 euros/año$
+
+Recuperaríamos la inversión en:
+
+$5039.12/6000 euros anuales = 0.83 años$ 
+
+A partir de ese tiempo, unos 10 meses, obtendríamos beneficios.
+
 
 \subsection{Viabilidad legal}
 En este apartado veremos las licencias del software, compatibilidades entre ellas y la licencia final de la aplicación. También, aunque no se ha trabajado con ello, veremos la legislación de robots y vehículos autónomos en España, ya que el software sí esta pensado para dirigir a un vehículo de forma autónoma.
 
 \subsubsection{Software}
+Primero veamos las licencias del software usado:
+\begin{itemize}
+	\item OpenCV, licencia BSD
+	\item SciPy, licencia BSD
+ 	\item Numpy, licencia BSD
+	\item MatPlotLib, licencia BSD
+	\item Urllib, licencia MIT
+\end{itemize}
+Según la guía de licencias para python\cite{licen}, la licencia adecuada para este proyecto podría ser MIT o BSD, ya que son compatibles entre ellas, y cumplen con todas las licencias de las librerías usadas.
 
-\subsubsection{Documentación}
+En este caso elegiremos licencia MIT ya que es menos restrictiva en cuanto a los avisos de Copyright, y en cuanto a publicitar del software. Con la licencia BSD se tiene que remarcar siempre que se use el software usado, quien lo creó en toda la publicidad que se haga.
+
+La licencia Mit permite\cite{mit}:
+\begin{itemize}
+	\item Uso de la herramienta
+	\item Distribución de la herramienta
+	\item Distracción y modificación
+	\item Aviso de copyrigth y garantía solo en el software que lleve partes del software marcado con esta licencia. En publicidad y otros elementos no haría falta.
+	\item Mezclar la herramienta con otro software.
+	\item Vender la herramienta
+	\item Asignarle una licencia más restrictiva.
+	\item Publicarla
+\end{itemize}
+
+La aplicación IpWebcam no la consideramos puesto que aunque ha sido usada para el desarrollo, en la versión final del producto, lo único que tenemos que suministrar al programa es una url del servidor de vídeo, por lo que el usuario podrá usar la aplicación o sistema que necesite.
 
 \subsubsection{Legislación de robots autónomos}
+Actualmente en España no hay una legislación clara sobre robots y vehículos autónomos, aun así dentro del marco Europeo ya se está trabajando en algunas normas o objetivos que en un futuro no muy lejano pueden afectar a este software\cite{ley_rob}
+
+\begin{itemize}
+	\item Necesidad de un registro de robots.
+	\item Necesidad de un sistema de responsabilidad objetiva por daños causados y un sistema de seguro obligatorio.
+	\item Necesidad de fijar un régimen de cotización a la seguridad social, por los dueños de los robots.
+\end{itemize}
+
+Al final estas normas son previsibles, el trabajo que está haciendo un AGV de forma autónoma lo podría hacer un trabajador que cotiza y que puede cometer fallos y generar daños. 
+
+El registro de robots se tendrá para no tener robots "trabajando en negro", al igual que las personas.
 
 

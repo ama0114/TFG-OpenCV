@@ -1,11 +1,48 @@
 \apendice{Especificación de diseño}
 
 \section{Introducción}
+En este apartado veremos como se ha diseñado la herramienta. 
 
 \section{Diseño de datos}
+El único dato relevante con el que trabajamos son imágenes. Veamos los formatos de imagen usados:
+
+
+\begin{itemize}
+	\item Las imágenes se generan en formato RGB, el cual tiene 3 matrices de enteros de 8 bits, una para Rojos, Una para Verdes y otra para Azules.
+	
+	\item Las imágenes en formato BGR, tienen 3 matrices de enteros de 8 bits, una para Azules, una para Verdes y otra para Rojos.
+	
+	\item Las imágenes en escala de grises tiene una sola matriz de valores enteros de 8 bits.
+	
+	\item Las imágenes en formato HSV tienen 3 matrices de enteros de 8 bits, una para los colores, H; otra para la saturación, S; y otra para el valor de negro, V.
+\end{itemize}
+
+Las transformaciones entre formatos se harán con llamadas a OpenCV.
+
 
 \section{Diseño procedimental}
 
+A continuación veremos la interacción entre los elementos del programa.
+
+\imagen{bin_color}{Interacción. Prueba de binarización por color.}
+
+\imagen{bin_lum}{Interacción. Prueba de binarización por luminosidad.}
+
+\imagen{color_persp}{Interacción. Probar perspectiva con binarización por color.}
+
+\imagen{lum_persp}{Interacción. Probar perspectiva con binarización por luminosidad.}
+
+\imagen{gui_color}{Interacción. Ejecución principal con binarización por color.}
+
+\imagen{gui_lum}{Interacción. Ejecución principal con binarización por luminosidad.}
+
+
+
 \section{Diseño arquitectónico}
+A continuación se mostrará la organización de los diferentes módulos del programa.
+
+Destacar que en el diseño del programa se han usado clases y scripts, remarcados con la palabra (Script) al lado de su nombre en el diagrama.
+
+\imagen{class}{Diagrama de clases y scripts. }
 
 

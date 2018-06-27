@@ -1,31 +1,250 @@
 \apendice{Especificación de Requisitos}
 
 \section{Introducción}
+En este apartado describiremos los requisitos que ha de cumplir nuestra herramienta en cuanto a funcionalidad.
 
 \section{Objetivos generales}
+Los objetivos generales de la herramienta son:
+\begin{itemize}
+	\item Detección de lineas
+	\item Trabajar en perspectiva
+	\item Implementar un sistema de guiado
+\end{itemize}
 
 \section{Catalogo de requisitos}
 
+\subsection{Requisitos Funcionales}
+
+\begin{itemize}
+	
+	\item R1. Probar sistema de binarización por luminosidad.
+	
+	\item R2. Probar sistema de binarización por color.
+	
+	\item R3. Probar el sistema de resolución de distorsión de perspectiva.
+	
+	\item R4. Calibrar binarización por color.
+	
+	\item R5. Calibrar distorsión de perspectiva.
+	
+	\item R6. Calibrar zona segura del sistema de guiado.
+	
+	\item R7. Calibrar angulo de giro del sistema de guiado.
+	
+	\item R8. Ejecutar el flujo principal del programa.
+	
+	\item R9.Solicitar URL del servidor de vídeo.
+
+\end{itemize}
+
+\subsection{Requisitos no Funcionales}
+
+\begin{itemize}
+
+\item El software ha de conseguir la máxima tasa de Fps, idealmente 50.
+
+\item El software necesita de un servidor de vídeo que le proporcione imágenes mediante una url.
+
+\item El software puede ser extendido, por lo que el código debe de ser modular.
+
+\end{itemize}
+
 \section{Especificación de requisitos}
 
-\subsection{R1}
+\subsection{R1. Probar sistema de binarización por luminosidad.}
 \begin{description}
-	\item [Versión]
-	\item [Autor]
-	\item [Descripción]
-	\item [Precondición]
-	\item [Secuencia Normal]
+	\item [Versión] V1.0
+	\item [Autor] Antonio de los Mozos Alonso
+	\item [Descripción] Probar el sistema de binarización por luminisidad fuera del flujo principal para ver que materiales o forma de iluminación es la adecuada en el entorno.
+	\item [Precondición] Haber obtenido una conexión de vídeo, Requisito R9.
+	\item [Secuencia Normal] Paso y Descripción
+	
 		\begin{enumerate}
-			\item Hacer algo
+			\item El usuario seleccióna la opción en el menú principal.
+			
+			\item El programa abre una ventana donde se ve la imagen real y la imagen binarizada.			
+			
+			\item El usuario comprueba que la conexión de vídeo es adecuada, se ve sin cortes.
+			\item El usuario prueba sus materiales y condiciones de luminosidad.
+			\item Pulsar la tecla S para salir.
 		\end{enumerate}
-	\item [Postcondición]
-	\item [Excepciones]
-	\item [Importancia]
-	\item [Comentarios]
+	\item [Postcondición] El usuario consigue ver que materiales y luminosidad funcionan mejor para este tipo de binarización.
+	\item [Excepciones] Luminosidad no sea lo suficientemente grande como para distinguir algo en la imagen.
+	\item [Importancia] Media.
+	\item [Comentarios] Ninguno.
+\end{description}
+
+\subsection{R2. Probar sistema de binarización por color.}
+\begin{description}
+	\item [Versión] V1.0
+	\item [Autor] Antonio de los Mozos Alonso
+	\item [Descripción] Probar el sistema de binarización por color fuera del flujo principal para ver que materiales o forma de iluminación es la adecuada en el entorno.
+	\item [Precondición] Haber obtenido una conexión de vídeo, Requisito R9.
+	\item [Secuencia Normal] Paso y Descripción
+	
+		\begin{enumerate}
+			\item El usuario selecciona la opción en el menú principal.
+			
+			\item El programa abre una ventana donde se ve la imagen real y la imagen binarizada.
+			
+			\item El usuario comprueba que la conexión de vídeo es adecuada, se ve sin cortes.
+			\item El usuario prueba sus materiales y condiciones de luminosidad.
+			\item Pulsar la tecla S para salir.
+		\end{enumerate}
+	\item [Postcondición]  El usuario consigue ver que materiales y luminosidad funcionan mejor para este tipo de binarización.
+	\item [Excepciones] Luminosidad no sea lo suficientemente grande como para distinguir algo en la imagen.
+	\item [Importancia] Media
+	\item [Comentarios] Ninguno
+\end{description}
+
+
+\subsection{R3. Probar el sistema de resolución de distorsión de perspectiva.}
+\begin{description}
+	\item [Versión] V1.0
+	\item [Autor] Antonio de los Mozos Alonso
+	\item [Descripción] El usuario necesita ver las fases por las que pasa la imagen hasta que se resuelve la distorsión de perspectiva.
+	\item [Precondición] Haber calibrado el sistema de binarización Requisito R4 o Requisito R10. Haber calibrado la distorsión de perspectiva,Requisito R5.
+	\item [Secuencia Normal] Paso y Descripción
+	
+		\begin{enumerate}
+			\item El usuario selecciona la opción en el menú.
+			\item El programa solicita el tipo de binarización y todas las calibraciones necesarias.
+			
+			\item EL programa abre una ventana donde se ven las fases por las que pasa la imagen.
+			
+			\item El usuario realiza pruebas en el entorno para ver que materiales, ángulo de la cámara y luminosidad le conviene. 
+			\item El usuario sale de la ventana haciendo click en el aspa roja.
+		\end{enumerate}
+	\item [Postcondición] Permite que el usuario vea las fases por las que pasa la imagen, y permite realizar ajustes en el entorno según le convenga.
+	\item [Excepciones] No haber calibrado bien los sistemas necesarios.
+	\item [Importancia] Media.
+	\item [Comentarios] Ninguno.
+\end{description}
+
+\subsection{R4. Calibrar binarización por color.}
+\begin{description}
+	\item [Versión] V1.0
+	\item [Autor] Antonio de los Mozos Alonso
+	\item [Descripción] Calibrar el sistema de binarización por color para usarlo en el flujo del programa principal.
+	\item [Precondición] Haber realizado las pruebas pertinentes para comprobar que el algoritmo va a funcionar bien en el entorno. R2.
+	\item [Secuencia Normal] Paso y Descripción
+		\begin{enumerate}
+			\item Cuando se requiera realizar la calibración se abrirá una ventana de OpenCV, con la imagen en color y la imagen binarizada.
+			
+			\item Pinchar sobre el color por el que queramos binarizar.
+			
+			\item Pulsar la tecla S para salir.
+		\end{enumerate}
+	\item [Postcondición] El sistema de binarización por color quedará calibrado para ser usado en el flujo principal.
+	\item [Excepciones] Luminosidad no sea lo suficientemente grande como para distinguir algo en la imagen.
+	\item [Importancia] Alta.
+	\item [Comentarios] Ninguno.
+\end{description}
+
+\subsection{R5. Calibrar distorsión de perspectiva.}
+\begin{description}
+	\item [Versión] V1.0
+	\item [Autor] Antonio de los Mozos Alonso
+	\item [Descripción] Permite calibrar el sistema de resolución de distorsión por perspectiva.
+	\item [Precondición] Necesitamos tener una plantilla cuadrada, y que el sistema de binarización la detecte adecuadamente.
+	\item [Secuencia Normal] Paso y Descripción
+		\begin{enumerate}
+			\item El sistema pedirá que se calibre la distorsión de perspectiva.
+			\item El sistema solicitará que se coloque la plantilla del cuadrado delante de la imagen.
+			\item El sistema abrirá una ventana OpenCV donde se verá la imagen binarizada.
+			\item El usuario tendrá que colocar el cuadrado en la parte baja de la imagen, lo más centrado y paralelo a la cámara posible.
+			\item El usuario pulsara S para salir de la ventana.
+			\item El sistema pedirá al usuario que retire la plantilla del cuadrado.
+			\item El sistema mostrará en la linea de comandos el coeficiente calculado asociado al ángulo.
+			
+			\item Se calibrará el sistema de resolución de distorsión de perspectiva.
+		\end{enumerate}
+	\item [Postcondición] El sistema de resolución de distorsión de perspectiva quedará calibrado.
+	\item [Excepciones] Colocar el cuadrado de una forma no adecuada, dando lugar a calibraciones erróneas.
+	\item [Importancia] Alta.
+	\item [Comentarios] Ninguno.
+\end{description}
+
+\subsection{R6. Calibrar zona segura del sistema de guiado.}
+\begin{description}
+	\item [Versión] V1.0
+	\item [Autor] Antonio de los Mozos Alonso
+	\item [Descripción] El sistema de guiado cuenta con una zona segura que se tiene que calibrar. 
+	\item [Precondición] Haber obtenido un flujo de video. Requisito R9.
+	\item [Secuencia Normal] Paso y Descripción
+		\begin{enumerate}
+			\item El sistema solicitará un valor numérico decimal por linea de comandos, entre 0 y 0.3.
+			\item El usuario escribirá el valor que desee y pulsará enter.
+			\item El sistema validará el valor y continuará.
+		\end{enumerate}
+	\item [Postcondición] La zona segura del sistema de guiado se generará.
+	\item [Excepciones] 
+	\item [Importancia] Alta
+	\item [Comentarios] Ninguno.
+\end{description}
+
+\subsection{R7. Calibrar angulo de giro del sistema de guiado.}
+\begin{description}
+	\item [Versión] V1.0
+	\item [Autor] Antonio de los Mozos Alonso
+	\item [Descripción] Permite establecer el ángulo de giro máximo que puede realizar el vehículo, para calibrar el sistema de guiado para ese vehículo.
+	\item [Precondición] Haber establecido la zona segura del sistema de guiado. Requisito R6.
+	\item [Secuencia Normal] Paso y Descripción
+		\begin{enumerate}
+			\item El sistema solicitará un valor numérico decimal por linea de comandos, entre 0 y 90.
+			\item El usuario escribirá el valor que desee y pulsará enter.
+			\item El sistema validará el valor y continuará.
+		\end{enumerate}
+	\item [Postcondición] El sistema de guiado quedará calibrado para ese tipo de vehículo.
+	\item [Excepciones] Si no se calibra bien, el vehículo puede tener problemas a la hora de realizar giros.
+	\item [Importancia] Alta
+	\item [Comentarios] Ninguno.
+\end{description}
+
+\subsection{R8. Ejecutar el flujo principal del programa.}
+\begin{description}
+	\item [Versión] V1.0
+	\item [Autor] Antonio de los Mozos Alonso
+	\item [Descripción] Poder ejecutar el flujo del programa principal con todos los sistemas de guiado y resolución de distorsión por perspectiva.
+	\item [Precondición] Haber calibrado bien el sistema de binarizacion, el sistema de resolución de distorsión por perspectiva y el sistema de guiado. Requisito R7, Requisito R6, Requisito R5, Requisito R4 y Requisito R9.
+	\item [Secuencia Normal] Paso y Descripción
+		\begin{enumerate}
+			\item El usuario elegirá la opción en el menú principal.
+			\item El sistema pedirá hacer la calibración de binarización por color, si se usa.
+			
+			\item El sistema pedirá hacer la distorsión de perspectiva.
+			\item El sistema pedirá hacer la calibración de la zona segura del sistema de guiado.
+			
+			\item El sistema pedirá hacer la calibración del angulo de giro del sistema de guiado.
+			
+			\item El sistema abrirá una ventana de OpenCV donde se mostrará el sistema de guiado y la resolución de distorsión por perspectiva.
+		\end{enumerate}
+	\item [Postcondición] El sistema comenzará a generar instrucciones de guía.
+	\item [Excepciones] Alguna de las calibraciones no se haya hecho de forma adecuada.
+	\item [Importancia] Alta.
+	\item [Comentarios] Ninguno.
+\end{description}
+
+\subsection{R9.Solicitar URL del servidor de vídeo.}
+\begin{description}
+	\item [Versión] V1.0
+	\item [Autor] Antonio de los Mozos Alonso
+	\item [Descripción] Al inicio del programa se nos solicitará la URL de donde vamos a obtener el vídeo.
+	\item [Precondición] Haber iniciado el programa.
+	\item [Secuencia Normal] Paso y Descripción
+		\begin{enumerate}
+			\item El programa solicitará una URL de video.
+			\item El usuario introducirá por linea de comandos la URL.
+			\item El programa validará que tiene conexion a la URL.
+		\end{enumerate}
+	\item [Postcondición] Se establecerá una conexión con el servidor de video.
+	\item [Excepciones] No poderse conectar con el servidor de video.
+	\item [Importancia] Alta.
+	\item [Comentarios] Ninguno.
 \end{description}
 
 \section{Casos de uso}
 Diagrama de casos de uso de la herramienta:
-\imagen{}{Diagrama de casos de uso.}
+\imagen{casos}{Diagrama de casos de uso.}
 
 

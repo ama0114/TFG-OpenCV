@@ -1,11 +1,132 @@
 \apendice{Documentación técnica de programación}
 
 \section{Introducción}
+En este apartado mostraremos todas las herramientas necesarias para ponernos a trabajar con este proyecto.
+
+El proyecto es accesible desde: \url{https://github.com/ama0114/TFG-OpenCV/}
+
+Para descargarlo, basta con usar la herramienta git\cite{git}
 
 \section{Estructura de directorios}
+Los scripts y clases están dentro de la carpeta src. 
+
+Listado de archivos:
+\begin{itemize}
+
+	\item binarizar\_hsv.py
+	\item direccion.py
+	\item ejecucion.py
+	\item ejecucion.spec
+	\item toolbox.py
+	\item webcam\_stream.py
+	\item perspectiva.py
+	
+\end{itemize}
+
+El archivo ejecucion.spec se usa con la herramienta pyinstaller para generar el ejecutable. 
+
+En la carpeta pruebasPython encontraremos archivos de prueba.
+
+Listado de archivos:
+\begin{itemize}
+
+	\item holamundo.py
+	\item pruebaVideo.py
+	\item test\_angulo.py
+	\item tes\_luminosidad.py
+	\item recIzq.avi
+	
+\end{itemize}
+
+Los archivos test\_angulo.py y test\_luminosidad.py requieren algunos de los archivos de la carpeta src, por lo que para hacerlos funcionar los tenemos que mover ahí. Se han colocado en la carpeta de pruebas para estructurar bien el repositorio.
 
 \section{Manual del programador}
+Ahora veremos como preparar el entorno de trabajo.
+
+\subsection{Python}
+Lo primero que haremos será instalar Python. La versión utilizada para este proyecto es la 2.7.15.
+Lo podemos descargar en:
+\url{https://www.python.org/downloads/release/python-2715/}
+
+Una vez hecho esto instalaremos pip para Python. Necesitaremos el archivo get\_pip.py, lo podemos descargar en:
+\url{https://bootstrap.pypa.io/get-pip.py}
+
+Para instalar pip, abrimos un terminal, nos colocamos mediante el comando cd en el directorio donde tengamos el archivo get\_pip.py y ejecutamos: python get\_pip.py
+
+Una vez que tengamos pip, instalaremos las librerías necesarias, para ello usaremos los comandos:
+
+\begin{itemize}
+	\item pip install opencv-python
+	\item pip install matplotlib
+	\item pip install numpy
+	\item pip install scipy
+	\item pip install pylint
+	\item pip install pyinstaller
+\end{itemize}
+
+Con las primeras 4 liberias podremos ejecutar el código desde python, pylint es un parser para python, que nos ayudará en la labor de programación y pyinstaller nos servirá para crear el ejecutable.
+
+Se ha dejado en el repositorio un archivo requirements.txt para instalar todas las librerías con un solo comando. Nos descargamos el archivo y ejecutamos el comando: pip install -r requirements.txt
+
+\subsection{IDE}
+Una vez preparado Python, ya nos podríamos poner a programar desde el propio IDE de Python. 
+
+Aun así, en este proyecto hemos usado Microsoft Visual Studio Code.
+
+Lo podemos descargar desde aquí:
+\url{https://code.visualstudio.com/}
+
+La instalación es como la de cualquier programa para Windows.
+
+Inicialmente este IDE ya viene preparado para trabajar, aun así, si necesitamos realizar alguna configuración, la podemos hacer desde: Archivo, Preferencias, Configuración.
+
+Se nos abrirá una nueva ventana del editor con el archivo de configuración, aquí podemos realizar la configuración que necesitemos.
+
+\subsection{Git}
+Git es el sistema de control de versiones elegido para este proyecto. Windows no lo trae por defecto, a si que lo tenemos que descargar desde:
+
+\url{https://git-scm.com/}
+
+Descargamos el ejecutable y lo instalamos. Podemos elegir entre usar Git desde una consola Bash, desde la consola de Windows, y también instalar componentes adicionales, esto lo dejamos a gusto del usuario.
+
+Para obtener el proyecto usaremos el comando: git clone https://github.com/ama0114/TFG-OpenCV.git
+
+\subsection{GitKraken}
+Para gestionar mejor el respositorio, hemos usado la herramienta GitKraken. Lo podemos descargar aquí:
+
+\url{https://www.gitkraken.com/}
+
+Descargamos el ejecutable y lo instalamos. Esta herramienta también nos permite clonar el repositorio si no lo hemos hecho antes, para ello pinchamos en: File, Clone Repo. Nos pedirá la dirección del archivo git del repositorio: https://github.com/ama0114/TFG-OpenCV.git
+
+En caso de tenerlo ya clonado, pinchamos en la opción: File, Open Repo y buscamos la carpeta donde lo hayamos descargado.
+
+Una vez hecho esto, la herramienta nos mostrará las ramas del proyecto, los commits realizados, en general toda la información del repositorio. También nos permite hacer las operaciones básicas del repositorio, Pull, Push, Stash, Branch y Pop.
 
 \section{Compilación, instalación y ejecución del proyecto}
+
+Podemos ejecutar el proyecto de diferentes maneras, veamos:
+
+\subsection{Linea de comandos}
+Usando Python desde la linea de comandos, simplemente nos colocamos sobre la carpeta src y ejecutamos el comando: python ejecucion.py 
+
+El programa se ejecutará.
+
+\subsection{Visual Studio Code}
+Podemos ejecutar el programa desde Visual Studio Code.
+
+
+Hacemos click derecho sobre el archivo ejecucion.py y seleccionamos la opción "Ejecutar archivo Python en la terminal".
+
+
+Ejecutará el archivo en la terminal del IDE.
+
+\subsection{Creación del ejecutable}
+Para crear el ejecutable usaremos la herramienta pyinstaller.
+
+Abrimos una consola de comandos nos movemos con el comando cd hasta la carpeta src y ejecutamos el comando: pyinstaller ejecucion.spec
+
+Si nos lanza algún error, será porque nos faltan Dlls en la carpeta Python/Dlls. Estos Dlls los podemos encontrar en la carpeta Python/libs/site-packages. Dentro de aquí tendremos todos los paquetes que tengamos en Python instalados, buscaremos el paquete del que nos falten los Dlls (nos lo indicará pyinstaller) y copiamos sus Dlls en la carpeta Python/Dlls.
+
+Como esta tarea es un poco complicada, y suele llevar horas de exploración por internet, se ha dejado un fichero Dlls.zip en el repositorio con los Dlls necesarios para crear el ejecutable de esta versión. Si en un futuro se expande el proyecto, es posible que haya que incluir más.
 
 \section{Pruebas del sistema}
