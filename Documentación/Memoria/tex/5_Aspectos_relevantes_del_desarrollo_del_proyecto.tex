@@ -154,7 +154,14 @@ En cada fase se han realizado pruebas y se han dejado expuestas en vídeos en el
 Las pruebas están organizadas según la investigación:
 
 \begin{itemize}
-	\item Una prueba inicial con el objetivo de obtener 50 Fps. Se trabajará en el entorno habitual, en esta etapa no teníamos la función de luminosidad por lo que no hay medidas de esta, pero teníamos la suficiente luminosidad como para que la cámara obtuviera la máxima tasa de Fps, y la imagen fuera perfectamente visible.
+	
+	\item La primera prueba	que se realizó fue buscando optimizar la conexión de la cámara y el ordenador. Inicialmente ambos estaban conectados vía wifi a un router, al que había más dispositivos conectados. Esto a veces producía perdida de paquetes y por tanto perdida de rendimiento en la transmisión de la imagen. 
+	
+	Finalmente se optó por usar un router aislado y conectarlo por cable al ordenador para optimizar al máximo posible la conexión. El smartphone se siguió conectando vía wifi.
+	
+	La prueba tuvo éxito, ya que conseguimos un sistema estable sobre el que empezar a trabajar.
+	
+	\item Una prueba con el objetivo de obtener 50 Fps. Se trabajará en el entorno habitual, en esta etapa no teníamos la función de luminosidad por lo que no hay medidas de esta, pero teníamos la suficiente luminosidad como para que la cámara obtuviera la máxima tasa de Fps, y la imagen fuera perfectamente visible.
 	
 Lo que se ha ido haciendo es modificar la resolución y calidad de la imagen hasta que hemos obtenido la tasa de frames deseada, 50 fps. Esta tasa se ha alcanzado en la prueba de resolución 176x144, con una calidad del streaming 20.
 
@@ -203,19 +210,31 @@ La funcionalidad buscada en esta prueba es la de obtener una función que se com
 En condiciones de luminosidad constante, ambas funciones se comportan bien.
 
 Destacar que mientras que en la binarización por luminosidad, el fondo blanco donde está la línea, no puede sufrir distorsión alguna, ya que aparecerían desperfectos en la imagen, en la binarización por color si podemos tener un fondo de muy diversa indole, siempre y cuando no sea del mismo color o parecido al color de la línea.
+
+	Se registrarán los Fps de cada algoritmo para ver el que mejor rendimiento tiene. El rendimiento de Otsu y su versatilidad en diferentes condiciones de luminosidad lo hace un buen candidato. La binarización por color funciona realmente bien, pero al ser más compleja, tiene peor rendimiento, aun así es otro buen candidato.
 	
 	
 	Podemos verlas en los siguientes vídeos:
 	
 	\href{https://youtu.be/Gu_HvPr3cCU}{Binarizar con umbral fijo}
 	
+	Resultados de Fps: Mínimios: 5.52 Máximos: 200 Promedio: 55.5
+	
 	\href{https://youtu.be/NCWQ2I-1J_o}{Binarizar con umbral adaptativo de vecindad Media}
+	
+	Resultados de Fps: Mínimios: 1.5 Máximos: 199 Promedio: 56.4
 	
 	\href{https://youtu.be/XPxqk3kNXKY}{Binarizar con umbral adaptativo de vecindad Gausiano}
 	
+	Resultados de Fps: Mínimios: 2.3 Máximos: 200 Promedio: 56.17
+	
 	\href{https://youtu.be/4CW4r9qdo4Y}{Binarizar por luminosidad con Otsu}
 	
+	Resultados de Fps: Mínimios: 5.05 Máximos: 166.67 Promedio: 56.94
+	
 	\href{https://youtu.be/Rks5PkxDeZQ}{Binarizar por color}
+	
+	Resultados de Fps: Mínimios: 5.52 Máximos: 60 Promedio: 40
 	
 	\item Prueba de calculo del coefciente para resolver la distorsión de perspectiva. 
 	
@@ -255,13 +274,15 @@ Una vez pensado el algoritmo, elegimos una fila cualquiera, la 70 por ejemplo y 
 	En esta prueba comprobamos como afecta la variación de luminosidad en la binarización por luminosidad a la medida del ancho de la línea.
 Se variará la luminosidad del entorno.
 
-El parametro a medir es el ancho de la línea.
+Los resultados son los esperados, cuando la luminosidad disminuye, aumenta el error de la medida en la imagen frente al tamaño real.
+
+El parámetro a medir es el ancho de la línea.
 	
 	\href{https://youtu.be/m7t4dcfuFeo}{Prueba a medir el ancho variando la luminosidad}
 	
 	\item Primera comprobación de la transformación de perspectiva
 	
-	En esta prueba simplemente buscamos ver a ojo si la función de transformación de perspectiva es capaz de modificar la imagen, buscando realizar la correción de la distorsión.
+	En esta prueba simplemente buscamos ver a ojo si la función de transformación de perspectiva es capaz de modificar la imagen, buscando realizar la corrección de la distorsión.
 	
 Para ello colocaremos la cámara en distintos ángulos y ejecutaremos las funciones de corrección.
 	
